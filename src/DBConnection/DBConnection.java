@@ -1,18 +1,21 @@
 package DBConnection;
 
-import org.sqlite.JDBC;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Wrapper;
 
 public class DBConnection {
 
-   String url = "jdbc:sqlite:C://Users//Flo//OneDrive - OSZ IMT//LF12//PROJEKT ARBEIT//DB";
+   public static final String DB_Name = "ProjektDB_2";
+   public static final String PATH = "C://Users//Flo//OneDrive - OSZ IMT//LF12//PROJEKT ARBEIT//DB/" + DB_Name;
+   public static final String ConnectionURL = "jdbc:sqlite:" + PATH;
 
-   Connection connection = DriverManager.getConnection(url);
+    public  Connection() throws SQLException {
 
-
-    public DBConnection() throws SQLException {
+        Connection connection = null;
+        connection = DriverManager.getConnection(ConnectionURL);
+        return connection;
+        
     }
 }
