@@ -3,6 +3,8 @@ package DBConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.*;
+import java.util.Map;
 
 public class DBConnection {
 
@@ -13,14 +15,14 @@ public class DBConnection {
    private Connection connection = null;
 
 
-   public static Connection Verbidung() throws SQLException {
+   public static Connection Verbindung() throws SQLException {
 
        Connection connection = null;
        connection = DriverManager.getConnection(ConnectionURL);
        return connection;
    }
     public boolean checkDBConnectionWV() throws SQLException {
-        connection = Verbidung();
+        connection = Verbindung();
         if (connection != null) {
             System.out.println("klappt");
             return true;
@@ -30,3 +32,4 @@ public class DBConnection {
     }
 
 }
+
