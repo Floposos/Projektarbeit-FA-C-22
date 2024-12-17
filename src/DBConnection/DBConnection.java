@@ -3,7 +3,6 @@ package DBConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Wrapper;
 
 public class DBConnection {
 
@@ -11,11 +10,23 @@ public class DBConnection {
    public static final String PATH = "C://Users//Flo//OneDrive - OSZ IMT//LF12//PROJEKT ARBEIT//DB/" + DB_Name;
    public static final String ConnectionURL = "jdbc:sqlite:" + PATH;
 
-    public  Connection() throws SQLException {
+   private Connection connection = null;
 
-        Connection connection = null;
-        connection = DriverManager.getConnection(ConnectionURL);
-        return connection;
-        
+
+   public static Connection Verbidung() throws SQLException {
+
+       Connection connection = null;
+       connection = DriverManager.getConnection(ConnectionURL);
+       return connection;
+   }
+    public boolean checkDBConnectionWV() throws SQLException {
+        connection = Verbidung();
+        if (connection != null) {
+            System.out.println("klappt");
+            return true;
+        } else {
+            return false;
+        }
     }
+
 }
