@@ -1,22 +1,22 @@
 package Model;
 
 public class Participant {
-    private int id;
+    private int participantId;
     private int memberId;
     private int eventId;
 
-    public Participant(int id, int memberId, int eventId) {
-        this.id = id;
+    public Participant(int participantId, int memberId, int eventId) {
+        this.participantId = participantId;
         this.memberId = memberId;
         this.eventId = eventId;
     }
 
-    public int getId() {
-        return id;
+    public int getParticipantId() {
+        return participantId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setParticipantId(int participantId) {
+        this.participantId = participantId;
     }
 
     public int getMemberId() {
