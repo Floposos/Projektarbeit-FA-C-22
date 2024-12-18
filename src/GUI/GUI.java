@@ -9,9 +9,6 @@ public class GUI {
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
-    JLabel label = new JLabel("Wählen Sie aus, was auf Sie zutrifft");
-    JButton buttonEventManager = new JButton("Event-Manager");
-    JButton buttonVerein = new JButton("Verein");
 
     public GUI() {
         // Nimbus-Look-and-Feel aktivieren
@@ -23,83 +20,63 @@ public class GUI {
 
         // Grundlegende JFrame-Einstellungen
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
+        frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
         // Startpanel erstellen
-        createMainPanel();
+        createRoleSelectionPanel();
 
         frame.add(panel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
-    // Erstellt das Hauptmenü-Panel
-    private void createMainPanel() {
-        panel.removeAll(); // Löscht vorherige Inhalte
+    // Erstellt das Auswahl-Panel (Event-Manager / Verein)
+    private void createRoleSelectionPanel() {
+        panel.removeAll();
         panel.setLayout(new GridBagLayout());
-        panel.setBackground(new Color(245, 245, 245));
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Label "Wählen Sie aus, was auf Sie zutrifft"
-        label.setFont(new Font("SansSerif", Font.BOLD, 18));
-        label.setForeground(new Color(50, 50, 50));
+        JLabel selectRoleLabel = new JLabel("Wählen Sie aus, was auf Sie zutrifft:");
+        selectRoleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 10, 20, 10);
-        panel.add(label, gbc);
+        panel.add(selectRoleLabel, gbc);
 
-        // Button "Event-Manager"
-        buttonEventManager.setPreferredSize(new Dimension(150, 40));
-        buttonEventManager.setBackground(new Color(100, 150, 255));
-        buttonEventManager.setForeground(Color.WHITE);
-        buttonEventManager.setFont(new Font("SansSerif", Font.BOLD, 14));
-        gbc.gridx = 0;
+        JButton buttonEventManager = new JButton("Event-Manager");
+        JButton buttonVerein = new JButton("Verein");
+
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         panel.add(buttonEventManager, gbc);
 
-        // Button "Verein"
-        buttonVerein.setPreferredSize(new Dimension(150, 40));
-        buttonVerein.setBackground(new Color(100, 200, 150));
-        buttonVerein.setForeground(Color.WHITE);
-        buttonVerein.setFont(new Font("SansSerif", Font.BOLD, 14));
         gbc.gridx = 1;
-        gbc.gridy = 1;
         panel.add(buttonVerein, gbc);
 
-        // ActionListener für "Event-Manager"
-        buttonEventManager.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showLoginPanel();
-            }
-        });
+        // ActionListener für die Buttons
+        buttonEventManager.addActionListener(e -> createLoginPanel());
+        buttonVerein.addActionListener(e -> showVereinPanel()); // Platzhalter für Verein
 
-        // Panel aktualisieren
         panel.revalidate();
         panel.repaint();
     }
 
-    // Erstellt das Login-Panel für "Event-Manager"
-    private void showLoginPanel() {
-        panel.removeAll(); // Löscht vorherige Inhalte
+    // Erstellt das Login-Panel
+    private void createLoginPanel() {
+        panel.removeAll();
         panel.setLayout(new GridBagLayout());
-        panel.setBackground(new Color(240, 240, 240));
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Label "Anmeldung"
         JLabel loginLabel = new JLabel("Anmeldung");
         loginLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        loginLabel.setForeground(new Color(50, 50, 50));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 20, 10);
         panel.add(loginLabel, gbc);
 
-        // Label und Eingabefeld "Benutzername"
         JLabel userLabel = new JLabel("Benutzername:");
         JTextField userField = new JTextField(15);
         gbc.gridy = 1;
@@ -109,7 +86,6 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(userField, gbc);
 
-        // Label und Eingabefeld "Passwort"
         JLabel passLabel = new JLabel("Passwort:");
         JPasswordField passField = new JPasswordField(15);
         gbc.gridx = 0;
@@ -118,35 +94,186 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(passField, gbc);
 
-        // Button "Speichern"
-        JButton saveButton = new JButton("Speichern");
-        saveButton.setBackground(new Color(100, 150, 255));
-        saveButton.setForeground(Color.WHITE);
-        saveButton.setFocusPainted(false);
+        JButton loginButton = new JButton("Einloggen");
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 10, 10, 10);
+        panel.add(loginButton, gbc);
+
+        loginButton.addActionListener(e -> showActionSelectionPanel());
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    // Platzhalter für die Verein-Seite
+    private void showVereinPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+
+        JLabel vereinLabel = new JLabel("Verein-Seite in Arbeit...");
+        vereinLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        panel.add(vereinLabel);
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    // Erstellt die Haupt-Auswahlseite
+    private void showActionSelectionPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel actionLabel = new JLabel("Was möchten Sie tun?");
+        actionLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 10, 20, 10);
+        panel.add(actionLabel, gbc);
+
+        JButton buttonNewEvent = new JButton("Neues Event anlegen");
+        JButton buttonManageEvent = new JButton("Event Verwalten");
+        JButton buttonAddManager = new JButton("Neuen Event-Manager hinzufügen");
+        JButton buttonManageSports = new JButton("Sportarten Verwalten");
+
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(buttonNewEvent, gbc);
+        gbc.gridx = 1;
+        panel.add(buttonManageEvent, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(buttonAddManager, gbc);
+        gbc.gridx = 1;
+        panel.add(buttonManageSports, gbc);
+
+        buttonNewEvent.addActionListener(e -> showNewEventPanel());
+        buttonManageEvent.addActionListener(e -> showManageEventPanel());
+
+
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    // Panel für Neues Event
+    private void showNewEventPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel newEventLabel = new JLabel("Neues Event");
+        newEventLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(newEventLabel, gbc);
+
+        JLabel nameLabel = new JLabel("Event-Name:");
+        JTextField nameField = new JTextField(15);
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(nameLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(nameField, gbc);
+
+        JLabel dateLabel = new JLabel("Datum:");
+        JFormattedTextField dateField = new JFormattedTextField("TT/MM/JJJJ");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(dateLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(dateField, gbc);
+
+        JLabel sportLabel = new JLabel("Sportart:");
+        JComboBox<String> sportComboBox = new JComboBox<>(new String[]{"Schwimmen", "Sprint", "Weitsprung"});
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(sportLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(sportComboBox, gbc);
+
+        JButton saveButton = new JButton("Speichern");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(saveButton, gbc);
 
-        // ActionListener für den Speichern-Button
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = userField.getText();
-                String password = new String(passField.getPassword());
-                JOptionPane.showMessageDialog(frame,
-                        "Benutzername: " + username + "\nPasswort: " + password,
-                        "Gespeichert", JOptionPane.INFORMATION_MESSAGE);
-            }
+        saveButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Event erfolgreich gespeichert!");
+            showActionSelectionPanel();
         });
 
-        // Panel aktualisieren
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    // Panel für Event verwalten
+    private void showManageEventPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel manageEventLabel = new JLabel("Event Verwalten");
+        manageEventLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(manageEventLabel, gbc);
+
+        JLabel eventLabel = new JLabel("Event:");
+        JComboBox<String> eventComboBox = new JComboBox<>(new String[]{"Event 1", "Event 2", "Event 3"});
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(eventLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(eventComboBox, gbc);
+
+        JLabel participantLabel = new JLabel("Teilnehmer:");
+        JComboBox<String> participantComboBox = new JComboBox<>(new String[]{"Teilnehmer 1", "Teilnehmer 2"});
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(participantLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(participantComboBox, gbc);
+
+        JLabel timeLabel = new JLabel("Gemessene Zeit:");
+        JTextField timeField = new JTextField(10);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(timeLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(timeField, gbc);
+
+        JButton saveParticipantButton = new JButton("Teilnehmerdaten speichern");
+        JButton finishEventButton = new JButton("Event abschließen");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        panel.add(saveParticipantButton, gbc);
+        gbc.gridy = 5;
+        panel.add(finishEventButton, gbc);
+
+        saveParticipantButton.addActionListener(e -> {
+            timeField.setText("");
+            participantComboBox.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(frame, "Teilnehmerdaten erfolgreich gespeichert!");
+        });
+
+        finishEventButton.addActionListener(e -> showActionSelectionPanel());
+
         panel.revalidate();
         panel.repaint();
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GUI());
+        SwingUtilities.invokeLater(GUI::new);
     }
 }
