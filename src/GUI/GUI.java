@@ -2,8 +2,6 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GUI {
 
@@ -274,12 +272,72 @@ public class GUI {
         panel.repaint();
     }
 
-    private Void showAddManagerPanel() {
-        return null;
+    private void showAddManagerPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel newEventLabel = new JLabel("Neuer Event-Manager");
+        newEventLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(newEventLabel, gbc);
+
+        JLabel VorNameLabel = new JLabel("Vorname:");
+        JTextField VorNameField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(VorNameLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(VorNameField, gbc);
+
+        JLabel NachNameLabel = new JLabel("Nachname:");
+        JTextField NachNameField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        panel.add(NachNameLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(NachNameField, gbc);
+
+        JLabel nameLabel = new JLabel("Benutzername:");
+        JTextField nameField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        panel.add(nameLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(nameField, gbc);
+
+        JLabel passLabel = new JLabel("Passwort:");
+        JPasswordField passField = new JPasswordField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panel.add(passLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(passField, gbc);
+
+        JButton saveButton = new JButton("Anlegen");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 10, 10, 10);
+        panel.add(saveButton, gbc);
+
+        saveButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Manager erfolgreich gespeichert!");
+            showActionSelectionPanel();
+        });
+
+        panel.revalidate();
+        panel.repaint();
     }
 
-    private Void showManageSportsPanel() {
-        return null;
+    private void  showManageSportsPanel() {
+
     }
 
     public static void main(String[] args) {
