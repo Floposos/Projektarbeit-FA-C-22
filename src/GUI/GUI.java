@@ -337,7 +337,40 @@ public class GUI {
     }
 
     private void  showManageSportsPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
+        JLabel actionLabel = new JLabel("Was möchten Sie tun?");
+        actionLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 10, 20, 10);
+        panel.add(actionLabel, gbc);
+
+        JButton buttonNewSportType = new JButton("Neue Sportart anlegen");
+        JButton buttonManageSportsType = new JButton("Sportart Verwalten");
+
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(buttonNewSportType, gbc);
+        gbc.gridx = 1;
+        panel.add(buttonManageSportsType, gbc);
+
+        buttonNewSportType.addActionListener(e -> showNewSportsTypePanel());
+        buttonManageSportsType.addActionListener(e -> showManageSportsTypePanel());
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private void showNewSportsTypePanel() {
+        //TODO
+    }
+
+    private void showManageSportsTypePanel() {
+        //TODO
     }
 
     public static void main(String[] args) {
