@@ -153,7 +153,8 @@ public class GUI {
 
         buttonNewEvent.addActionListener(e -> showNewEventPanel());
         buttonManageEvent.addActionListener(e -> showManageEventPanel());
-
+        buttonAddManager.addActionListener(e -> showAddManagerPanel());
+        buttonManageSports.addActionListener(e -> showManageSportsPanel());
 
 
         panel.revalidate();
@@ -271,6 +272,14 @@ public class GUI {
 
         panel.revalidate();
         panel.repaint();
+    }
+
+    private Void showAddManagerPanel() {
+        return null;
+    }
+
+    private Void showManageSportsPanel() {
+        return null;
     }
 
     public static void main(String[] args) {
