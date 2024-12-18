@@ -1,30 +1,43 @@
 package Model;
+import java.time.LocalDate;
 
 public class Member {
-    private int id;
-    private String name;
+    private int memberId;
+    private String firstName;
+    private String lastName;
     private int clubId;
+    LocalDate birthDate;
 
-    public Member(int id, String name, int clubId) {
-        this.id = id;
-        this.name = name;
+    public Member(int memberId, String firstName, String lastName, int clubId, LocalDate birthDate) {
+        this.birthDate = birthDate;
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.clubId = clubId;
     }
 
-    public int getId() {
-        return id;
+    public int getMemberId() {
+        return memberId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return firstName;
+    }
+
+    public void setLastName(String firstName) {
+        this.lastName = lastName;
     }
 
     public int getClubId() {
@@ -33,5 +46,13 @@ public class Member {
 
     public void setClubId(int clubId) {
         this.clubId = clubId;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

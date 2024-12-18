@@ -3,9 +3,10 @@ import Model.Member;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class MemberDatabaseOperations {
-    public void insertMember(String name, int clubId) {
+    public void insertMember(String firstName, String lastName, LocalDate birthDate, int clubId) {
         // Database query to insert a member
     }
 

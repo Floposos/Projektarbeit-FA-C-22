@@ -1,22 +1,24 @@
 package Model;
 
 public class Event {
-    private int id;
+    private int eventId;
     private String name;
     private String date;
+    private String status;
 
-    public Event(int id, String name, String date) {
-        this.id = id;
+    public Event(int eventId, String name, String date, String status) {
+        this.eventId = eventId;
         this.name = name;
         this.date = date;
+        this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public int getEventId() {
+        return eventId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 
     public String getName() {
@@ -33,5 +35,13 @@ public class Event {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

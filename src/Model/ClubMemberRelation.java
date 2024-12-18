@@ -1,4 +1,7 @@
 package Model;
+//******************************************************
+// Vielleicht nicht nötig, muss noch geklärt werden!   *
+//******************************************************
 
 public class ClubMemberRelation {
     private int clubId;

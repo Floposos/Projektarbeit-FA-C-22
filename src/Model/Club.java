@@ -1,20 +1,20 @@
 package Model;
 
 public class Club {
-    private int id;
+    private int clubId;
     private String name;
 
-    public Club(int id, String name) {
-        this.id = id;
+    public Club(int clubId, String name) {
+        this.clubId = clubId;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getClubId() {
+        return clubId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setClubId(int clubId) {
+        this.clubId = clubId;
     }
 
     public String getName() {

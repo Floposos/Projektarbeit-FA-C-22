@@ -1,20 +1,20 @@
 package Model;
 
 public class Sport {
-    private int id;
+    private int sportId;
     private String name;
 
-    public Sport(int id, String name) {
-        this.id = id;
+    public Sport(int sportId, String name) {
+        this.sportId = sportId;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getSportId() {
+        return sportId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSportId(int sportId) {
+        this.sportId = sportId;
     }
 
     public String getName() {

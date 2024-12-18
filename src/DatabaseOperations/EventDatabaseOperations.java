@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class EventDatabaseOperations {
-    public void insertEvent(String name, String date) {
+    public void insertEvent(String name, String date, String status) {
         // Database query to insert an event
     }
 
@@ -13,7 +13,7 @@ public class EventDatabaseOperations {
         // Database query to delete an event
     }
 
-    public void updateEvent(int id, String name, String date) {
+    public void updateEvent(int id, String name, String date, String status) {
         // Database query to update an event's details
     }
 
