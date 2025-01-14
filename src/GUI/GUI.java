@@ -61,7 +61,7 @@ public class GUI {
         panel.repaint();
     }
 
-    // Erstellt das Login-Panel
+    // Login-Panel
     private void createLoginPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -101,8 +101,25 @@ public class GUI {
 
         loginButton.addActionListener(e -> showActionSelectionPanel());
 
+        // Zurück-Button
+        JButton backButton = new JButton("←");
+        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        backButton.setMargin(new Insets(2,5,2,5));
+        backButton.setFocusPainted(false);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+
+        // Pfeil-Button unten links
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+        backButton.addActionListener(e -> createRoleSelectionPanel());
+
         panel.revalidate();
         panel.repaint();
+
     }
 
     // Platzhalter für die Verein-Seite
@@ -116,6 +133,8 @@ public class GUI {
 
         panel.revalidate();
         panel.repaint();
+
+
     }
 
     // Erstellt die Haupt-Auswahlseite
@@ -136,24 +155,39 @@ public class GUI {
         JButton buttonManageEvent = new JButton("Event Verwalten");
         JButton buttonAddManager = new JButton("Neuen Event-Manager hinzufügen");
         JButton buttonManageSports = new JButton("Sportarten Verwalten");
+        JButton backButton = new JButton("←");
 
+        //NewEvent Button
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         panel.add(buttonNewEvent, gbc);
         gbc.gridx = 1;
         panel.add(buttonManageEvent, gbc);
 
+        //AddManager Button
         gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(buttonAddManager, gbc);
         gbc.gridx = 1;
         panel.add(buttonManageSports, gbc);
 
+        //back-button
+        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        backButton.setMargin(new Insets(2,5,2,5));
+        backButton.setFocusPainted(false);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+
         buttonNewEvent.addActionListener(e -> showNewEventPanel());
         buttonManageEvent.addActionListener(e -> showManageEventPanel());
         buttonAddManager.addActionListener(e -> showAddManagerPanel());
         buttonManageSports.addActionListener(e -> showManageSportsPanel());
-
+        backButton.addActionListener(e -> createRoleSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
@@ -181,6 +215,63 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(nameField, gbc);
 
+        JButton saveButton = new JButton("Speichern");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 10, 10, 10);
+        panel.add(saveButton, gbc);
+
+        // Zurück-Button
+        JButton backButton = new JButton("←");
+        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        backButton.setMargin(new Insets(2,5,2,5));
+        backButton.setFocusPainted(false);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+
+        // Pfeil-Button unten links
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+
+        String eventName = nameField.getText();
+        saveButton.addActionListener(e -> showNewSportEventPanel(eventName));
+//            JOptionPane.showMessageDialog(frame, "Event erfolgreich gespeichert!");
+//            showActionSelectionPanel(););
+        backButton.addActionListener(e -> showActionSelectionPanel());
+
+
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private void showNewSportEventPanel(String eventName){
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+
+
+        JLabel EventNameLabel = new JLabel("Test");
+        EventNameLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(EventNameLabel, gbc);
+
+        JLabel eventLabel = new JLabel("Sportart:");
+        JComboBox<String> eventComboBox = new JComboBox<>(new String[]{"Schwimmen 25m", "Laufen", "Schwimmen 50m"}); // TODO aus DB aus T_sportart
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(eventLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(eventComboBox, gbc);
+
         JLabel dateLabel = new JLabel("Datum:");
         JFormattedTextField dateField = new JFormattedTextField("TT/MM/JJJJ");
         gbc.gridx = 0;
@@ -189,29 +280,73 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(dateField, gbc);
 
-        JLabel sportLabel = new JLabel("Sportart:");
-        JComboBox<String> sportComboBox = new JComboBox<>(new String[]{"Schwimmen", "Sprint", "Weitsprung"});
+//        JComboBox<String> participantComboBox = new JComboBox<>(new String[]{"Teilnehmer 1", "Teilnehmer 2"});
+//        gbc.gridx = 0;
+//        gbc.gridy = 2;
+//        panel.add(participantLabel, gbc);
+//        gbc.gridx = 1;
+//        panel.add(participantComboBox, gbc);
+
+        JLabel timeLabel = new JLabel("Gemessene Zeit:");
+        JTextField timeField = new JTextField(10);
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(sportLabel, gbc);
+        panel.add(timeLabel, gbc);
         gbc.gridx = 1;
-        panel.add(sportComboBox, gbc);
+        panel.add(timeField, gbc);
 
-        JButton saveButton = new JButton("Speichern");
+        JButton finishEventButton = new JButton("Event abschließen");
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 10, 10, 10);
-        panel.add(saveButton, gbc);
+        panel.add(finishEventButton, gbc);
 
-        saveButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Event erfolgreich gespeichert!");
-            showActionSelectionPanel();
-        });
+        // Zurück-Button
+        JButton backButton = new JButton("←");
+        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        backButton.setMargin(new Insets(2,5,2,5));
+        backButton.setFocusPainted(false);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+
+        // Pfeil-Button unten links
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+
+        finishEventButton.addActionListener(e -> showActionSelectionPanel());
+        backButton.addActionListener(e -> showNewEventPanel());
 
         panel.revalidate();
         panel.repaint();
     }
+//
+
+//        EventNameLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+//        gbc.gridx = 0;
+//        gbc.gridy = 0;
+//        gbc.gridwidth = 2;
+//        gbc.insets = new Insets(10, 10, 20, 10);
+//        panel.add(EventNameLabel, gbc);
+//
+//        JLabel dateLabel = new JLabel("Datum:");
+//        JFormattedTextField dateField = new JFormattedTextField("TT/MM/JJJJ");
+//        gbc.gridx = 0;
+//        gbc.gridy = 2;
+//        panel.add(dateLabel, gbc);
+//        gbc.gridx = 1;
+//        panel.add(dateField, gbc);
+//
+//        JLabel sportLabel = new JLabel("Sportart:");
+//        JComboBox<String> sportComboBox = new JComboBox<>(new String[]{"Schwimmen", "Sprint", "Weitsprung"});
+//        gbc.gridx = 0;
+//        gbc.gridy = 3;
+//        panel.add(sportLabel, gbc);
+//        gbc.gridx = 1;
+//        panel.add(sportComboBox, gbc);
+//    }
 
     // Panel für Event verwalten
     private void showManageEventPanel() {
