@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDatabaseOperations {
-    private static final String TABLE_NAME = "events";
+    private static final String TABLE_NAME = "T_events";
 
     public void insertEvent(String name, String date, String status) {
         String query = "INSERT INTO " + TABLE_NAME + " (name, date, status) VALUES (?, ?, ?)";
