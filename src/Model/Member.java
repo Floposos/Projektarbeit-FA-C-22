@@ -2,6 +2,7 @@ package Model;
 import java.time.LocalDate;
 
 public class Member {
+
     private int memberId;
     private String firstName;
     private String lastName;
@@ -9,11 +10,13 @@ public class Member {
     LocalDate birthDate;
 
     public Member(int memberId, String firstName, String lastName, int clubId, LocalDate birthDate) {
+
         this.birthDate = birthDate;
         this.memberId = memberId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.clubId = clubId;
+
     }
 
     public int getMemberId() {

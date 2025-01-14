@@ -21,9 +21,17 @@ public class MemberManager {
 
     public void removeMember(int memberId) {
         // Logic to remove a member
+        if (memberId <= 0) {
+            throw new IllegalArgumentException("Ungeltige Mitglieds-ID.");
+        }
+        memberDbOps.deleteMember(memberId);
     }
 
     public void updateMember(int memberId, String name, int clubId) {
         // Logic to update member details
+        if (memberId <= 0 || name == null || name.trim().isEmpty() || clubId <= 0) {
+            throw new IllegalArgumentException("Ungültiger Wert.");
+        }
+        memberDbOps.updateMember(memberId, name, clubId);
     }
 }
