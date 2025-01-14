@@ -9,12 +9,13 @@ import java.util.List;
 public class SportDatabaseOperations {
     private static final String TABLE_NAME = "sports";
 
-    public void insertSport(String name) {
-        String query = "INSERT INTO " + TABLE_NAME + " (name) VALUES (?)";
+    public void insertSport(String name, String resultType) {
+        String query = "INSERT INTO " + TABLE_NAME + " (name, result_type) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
+            preparedStatement.setString(2, resultType);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Hinzufügen der Sportart: " + e.getMessage(), e);
@@ -33,13 +34,14 @@ public class SportDatabaseOperations {
         }
     }
 
-    public void updateSport(int id, String name) {
-        String query = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
+    public void updateSport(int id, String name, String resultType) {
+        String query = "UPDATE " + TABLE_NAME + " SET name = ?, result_type = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setString(2, resultType);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren der Sportart: " + e.getMessage(), e);
@@ -54,7 +56,11 @@ public class SportDatabaseOperations {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new Sport(resultSet.getInt("id"), resultSet.getString("name"));
+                    return new Sport(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("result_type")
+                    );
                 }
             }
         } catch (SQLException e) {
@@ -72,7 +78,11 @@ public class SportDatabaseOperations {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                sports.add(new Sport(resultSet.getInt("id"), resultSet.getString("name")));
+                sports.add(new Sport(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("result_type")
+                ));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Abrufen der Sportarten: " + e.getMessage(), e);
@@ -80,4 +90,3 @@ public class SportDatabaseOperations {
         return sports;
     }
 }
-

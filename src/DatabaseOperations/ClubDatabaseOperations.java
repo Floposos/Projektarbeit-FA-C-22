@@ -9,7 +9,7 @@ import java.util.List;
 public class ClubDatabaseOperations {
     private static final String TABLE_NAME = "T_clubs";
 
-    public void insertClub(String name) {
+    public void insertClub(String name, String password) {
         String query = "INSERT INTO " + TABLE_NAME + " (name) VALUES (?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -33,7 +33,7 @@ public class ClubDatabaseOperations {
         }
     }
 
-    public void updateClub(int id, String name) {
+    public void updateClub(int id, String name, String password) {
         String query = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -54,7 +54,10 @@ public class ClubDatabaseOperations {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new Club(resultSet.getInt("id"), resultSet.getString("name"));
+                    return new Club(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("password"));
                 }
             }
         } catch (SQLException e) {
@@ -72,7 +75,10 @@ public class ClubDatabaseOperations {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                clubs.add(new Club(resultSet.getInt("id"), resultSet.getString("name")));
+                clubs.add(new Club(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("password")));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Abrufen der Vereine: " + e.getMessage(), e);
