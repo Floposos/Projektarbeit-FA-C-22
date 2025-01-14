@@ -1,15 +1,15 @@
 package DatabaseOperations;
 
 import DBConnection.DBConnection;
-import Model.Club;
+import Model.Sport;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClubDatabaseOperations {
-    private static final String TABLE_NAME = "clubs";
+public class SportDatabaseOperations {
+    private static final String TABLE_NAME = "sports";
 
-    public void insertClub(String name) {
+    public void insertSport(String name) {
         String query = "INSERT INTO " + TABLE_NAME + " (name) VALUES (?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -17,11 +17,11 @@ public class ClubDatabaseOperations {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Hinzufügen des Vereins: " + e.getMessage(), e);
+            throw new RuntimeException("Fehler beim Hinzufügen der Sportart: " + e.getMessage(), e);
         }
     }
 
-    public void deleteClub(int id) {
+    public void deleteSport(int id) {
         String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -29,11 +29,11 @@ public class ClubDatabaseOperations {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Löschen des Vereins: " + e.getMessage(), e);
+            throw new RuntimeException("Fehler beim Löschen der Sportart: " + e.getMessage(), e);
         }
     }
 
-    public void updateClub(int id, String name) {
+    public void updateSport(int id, String name) {
         String query = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -42,11 +42,11 @@ public class ClubDatabaseOperations {
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Aktualisieren des Vereins: " + e.getMessage(), e);
+            throw new RuntimeException("Fehler beim Aktualisieren der Sportart: " + e.getMessage(), e);
         }
     }
 
-    public Club getClubById(int id) {
+    public Sport getSportById(int id) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -54,17 +54,17 @@ public class ClubDatabaseOperations {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return new Club(resultSet.getInt("id"), resultSet.getString("name"));
+                    return new Sport(resultSet.getInt("id"), resultSet.getString("name"));
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Abrufen des Vereins: " + e.getMessage(), e);
+            throw new RuntimeException("Fehler beim Abrufen der Sportart: " + e.getMessage(), e);
         }
         return null;
     }
 
-    public List<Club> getAllClubs() {
-        List<Club> clubs = new ArrayList<>();
+    public List<Sport> getAllSports() {
+        List<Sport> sports = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
 
         try (Connection connection = DBConnection.Verbindung();
@@ -72,11 +72,12 @@ public class ClubDatabaseOperations {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                clubs.add(new Club(resultSet.getInt("id"), resultSet.getString("name")));
+                sports.add(new Sport(resultSet.getInt("id"), resultSet.getString("name")));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Abrufen der Vereine: " + e.getMessage(), e);
+            throw new RuntimeException("Fehler beim Abrufen der Sportarten: " + e.getMessage(), e);
         }
-        return clubs;
+        return sports;
     }
 }
+
