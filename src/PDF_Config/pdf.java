@@ -1,6 +1,5 @@
 package PDF_Config;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
