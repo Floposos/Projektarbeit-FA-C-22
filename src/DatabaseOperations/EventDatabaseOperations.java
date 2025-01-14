@@ -9,13 +9,13 @@ import java.util.List;
 public class EventDatabaseOperations {
     private static final String TABLE_NAME = "T_events";
 
-    public void insertEvent(String name,  String status) {
-        String query = "INSERT INTO " + TABLE_NAME + " (name, status) VALUES (?, ?)";
+    public void insertEvent(String administratorId ,String name,  String status) {
+        String query = "INSERT INTO " + TABLE_NAME + " (administratorId, name, status) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, status);
+            preparedStatement.setString(1, administratorId);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, status);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Hinzufügen des Events: " + e.getMessage(), e);
@@ -34,14 +34,14 @@ public class EventDatabaseOperations {
         }
     }
 
-    public void updateEvent(int id, String name, String status) {
+    public void updateEvent(int id, String administratorId, String name, String status) {
         String query = "UPDATE " + TABLE_NAME + " SET name = ?, status = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, status);
-            preparedStatement.setInt(3, id);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, administratorId);
+            preparedStatement.setString(3, name);
+            preparedStatement.setString(4, status);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Events: " + e.getMessage(), e);
@@ -58,7 +58,7 @@ public class EventDatabaseOperations {
                 if (resultSet.next()) {
                     return new Event(
                             resultSet.getInt("eventId"),
-                            resultSet.getInt("administratorId")  ,
+                            resultSet.getString("administratorId")  ,
                             resultSet.getString("name"),
                             resultSet.getString("status")
 
@@ -82,7 +82,7 @@ public class EventDatabaseOperations {
             while (resultSet.next()) {
                 events.add(new Event(
                         resultSet.getInt("eventId"),
-                        resultSet.getInt("administratorId")  ,
+                        resultSet.getString("administratorId")  ,
                         resultSet.getString("name"),
                         resultSet.getString("status")
                 ));
