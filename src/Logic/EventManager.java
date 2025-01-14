@@ -11,8 +11,8 @@ public class EventManager {
     }
 
     public void createEvent(String administratorId, String name,  String status) {
-        if (name == null || name.trim().isEmpty() || status == null || status.trim().isEmpty()) {
-            throw new IllegalArgumentException("Der Name und das Datum des Events dürfen nicht leer oder null sein.");
+        if (administratorId == null || administratorId.trim().isEmpty() || name == null || name.trim().isEmpty() || status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Der Name des Events darf nicht leer oder null sein.");
         }
         eventDbOps.insertEvent(administratorId ,name, status);
     }

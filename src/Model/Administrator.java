@@ -1,17 +1,20 @@
 package Model;
 
 public class Administrator {
+
+    private String administratorId;
     private String firstName;
     private String lastName;
-    private String userId;
     private String password;
 
 
-    public Administrator(String firstName, String lastName, String userId, String password) {
+    public Administrator(String administratorId, String firstName, String lastName, String password) {
+
+        this.administratorId = administratorId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userId = userId;
         this.password = password;
+
     }
 
     public String getFirstName() {
@@ -30,12 +33,12 @@ public class Administrator {
         this.lastName = lastName;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getAdministratorId() {
+        return administratorId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAdministratorId(String userId) {
+        this.administratorId = userId;
     }
 
     public String getPassword() {

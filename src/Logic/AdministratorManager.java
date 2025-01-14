@@ -13,15 +13,15 @@ public class AdministratorManager {
         this.adminDbOps = new AdministratorDatabaseOperations();
     }
 
-    public void addAdmin(String firstName, String lastName, String userId, String password) {
+    public void addAdmin(String firstName, String lastName, String password) {
         // Logic to add a new member
-        if (userId == null || userId.trim().isEmpty() || firstName == null || firstName.trim().isEmpty() || lastName == null || lastName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Ungültiger Name.");
+        if (firstName == null || firstName.trim().isEmpty() || lastName == null || lastName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ungültiger Name oder Passwort.");
         }
-        adminDbOps.insertAdmin(firstName, lastName, userId, password);
+        adminDbOps.insertAdmin(firstName, lastName, password);
     }
 
-    public void removeAdmin(int userId) {
+    public void removeAdmin(int administratorId) {
         // Logic to remove a member
     }
 

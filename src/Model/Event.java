@@ -1,16 +1,19 @@
 package Model;
 
 public class Event {
+
     private int eventId;
     private String administratorId;
     private String name;
     private String status;
 
     public Event(int eventId, String administratorId, String name, String status) {
+
         this.eventId = eventId;
         this.administratorId = administratorId;
         this.name = name;
         this.status = status;
+
     }
 
     public int getEventId() {

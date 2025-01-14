@@ -10,7 +10,7 @@ public class ClubDatabaseOperations {
     private static final String TABLE_NAME = "T_clubs";
 
     public void insertClub(String name, String password) {
-        String query = "INSERT INTO " + TABLE_NAME + " (name) VALUES (?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (name, password) VALUES (?,b?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -34,7 +34,7 @@ public class ClubDatabaseOperations {
     }
 
     public void updateClub(int id, String name, String password) {
-        String query = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET name = ?, password = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 

@@ -10,7 +10,7 @@ public class EventDatabaseOperations {
     private static final String TABLE_NAME = "T_events";
 
     public void insertEvent(String administratorId ,String name,  String status) {
-        String query = "INSERT INTO " + TABLE_NAME + " (administratorId, name, status) VALUES (?, ?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (administratorId, name, status) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, administratorId);
@@ -35,7 +35,7 @@ public class EventDatabaseOperations {
     }
 
     public void updateEvent(int id, String administratorId, String name, String status) {
-        String query = "UPDATE " + TABLE_NAME + " SET name = ?, status = ? WHERE id = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET administratorId = ?, name = ?, status = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);

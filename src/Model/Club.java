@@ -6,9 +6,11 @@ public class Club {
     private String password;
 
     public Club(int clubId, String name, String password) {
+
         this.clubId = clubId;
         this.name = name;
         this.password = password;
+
     }
 
     public int getClubId() {

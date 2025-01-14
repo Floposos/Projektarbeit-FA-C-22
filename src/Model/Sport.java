@@ -6,9 +6,11 @@ public class Sport {
     private String resultType;
 
     public Sport(int sportId, String name, String resultType) {
+
         this.sportId = sportId;
         this.name = name;
         this.resultType = resultType;
+
     }
 
     public int getSportId() {

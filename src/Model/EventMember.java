@@ -6,9 +6,11 @@ public class EventMember {
     private int eventId;
 
     public EventMember(int eventMemberId, int memberId, int eventId) {
+
         this.eventMemberId = eventMemberId;
         this.memberId = memberId;
         this.eventId = eventId;
+
     }
 
     public int getEventMemberId() {
