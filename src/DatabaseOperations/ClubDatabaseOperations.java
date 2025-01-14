@@ -1,24 +1,82 @@
 package DatabaseOperations;
+
+import DBConnection.DBConnection;
 import Model.Club;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClubDatabaseOperations {
+    private static final String TABLE_NAME = "T_clubs";
+
     public void insertClub(String name) {
-        // Database query to insert a club
+        String query = "INSERT INTO " + TABLE_NAME + " (name) VALUES (?)";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Hinzufügen des Vereins: " + e.getMessage(), e);
+        }
     }
 
     public void deleteClub(int id) {
-        // Database query to delete a club
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Löschen des Vereins: " + e.getMessage(), e);
+        }
     }
 
     public void updateClub(int id, String name) {
-        // Database query to update a club's details
+        String query = "UPDATE " + TABLE_NAME + " SET name = ? WHERE id = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Aktualisieren des Vereins: " + e.getMessage(), e);
+        }
     }
 
     public Club getClubById(int id) {
-        // Database query to retrieve a club by ID
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Club(resultSet.getInt("id"), resultSet.getString("name"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen des Vereins: " + e.getMessage(), e);
+        }
         return null;
+    }
+
+    public List<Club> getAllClubs() {
+        List<Club> clubs = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        try (Connection connection = DBConnection.Verbindung();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                clubs.add(new Club(resultSet.getInt("id"), resultSet.getString("name")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen der Vereine: " + e.getMessage(), e);
+        }
+        return clubs;
     }
 }

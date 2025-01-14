@@ -12,7 +12,7 @@ public class DBConnection {
    public static final String PATH = "C://Users//Flo//OneDrive - OSZ IMT//LF12//PROJEKT ARBEIT//DB/" + DB_Name;
    public static final String ConnectionURL = "jdbc:sqlite:" + PATH;
 
-   private Connection connection = null;
+   //private Connection connection = null;
 
 
    public static Connection Verbindung() throws SQLException {
@@ -21,15 +21,15 @@ public class DBConnection {
        connection = DriverManager.getConnection(ConnectionURL);
        return connection;
    }
-    public boolean checkDBConnectionWV() throws SQLException {
-        connection = Verbindung();
-        if (connection != null) {
-            System.out.println("klappt");
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean checkDBConnectionWV() throws SQLException {
+//        connection = Verbindung();
+//        if (connection != null) {
+//            System.out.println("klappt");
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
 }
 

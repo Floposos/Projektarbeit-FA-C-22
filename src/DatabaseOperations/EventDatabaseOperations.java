@@ -1,24 +1,96 @@
 package DatabaseOperations;
+
+import DBConnection.DBConnection;
 import Model.Event;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventDatabaseOperations {
+    private static final String TABLE_NAME = "T_events";
+
     public void insertEvent(String name, String date, String status) {
-        // Database query to insert an event
+        String query = "INSERT INTO " + TABLE_NAME + " (name, date, status) VALUES (?, ?, ?)";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, date);
+            preparedStatement.setString(3, status);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Hinzufügen des Events: " + e.getMessage(), e);
+        }
     }
 
     public void deleteEvent(int id) {
-        // Database query to delete an event
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Löschen des Events: " + e.getMessage(), e);
+        }
     }
 
     public void updateEvent(int id, String name, String date, String status) {
-        // Database query to update an event's details
+        String query = "UPDATE " + TABLE_NAME + " SET name = ?, date = ?, status = ? WHERE id = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, date);
+            preparedStatement.setString(3, status);
+            preparedStatement.setInt(4, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Aktualisieren des Events: " + e.getMessage(), e);
+        }
     }
 
     public Event getEventById(int id) {
-        // Database query to retrieve an event by ID
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Event(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("date"),
+                            resultSet.getString("status")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen des Events: " + e.getMessage(), e);
+        }
         return null;
+    }
+
+    public List<Event> getAllEvents() {
+        List<Event> events = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_NAME;
+
+        try (Connection connection = DBConnection.Verbindung();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                events.add(new Event(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("date"),
+                        resultSet.getString("status")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen der Events: " + e.getMessage(), e);
+        }
+        return events;
     }
 }
