@@ -9,7 +9,7 @@ import DBConnection.DBConnection;
 public class MemberDatabaseOperations {
 
     private static final String TABLE_NAME = "T_members";
-    public void insertMember(String firstName, String lastName, LocalDate birthDate, int clubId) throws SQLException {
+    public void insertMember(String firstName, String lastName,  int clubId, LocalDate birthDate)  {
         // Database query to insert a member
         String query = "INSERT INTO " + TABLE_NAME + "(first_name, last_name, birth_date, club_id) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
