@@ -2,6 +2,7 @@ package Logic;
 
 import Model.Member;
 import DatabaseOperations.MemberDatabaseOperations;
+import java.time.LocalDate;
 
 public class MemberManager {
 
@@ -10,12 +11,12 @@ public class MemberManager {
     public MemberManager() {
         this.memberDbOps = new MemberDatabaseOperations();
     }
-    public void addMember(String name, int clubId) {
+    public void addMember(String firstName, String lastName, int clubId, LocalDate birthDate) {
         // Logic to add a new member
-        if (clubId <= 0 || name == null || name.trim().isEmpty()) {
+        if (clubId <= 0 || firstName == null || firstName.trim().isEmpty() || lastName == null || lastName.trim().isEmpty()) {
             throw new IllegalArgumentException("Ungültiger Name.");
         }
-        memberDbOps.insertMember(firstName, lastName, birthDate, clubId);
+        memberDbOps.insertMember(firstName, lastName, clubId, birthDate);
     }
 
     public void removeMember(int memberId) {

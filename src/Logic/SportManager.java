@@ -9,11 +9,11 @@ public class SportManager {
         this.sportDbOps = new SportDatabaseOperations();
     }
 
-    public void addSport(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Der Name der Sportart darf nicht leer oder null sein.");
+    public void addSport(String name, String resultType) {
+        if (name == null || name.trim().isEmpty() || resultType == null || resultType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Der Name und die Ergebnisart der Sportart darf nicht leer oder null sein.");
         }
-        sportDbOps.insertSport(name);
+        sportDbOps.insertSport(name, resultType);
     }
 
     public void deleteSport(int id) {
@@ -23,11 +23,11 @@ public class SportManager {
         sportDbOps.deleteSport(id);
     }
 
-    public void updateSport(int id, String name) {
-        if (id <= 0 || name == null || name.trim().isEmpty()) {
+    public void updateSport(int id, String name, String resultType) {
+        if (id <= 0 || name == null || name.trim().isEmpty() || resultType == null || resultType.trim().isEmpty()) {
             throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung der Sportart.");
         }
-        sportDbOps.updateSport(id, name);
+        sportDbOps.updateSport(id, name, resultType);
     }
 
     public Sport getSportById(int id) {

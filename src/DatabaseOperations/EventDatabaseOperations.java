@@ -9,14 +9,13 @@ import java.util.List;
 public class EventDatabaseOperations {
     private static final String TABLE_NAME = "T_events";
 
-    public void insertEvent(String name, String date, String status) {
-        String query = "INSERT INTO " + TABLE_NAME + " (name, date, status) VALUES (?, ?, ?)";
+    public void insertEvent(String name,  String status) {
+        String query = "INSERT INTO " + TABLE_NAME + " (name, status) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, date);
-            preparedStatement.setString(3, status);
+            preparedStatement.setString(2, status);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Hinzufügen des Events: " + e.getMessage(), e);
@@ -35,15 +34,14 @@ public class EventDatabaseOperations {
         }
     }
 
-    public void updateEvent(int id, String name, String date, String status) {
-        String query = "UPDATE " + TABLE_NAME + " SET name = ?, date = ?, status = ? WHERE id = ?";
+    public void updateEvent(int id, String name, String status) {
+        String query = "UPDATE " + TABLE_NAME + " SET name = ?, status = ? WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, date);
-            preparedStatement.setString(3, status);
-            preparedStatement.setInt(4, id);
+            preparedStatement.setString(2, status);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Events: " + e.getMessage(), e);
@@ -59,10 +57,11 @@ public class EventDatabaseOperations {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Event(
-                            resultSet.getInt("id"),
+                            resultSet.getInt("eventId"),
+                            resultSet.getInt("administratorId")  ,
                             resultSet.getString("name"),
-                            resultSet.getString("date"),
                             resultSet.getString("status")
+
                     );
                 }
             }
@@ -82,9 +81,9 @@ public class EventDatabaseOperations {
 
             while (resultSet.next()) {
                 events.add(new Event(
-                        resultSet.getInt("id"),
+                        resultSet.getInt("eventId"),
+                        resultSet.getInt("administratorId")  ,
                         resultSet.getString("name"),
-                        resultSet.getString("date"),
                         resultSet.getString("status")
                 ));
             }
