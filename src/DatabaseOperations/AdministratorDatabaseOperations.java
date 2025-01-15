@@ -1,7 +1,6 @@
 package DatabaseOperations;
 
 import Model.Administrator;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,11 @@ public class AdministratorDatabaseOperations {
     private static final String TABLE_NAME = "T_administrators";
 
     public void insertAdmin(String firstName, String lastName, String password) {
+        if (firstName == null || firstName.trim().isEmpty() ||
+                lastName == null || lastName.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Vorname, Nachname und Passwort dürfen nicht leer oder null sein.");
+        }
         String query = "INSERT INTO " + TABLE_NAME + " (first_name, last_name, password) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -24,6 +28,9 @@ public class AdministratorDatabaseOperations {
     }
 
     public void deleteAdmin(String administratorId) {
+        if (administratorId == null || administratorId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Administrator-ID darf nicht leer oder null sein.");
+        }
         String query = "DELETE FROM " + TABLE_NAME + " WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -36,15 +43,20 @@ public class AdministratorDatabaseOperations {
     }
 
     public void updateAdmin(String administratorId, String firstName, String lastName, String password) {
+        if (administratorId == null || administratorId.trim().isEmpty() ||
+                firstName == null || firstName.trim().isEmpty() ||
+                lastName == null || lastName.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Alle Eingaben müssen gültig sein (nicht leer oder null).");
+        }
         String query = "UPDATE " + TABLE_NAME + " SET first_name = ?, last_name = ?, password = ? WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, administratorId);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, password);
-
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, password);
+            preparedStatement.setString(4, administratorId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Administrators: " + e.getMessage(), e);
@@ -52,6 +64,9 @@ public class AdministratorDatabaseOperations {
     }
 
     public Administrator getAdminById(String administratorId) {
+        if (administratorId == null || administratorId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Administrator-ID darf nicht leer oder null sein.");
+        }
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -76,7 +91,6 @@ public class AdministratorDatabaseOperations {
     public List<Administrator> getAllAdministrators() {
         List<Administrator> administrators = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
-
         try (Connection connection = DBConnection.Verbindung();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {

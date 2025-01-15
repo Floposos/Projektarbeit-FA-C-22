@@ -19,7 +19,7 @@ public class MemberManager {
         memberDbOps.insertMember(clubId, firstName, lastName, birthDate);
     }
 
-    public void removeMember(int memberId) {
+    public void deleteMember(int memberId) {
         // Logic to remove a member
         if (memberId <= 0) {
             throw new IllegalArgumentException("Ungeltige Mitglieds-ID.");
