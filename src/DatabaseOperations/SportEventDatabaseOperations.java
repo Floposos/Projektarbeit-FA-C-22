@@ -11,7 +11,7 @@ public class SportEventDatabaseOperations {
     private static final String TABLE_NAME = "T_sport_events";
     public void insertSportEvent(LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
         // Database query to insert a participant
-        String query = "INSERT INTO " + TABLE_NAME + "("
+        String query = "INSERT INTO " + TABLE_NAME + "(";
     }
 
     public void deleteSportEvent(int id) {
