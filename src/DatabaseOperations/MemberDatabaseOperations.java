@@ -1,10 +1,8 @@
 package DatabaseOperations;
 import Model.Member;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.sql.*;
 import java.time.LocalDate;
-import DBConnection.DBConnection;
 
 public class MemberDatabaseOperations {
 
@@ -24,42 +22,42 @@ public class MemberDatabaseOperations {
         }
     }
 
-    public void deleteMember(int id) {
+    public void deleteMember(int memberId) {
         // Database query to delete a member
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE memberId = ?";
         try (Connection connection = DBConnection.Verbindung();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, memberId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Löschen des Mitglieds: " + e.getMessage(), e);
         }
     }
 
-    public void updateMember(int id, String name, int clubId) {
+    public void updateMember(int memberId, String name, int clubId) {
         // Database query to update a member's details
-        String query = "UPDATE " + TABLE_NAME + " SET name = ?, club_id = ? WHERE id = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET name = ?, club_id = ? WHERE memberId = ?";
         try (Connection connection = DBConnection.Verbindung();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
             preparedStatement.setInt(2, clubId);
-            preparedStatement.setInt(3, id);
+            preparedStatement.setInt(3, memberId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Mitglieds: " + e.getMessage(), e);
         }
     }
 
-    public Member getMemberById(int id) {
+    public Member getMemberById(int memberId) {
         // Database query to retrieve a member by ID
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE memberId = ?";
         try (Connection connection = DBConnection.Verbindung();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, memberId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Member(
-                            resultSet.getInt("id"),
+                            resultSet.getInt("memberId"),
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
                             resultSet.getInt("club_id"),

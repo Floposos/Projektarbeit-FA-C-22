@@ -1,14 +1,40 @@
 package Logic;
 
+import DatabaseOperations.EventMemberDatabaseOperations;
+import Model.EventMember;
+
 public class EventMemberManager {
-    public void addEventMember(int memberId, int eventId, int sportId) {
-        // Logic to add a participant
+    private EventMemberDatabaseOperations eventMemberDbOps;
+
+    public EventMemberManager() {
+        this.eventMemberDbOps = new EventMemberDatabaseOperations();
     }
 
-    public void removeEventMember(int EventMemberId) {
-        // Logic to remove a participant
+    public void addEventMember(int memberId, int eventId, int sportId) {
+        if (memberId <= 0 || eventId <= 0 || sportId <= 0) {
+            throw new IllegalArgumentException("Ungültige Eingabedaten für EventMember.");
+        }
+        eventMemberDbOps.insertEventMember(memberId, eventId, sportId);
     }
-    public void updateEventMember(int EventMemberId, int memberId, int eventId, int sportId) {
-        // Logic to update a participant
+
+    public void removeEventMember(int eventMemberId) {
+        if (eventMemberId <= 0) {
+            throw new IllegalArgumentException("Ungültige EventMember-ID.");
+        }
+        eventMemberDbOps.deleteEventMember(eventMemberId);
+    }
+
+    public void updateEventMember(int eventMemberId, int memberId, int eventId, int sportId) {
+        if (eventMemberId <= 0 || memberId <= 0 || eventId <= 0 || sportId <= 0) {
+            throw new IllegalArgumentException("Ungültige Eingabedaten für die Aktualisierung von EventMember.");
+        }
+        eventMemberDbOps.updateEventMember(eventMemberId, memberId, eventId, sportId);
+    }
+
+    public EventMember getEventMemberById(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("Ungültige EventMember-ID.");
+        }
+        return eventMemberDbOps.getEventMemberById(id);
     }
 }

@@ -1,6 +1,5 @@
 package DatabaseOperations;
 
-import DBConnection.DBConnection;
 import Model.Club;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,41 +20,41 @@ public class ClubDatabaseOperations {
         }
     }
 
-    public void deleteClub(int id) {
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+    public void deleteClub(int clubId) {
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE clubId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, clubId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Löschen des Vereins: " + e.getMessage(), e);
         }
     }
 
-    public void updateClub(int id, String name, String password) {
-        String query = "UPDATE " + TABLE_NAME + " SET name = ?, password = ? WHERE id = ?";
+    public void updateClub(int clubId, String name, String password) {
+        String query = "UPDATE " + TABLE_NAME + " SET name = ?, password = ? WHERE clubId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setInt(2, clubId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Vereins: " + e.getMessage(), e);
         }
     }
 
-    public Club getClubById(int id) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+    public Club getClubById(int clubId) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE clubId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, clubId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Club(
-                            resultSet.getInt("id"),
+                            resultSet.getInt("clubId"),
                             resultSet.getString("name"),
                             resultSet.getString("password"));
                 }
@@ -76,7 +75,7 @@ public class ClubDatabaseOperations {
 
             while (resultSet.next()) {
                 clubs.add(new Club(
-                        resultSet.getInt("id"),
+                        resultSet.getInt("clubId"),
                         resultSet.getString("name"),
                         resultSet.getString("password")));
             }
