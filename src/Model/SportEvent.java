@@ -12,7 +12,7 @@ public class SportEvent {
     private int eventId;
     private int sportId;
 
-    public SportEvent(int sportEventId, int eventId, int sportId, int eventMemberId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+    public SportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
         this.sportEventId = sportEventId;
         this.eventId = eventId;
         this.sportId = sportId;

@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/sqlite-jdbc-3.47.1.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/pdfbox-app-3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/openhtmltopdf-pdfbox-1.0.10.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
