@@ -1,12 +1,11 @@
 package DatabaseOperations;
-import DBConnection.DBConnection;
 import Model.Sport;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SportDatabaseOperations {
-    private static final String TABLE_NAME = "sports";
+    private static final String TABLE_NAME = "T_sports";
 
     public void insertSport(String name, String resultType) {
         String query = "INSERT INTO " + TABLE_NAME + " (name, result_type) VALUES (?, ?)";

@@ -1,10 +1,8 @@
 package DatabaseOperations;
 import Model.Member;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.sql.*;
 import java.time.LocalDate;
-import DBConnection.DBConnection;
 
 public class MemberDatabaseOperations {
 

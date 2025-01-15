@@ -1,6 +1,5 @@
 package DatabaseOperations;
 
-import DBConnection.DBConnection;
 import Model.Club;
 import java.sql.*;
 import java.util.ArrayList;
