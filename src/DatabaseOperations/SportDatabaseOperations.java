@@ -1,5 +1,4 @@
 package DatabaseOperations;
-
 import DBConnection.DBConnection;
 import Model.Sport;
 import java.sql.*;

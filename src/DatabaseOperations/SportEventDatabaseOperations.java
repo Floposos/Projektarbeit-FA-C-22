@@ -1,8 +1,5 @@
 package DatabaseOperations;
-
-
 import Model.Sport;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,6 +9,9 @@ public class SportEventDatabaseOperations {
     public void insertSportEvent(LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
         // Database query to insert a participant
         String query = "INSERT INTO " + TABLE_NAME + "(";
+    }
+    public void updateSportEvent(int sportEvent, LocalDate startDate, LocalDate endDate, List<String> resultValueLis){
+
     }
 
     public void deleteSportEvent(int id) {

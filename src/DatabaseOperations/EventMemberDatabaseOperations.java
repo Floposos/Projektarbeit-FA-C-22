@@ -6,6 +6,10 @@ public class EventMemberDatabaseOperations {
         // Database query to insert a EventMember
     }
 
+    public void updateEventMember(int eventMemberId ,int memberId, int eventId, int sportId) {
+        // Database query to update a EventMember
+    }
+
     public void deleteEventMember(int id) {
         // Database query to delete a EventMember
     }

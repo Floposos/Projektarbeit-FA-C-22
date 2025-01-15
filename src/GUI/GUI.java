@@ -256,7 +256,7 @@ public class GUI {
 
 
 
-        JLabel EventNameLabel = new JLabel("Test");
+        JLabel EventNameLabel = new JLabel();
         EventNameLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
