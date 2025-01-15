@@ -7,15 +7,16 @@ import java.time.LocalDate;
 public class MemberDatabaseOperations {
 
     private static final String TABLE_NAME = "T_members";
-    public void insertMember(String firstName, String lastName,  int clubId, LocalDate birthDate)  {
+    public void insertMember(int clubId, String firstName, String lastName, LocalDate birthDate)  {
         // Database query to insert a member
         String query = "INSERT INTO " + TABLE_NAME + "(first_name, last_name, birth_date, club_id) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setDate(3, Date.valueOf(birthDate));
-            preparedStatement.setInt(4, clubId);
+            preparedStatement.setInt(1, clubId);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
+            preparedStatement.setDate(4, Date.valueOf(birthDate));
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Hinzufügen des Mitglieds: " + e.getMessage(), e);
@@ -34,14 +35,18 @@ public class MemberDatabaseOperations {
         }
     }
 
-    public void updateMember(int memberId, String name, int clubId) {
+    public void updateMember(int memberId, int clubId, String firstName, String lastName, LocalDate birthDate) {
         // Database query to update a member's details
-        String query = "UPDATE " + TABLE_NAME + " SET name = ?, club_id = ? WHERE memberId = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET club_id = ?, lastName = ?, firstName = ?, birthDate = ? WHERE memberId = ?";
         try (Connection connection = DBConnection.Verbindung();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, name);
+
+            preparedStatement.setInt(1, memberId);
             preparedStatement.setInt(2, clubId);
-            preparedStatement.setInt(3, memberId);
+            preparedStatement.setString(3, firstName);
+            preparedStatement.setString(4, lastName);
+            preparedStatement.setDate(5, Date.valueOf(birthDate));
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Mitglieds: " + e.getMessage(), e);
@@ -57,10 +62,10 @@ public class MemberDatabaseOperations {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Member(
+                            resultSet.getInt("club_id"),
                             resultSet.getInt("memberId"),
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
-                            resultSet.getInt("club_id"),
                             resultSet.getDate("birth_date").toLocalDate()
                     );
                 }

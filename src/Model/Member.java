@@ -9,13 +9,13 @@ public class Member {
     private int clubId;
     LocalDate birthDate;
 
-    public Member(int memberId, String firstName, String lastName, int clubId, LocalDate birthDate) {
+    public Member(int memberId, int clubId, String firstName, String lastName, LocalDate birthDate) {
 
-        this.birthDate = birthDate;
         this.memberId = memberId;
+        this.clubId = clubId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.clubId = clubId;
+        this.birthDate = birthDate;
 
     }
 

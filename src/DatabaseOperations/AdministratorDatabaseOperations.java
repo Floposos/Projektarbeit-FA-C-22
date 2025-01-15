@@ -40,10 +40,11 @@ public class AdministratorDatabaseOperations {
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, password);
-            preparedStatement.setString(4, administratorId);
+            preparedStatement.setString(1, administratorId);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, lastName);
+            preparedStatement.setString(4, password);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Administrators: " + e.getMessage(), e);

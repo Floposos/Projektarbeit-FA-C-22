@@ -31,10 +31,10 @@ public class EventMemberManager {
         eventMemberDbOps.updateEventMember(eventMemberId, memberId, eventId, sportId);
     }
 
-    public EventMember getEventMemberById(int id) {
-        if (id <= 0) {
+    public EventMember getEventMemberById(int eventMemberId) {
+        if (eventMemberId <= 0) {
             throw new IllegalArgumentException("Ungültige EventMember-ID.");
         }
-        return eventMemberDbOps.getEventMemberById(id);
+        return eventMemberDbOps.getEventMemberById(eventMemberId);
     }
 }

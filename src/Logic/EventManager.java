@@ -17,24 +17,24 @@ public class EventManager {
         eventDbOps.insertEvent(administratorId ,name, status);
     }
 
-    public void updateEvent(int id, String administratorId, String name, String status) {
-        if (id <= 0 || name == null || name.trim().isEmpty() || administratorId == null || administratorId.trim().isEmpty() || status == null || status.trim().isEmpty()) {
+    public void updateEvent(int eventId, String administratorId, String name, String status) {
+        if (eventId <= 0 || name == null || name.trim().isEmpty() || administratorId == null || administratorId.trim().isEmpty() || status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung des Events.");
         }
-        eventDbOps.updateEvent(id, administratorId, name, status);
+        eventDbOps.updateEvent(eventId, administratorId, name, status);
     }
 
-    public void deleteEvent(int id) {
-        if (id <= 0) {
+    public void deleteEvent(int eventId) {
+        if (eventId <= 0) {
             throw new IllegalArgumentException("Ungültige Event-ID.");
         }
-        eventDbOps.deleteEvent(id);
+        eventDbOps.deleteEvent(eventId);
     }
 
-    public Event getEventById(int id) {
-        if (id <= 0) {
+    public Event getEventById(int eventId) {
+        if (eventId <= 0) {
             throw new IllegalArgumentException("Ungültige Event-ID.");
         }
-        return eventDbOps.getEventById(id);
+        return eventDbOps.getEventById(eventId);
     }
 }

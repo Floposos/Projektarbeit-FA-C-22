@@ -26,10 +26,11 @@ public class EventMemberDatabaseOperations {
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, memberId);
-            preparedStatement.setInt(2, eventId);
-            preparedStatement.setInt(3, sportEventId);
-            preparedStatement.setInt(4, eventMemberId);
+            preparedStatement.setInt(1, eventMemberId);
+            preparedStatement.setInt(2, memberId);
+            preparedStatement.setInt(3, eventId);
+            preparedStatement.setInt(4, sportEventId);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des EventMembers: " + e.getMessage(), e);

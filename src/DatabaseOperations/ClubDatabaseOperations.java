@@ -9,11 +9,12 @@ public class ClubDatabaseOperations {
     private static final String TABLE_NAME = "T_clubs";
 
     public void insertClub(String name, String password) {
-        String query = "INSERT INTO " + TABLE_NAME + " (name, password) VALUES (?,b?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (name, password) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Hinzufügen des Vereins: " + e.getMessage(), e);
@@ -37,8 +38,10 @@ public class ClubDatabaseOperations {
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, clubId);
+            preparedStatement.setInt(1, clubId);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, password);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Vereins: " + e.getMessage(), e);

@@ -17,24 +17,24 @@ public class ClubManager {
         clubDbOps.insertClub(name, password);
     }
 
-    public void deleteClub(int id) {
-        if (id <= 0) {
+    public void deleteClub(int clubId) {
+        if (clubId <= 0) {
             throw new IllegalArgumentException("Ungültige Vereins-ID.");
         }
-        clubDbOps.deleteClub(id);
+        clubDbOps.deleteClub(clubId);
     }
 
-    public void updateClub(int id, String name, String password) {
-        if (id <= 0 || name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+    public void updateClub(int clubId, String name, String password) {
+        if (clubId <= 0 || name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung des Vereins.");
         }
-        clubDbOps.updateClub(id, name, password);
+        clubDbOps.updateClub(clubId, name, password);
     }
 
-    public Club getClubById(int id) {
-        if (id <= 0) {
+    public Club getClubById(int clubId) {
+        if (clubId <= 0) {
             throw new IllegalArgumentException("Ungültige Vereins-ID.");
         }
-        return clubDbOps.getClubById(id);
+        return clubDbOps.getClubById(clubId);
     }
 }

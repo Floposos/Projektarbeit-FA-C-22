@@ -16,11 +16,11 @@ public class SportManager {
         sportDbOps.insertSport(name, resultType);
     }
 
-    public void deleteSport(int id) {
-        if (id <= 0) {
+    public void deleteSport(int sportId) {
+        if (sportId <= 0) {
             throw new IllegalArgumentException("Ungültige Sport-ID.");
         }
-        sportDbOps.deleteSport(id);
+        sportDbOps.deleteSport(sportId);
     }
 
     public void updateSport(int id, String name, String resultType) {
@@ -30,10 +30,10 @@ public class SportManager {
         sportDbOps.updateSport(id, name, resultType);
     }
 
-    public Sport getSportById(int id) {
-        if (id <= 0) {
+    public Sport getSportById(int sportId) {
+        if (sportId <= 0) {
             throw new IllegalArgumentException("Ungültige Sport-ID.");
         }
-        return sportDbOps.getSportById(id);
+        return sportDbOps.getSportById(sportId);
     }
 }
