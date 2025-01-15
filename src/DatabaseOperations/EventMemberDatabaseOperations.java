@@ -22,7 +22,7 @@ public class EventMemberDatabaseOperations {
     }
 
     public void updateEventMember(int eventMemberId, int memberId, int eventId, int sportEventId) {
-        String query = "UPDATE " + TABLE_NAME + " SET member_id = ?, event_id = ?, sportEvent_id = ? WHERE id = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET member_id = ?, event_id = ?, sportEvent_id = ? WHERE eventMemberId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -36,28 +36,28 @@ public class EventMemberDatabaseOperations {
         }
     }
 
-    public void deleteEventMember(int id) {
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+    public void deleteEventMember(int eventMemberId) {
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE eventMemberId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, eventMemberId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Löschen des EventMembers: " + e.getMessage(), e);
         }
     }
 
-    public EventMember getEventMemberById(int id) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+    public EventMember getEventMemberById(int eventMemberId) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE eventMemberId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, eventMemberId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new EventMember(
-                            resultSet.getInt("id"),
+                            resultSet.getInt("eventMemberId"),
                             resultSet.getInt("member_id"),
                             resultSet.getInt("event_id"),
                             resultSet.getInt("sportEvent_id")

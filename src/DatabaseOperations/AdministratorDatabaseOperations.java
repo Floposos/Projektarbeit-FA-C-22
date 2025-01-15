@@ -24,7 +24,7 @@ public class AdministratorDatabaseOperations {
     }
 
     public void deleteAdmin(String administratorId) {
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -36,7 +36,7 @@ public class AdministratorDatabaseOperations {
     }
 
     public void updateAdmin(String administratorId, String firstName, String lastName, String password) {
-        String query = "UPDATE " + TABLE_NAME + " SET first_name = ?, last_name = ?, password = ? WHERE id = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET first_name = ?, last_name = ?, password = ? WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -51,7 +51,7 @@ public class AdministratorDatabaseOperations {
     }
 
     public Administrator getAdminById(String administratorId) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -59,7 +59,7 @@ public class AdministratorDatabaseOperations {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Administrator(
-                            resultSet.getString("id"),
+                            resultSet.getString("administratorId"),
                             resultSet.getString("first_name"),
                             resultSet.getString("last_name"),
                             resultSet.getString("password")
@@ -82,7 +82,7 @@ public class AdministratorDatabaseOperations {
 
             while (resultSet.next()) {
                 administrators.add(new Administrator(
-                        resultSet.getString("id"),
+                        resultSet.getString("administratorId"),
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"),
                         resultSet.getString("password")

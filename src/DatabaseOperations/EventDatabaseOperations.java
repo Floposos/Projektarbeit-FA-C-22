@@ -21,23 +21,23 @@ public class EventDatabaseOperations {
         }
     }
 
-    public void deleteEvent(int id) {
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+    public void deleteEvent(int eventId) {
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE eventId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, eventId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Löschen des Events: " + e.getMessage(), e);
         }
     }
 
-    public void updateEvent(int id, String administratorId, String name, String status) {
-        String query = "UPDATE " + TABLE_NAME + " SET administratorId = ?, name = ?, status = ? WHERE id = ?";
+    public void updateEvent(int eventId, String administratorId, String name, String status) {
+        String query = "UPDATE " + TABLE_NAME + " SET administratorId = ?, name = ?, status = ? WHERE eventId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, eventId);
             preparedStatement.setString(2, administratorId);
             preparedStatement.setString(3, name);
             preparedStatement.setString(4, status);
@@ -47,12 +47,12 @@ public class EventDatabaseOperations {
         }
     }
 
-    public Event getEventById(int id) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+    public Event getEventById(int eventId) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE eventId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, eventId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Event(
