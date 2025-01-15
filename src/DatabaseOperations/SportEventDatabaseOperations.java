@@ -1,5 +1,6 @@
 package DatabaseOperations;
-import DBConnection.DBConnection;
+
+import DatabaseOperations.DBConnection;
 import Model.Club;
 import Model.Sport;
 import Model.SportEvent;
@@ -7,6 +8,8 @@ import org.sqlite.core.DB;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SportEventDatabaseOperations {
@@ -15,7 +18,7 @@ public class SportEventDatabaseOperations {
     public void insertSportEvent(int sportEventId, LocalDate startDate, LocalDate endDate, List<String> resultValueList, int eventMemberId, int eventId, int sportId) {
         // Database query to insert a participant
         String query = "INSERT INTO " + TABLE_NAME + "(startDate, endDate, resultValueList, eventMemberId, eventId, sportId) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DBConnection.Verbindung();
+        try (Connection connection = DatabaseOperations.DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, sportEventId);
             preparedStatement.setDate(2, Date.valueOf(startDate));
@@ -55,7 +58,7 @@ public class SportEventDatabaseOperations {
         }
     }
 
-    public Sport getSportEventById(int id) throws SQLException {
+    public SportEvent getSportEventById(int id) throws SQLException {
         // Database query to retrieve a participant by ID
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection connection = DBConnection.Verbindung();
@@ -63,6 +66,10 @@ public class SportEventDatabaseOperations {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
+                    String resultValueListString = resultSet.getString("resultValueList");
+                    List<String> resultValueList  = resultValueListString != null
+                            ? Arrays.asList(resultValueListString.split(","))
+                            : new ArrayList<>();
                     return new SportEvent(
                             resultSet.getInt("sportEventId"),
                             resultSet.getInt("eventId"),
@@ -70,7 +77,7 @@ public class SportEventDatabaseOperations {
                             resultSet.getInt("eventMemberId"),
                             resultSet.getDate("startDate").toLocalDate(),
                             resultSet.getDate("endDate").toLocalDate(),
-                            resultSet.getString("resultValueList")
+                            resultValueList
                     );
                 }
             }
