@@ -9,6 +9,9 @@ public class ClubDatabaseOperations {
     private static final String TABLE_NAME = "T_clubs";
 
     public void insertClub(String name, String password) {
+        if (name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name und Passwort dürfen nicht leer oder null sein.");
+        }
         String query = "INSERT INTO " + TABLE_NAME + " (name, password) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -22,6 +25,9 @@ public class ClubDatabaseOperations {
     }
 
     public void deleteClub(int clubId) {
+        if (clubId <= 0) {
+            throw new IllegalArgumentException("Ungültige Club-ID.");
+        }
         String query = "DELETE FROM " + TABLE_NAME + " WHERE clubId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -34,14 +40,16 @@ public class ClubDatabaseOperations {
     }
 
     public void updateClub(int clubId, String name, String password) {
+        if (clubId <= 0 || name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung des Vereins.");
+        }
         String query = "UPDATE " + TABLE_NAME + " SET name = ?, password = ? WHERE clubId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, clubId);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, password);
-
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
+            preparedStatement.setInt(3, clubId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Vereins: " + e.getMessage(), e);
@@ -49,6 +57,9 @@ public class ClubDatabaseOperations {
     }
 
     public Club getClubById(int clubId) {
+        if (clubId <= 0) {
+            throw new IllegalArgumentException("Ungültige Club-ID.");
+        }
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE clubId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -59,7 +70,8 @@ public class ClubDatabaseOperations {
                     return new Club(
                             resultSet.getInt("clubId"),
                             resultSet.getString("name"),
-                            resultSet.getString("password"));
+                            resultSet.getString("password")
+                    );
                 }
             }
         } catch (SQLException e) {
@@ -71,7 +83,6 @@ public class ClubDatabaseOperations {
     public List<Club> getAllClubs() {
         List<Club> clubs = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
-
         try (Connection connection = DBConnection.Verbindung();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -80,7 +91,8 @@ public class ClubDatabaseOperations {
                 clubs.add(new Club(
                         resultSet.getInt("clubId"),
                         resultSet.getString("name"),
-                        resultSet.getString("password")));
+                        resultSet.getString("password")
+                ));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Abrufen der Vereine: " + e.getMessage(), e);
