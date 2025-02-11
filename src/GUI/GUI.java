@@ -1,4 +1,5 @@
 package GUI;
+import Logic.AdministratorManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI {
+
+    private AdministratorManager Manager;
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
@@ -105,22 +108,13 @@ public class GUI {
 
         loginButton.addActionListener(e -> showActionSelectionPanel());
 
-        // Zurück-Button
-        JButton backButton = new JButton("←");
-        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        backButton.setMargin(new Insets(2,5,2,5));
-        backButton.setFocusPainted(false);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-
         // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::createRoleSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(backButton, gbc);
-        backButton.addActionListener(e -> createRoleSelectionPanel());
-
         panel.revalidate();
         panel.repaint();
 
@@ -159,7 +153,6 @@ public class GUI {
         JButton buttonManageEvent = new JButton("Event Verwalten");
         JButton buttonAddManager = new JButton("Neuen Event-Manager hinzufügen");
         JButton buttonManageSports = new JButton("Sportarten Verwalten");
-        JButton backButton = new JButton("←");
 
         //NewEvent Button
         gbc.gridy = 1;
@@ -176,11 +169,7 @@ public class GUI {
         panel.add(buttonManageSports, gbc);
 
         //back-button
-        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        backButton.setMargin(new Insets(2,5,2,5));
-        backButton.setFocusPainted(false);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
+        JButton backButton = createBackButton(this::createRoleSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -191,7 +180,6 @@ public class GUI {
         buttonManageEvent.addActionListener(e -> showManageEventPanel());
         buttonAddManager.addActionListener(e -> showAddManagerPanel());
         buttonManageSports.addActionListener(e -> showManageSportsPanel());
-        backButton.addActionListener(e -> createRoleSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
@@ -226,15 +214,8 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(saveButton, gbc);
 
-        // Zurück-Button
-        JButton backButton = new JButton("←");
-        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        backButton.setMargin(new Insets(2, 5, 2, 5));
-        backButton.setFocusPainted(false);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-
         // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -251,8 +232,6 @@ public class GUI {
                 //showNewSportEventPanel(eventName); // Event-Name an die nächste Methode übergeben
             }
         });
-
-        backButton.addActionListener(e -> showActionSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
@@ -394,6 +373,17 @@ public class GUI {
 
         panel.revalidate();
         panel.repaint();
+
+        // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+
+        panel.revalidate();
+        panel.repaint();
     }
 
     private void showAddManagerPanel() {
@@ -416,6 +406,8 @@ public class GUI {
         gbc.gridwidth = 1;
         panel.add(VorNameLabel, gbc);
         gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(VorNameField, gbc);
 
         JLabel NachNameLabel = new JLabel("Nachname:");
@@ -426,15 +418,6 @@ public class GUI {
         panel.add(NachNameLabel, gbc);
         gbc.gridx = 1;
         panel.add(NachNameField, gbc);
-
-        JLabel nameLabel = new JLabel("Benutzername:");
-        JTextField nameField = new JTextField(15);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        panel.add(nameLabel, gbc);
-        gbc.gridx = 1;
-        panel.add(nameField, gbc);
 
         JLabel passLabel = new JLabel("Passwort:");
         JPasswordField passField = new JPasswordField(15);
@@ -451,14 +434,23 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(saveButton, gbc);
 
+        // Event-Handler für den Button "Anlegen"
         saveButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Manager erfolgreich gespeichert!");
+            // Daten aus den Textfeldern abrufen und in Variablen speichern
+//            String firstname = VorNameField.getText();
+//            String lastname = NachNameField.getText();
+//            String password = new String(passField.getPassword());  // Passwörter abrufen
+
+//            Manager.addAdmin(firstname,lastname,password);
+
+            // Nachricht anzeigen
+            //JOptionPane.showMessageDialog(frame, "Manager " + firstname + " gespeichert!");
+
+            // Weiterleitung zur nächsten Ansicht
             showActionSelectionPanel();
         });
-
-        panel.revalidate();
-        panel.repaint();
     }
+
 
     private void  showManageSportsPanel() {
         panel.removeAll();
@@ -485,21 +477,13 @@ public class GUI {
         buttonNewSportType.addActionListener(e -> showNewSportsTypePanel());
         buttonManageSportsType.addActionListener(e -> showManageSportsTypePanel());
 
-        //Zurück
-        JButton backButton = new JButton("←");
-        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-        backButton.setMargin(new Insets(2,5,2,5));
-        backButton.setFocusPainted(false);
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-
         // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(backButton, gbc);
-        backButton.addActionListener(e -> showAddManagerPanel());
 
         panel.revalidate();
         panel.repaint();
@@ -526,4 +510,16 @@ public class GUI {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(GUI::new);
     }
+
+    private JButton createBackButton(Runnable action) {
+        JButton backButton = new JButton("←");
+        backButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        backButton.setMargin(new Insets(2, 5, 2, 5));
+        backButton.setFocusPainted(false);
+        backButton.setBorderPainted(false);
+        backButton.setContentAreaFilled(false);
+        backButton.addActionListener(e -> action.run());
+        return backButton;
+    }
+
 }
