@@ -8,10 +8,11 @@ import java.util.List;
 public class EventDatabaseOperations {
     private static final String TABLE_NAME = "T_events";
 
-    public void insertEvent(String administratorId ,String name,  String status) {
+    public void insertEvent(String administratorId, String name, String status) {
         String query = "INSERT INTO " + TABLE_NAME + " (administratorId, name, status) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             preparedStatement.setString(1, administratorId);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, status);
@@ -37,10 +38,11 @@ public class EventDatabaseOperations {
         String query = "UPDATE " + TABLE_NAME + " SET administratorId = ?, name = ?, status = ? WHERE eventId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, eventId);
-            preparedStatement.setString(2, administratorId);
-            preparedStatement.setString(3, name);
-            preparedStatement.setString(4, status);
+
+            preparedStatement.setString(1, administratorId);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, status);
+            preparedStatement.setInt(4, eventId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Aktualisieren des Events: " + e.getMessage(), e);
@@ -57,10 +59,9 @@ public class EventDatabaseOperations {
                 if (resultSet.next()) {
                     return new Event(
                             resultSet.getInt("eventId"),
-                            resultSet.getString("administratorId")  ,
+                            resultSet.getString("administratorId"),
                             resultSet.getString("name"),
                             resultSet.getString("status")
-
                     );
                 }
             }
@@ -73,7 +74,6 @@ public class EventDatabaseOperations {
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
-
         try (Connection connection = DBConnection.Verbindung();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -81,7 +81,7 @@ public class EventDatabaseOperations {
             while (resultSet.next()) {
                 events.add(new Event(
                         resultSet.getInt("eventId"),
-                        resultSet.getString("administratorId")  ,
+                        resultSet.getString("administratorId"),
                         resultSet.getString("name"),
                         resultSet.getString("status")
                 ));
