@@ -4,9 +4,6 @@ import DatabaseOperations.AdministratorDatabaseOperations;
 import Model.Administrator;
 import java.util.List;
 
-
-//Event Manager
-
 public class AdministratorManager {
 
     private AdministratorDatabaseOperations adminDbOps;
@@ -21,18 +18,23 @@ public class AdministratorManager {
                 password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Ungültiger Name oder Passwort.");
         }
+
+        if (adminDbOps.adminExists(firstName, lastName)) {
+            throw new IllegalArgumentException("Ein Administrator mit diesem Namen existiert bereits.");
+        }
+
         adminDbOps.insertAdmin(firstName, lastName, password);
     }
 
-    public void deleteAdmin(String administratorId) {
-        if (administratorId == null || administratorId.trim().isEmpty()) {
+    public void deleteAdmin(int administratorId) {
+        if (administratorId <= 0) {
             throw new IllegalArgumentException("Ungültige Administrator-ID.");
         }
         adminDbOps.deleteAdmin(administratorId);
     }
 
-    public void updateAdmin(String administratorId, String firstName, String lastName, String password) {
-        if (administratorId == null || administratorId.trim().isEmpty() ||
+    public void updateAdmin(int administratorId, String firstName, String lastName, String password) {
+        if (administratorId <= 0 ||
                 firstName == null || firstName.trim().isEmpty() ||
                 lastName == null || lastName.trim().isEmpty() ||
                 password == null || password.trim().isEmpty()) {
@@ -41,8 +43,8 @@ public class AdministratorManager {
         adminDbOps.updateAdmin(administratorId, firstName, lastName, password);
     }
 
-    public Administrator getAdminById(String administratorId) {
-        if (administratorId == null || administratorId.trim().isEmpty()) {
+    public Administrator getAdminById(int administratorId) {
+        if (administratorId <= 0) {
             throw new IllegalArgumentException("Ungültige Administrator-ID.");
         }
         return adminDbOps.getAdminById(administratorId);
@@ -52,8 +54,11 @@ public class AdministratorManager {
         return adminDbOps.getAllAdministrators();
     }
 
-    public boolean checkAuthorization(int adminID, String pwd){
-        //TODO
-        return true;
+    public boolean checkAuthorization(int administratorId, String password) {
+        if (administratorId <= 0 || password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ungültige Administrator-ID oder Passwort.");
+        }
+        return adminDbOps.validateCredentials(administratorId, password);
     }
+
 }
