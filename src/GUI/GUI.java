@@ -556,15 +556,15 @@ public class GUI {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-//        JLabel newSportsTypeLabel = new JLabel("Neuer Event-Manager");
-//        newEventLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        gbc.gridwidth = 2;
-//        gbc.insets = new Insets(10, 10, 20, 10);
-//        panel.add(newEventLabel, gbc);
-//        panel.revalidate();
-//        panel.repaint();
+        JLabel newSportsTypeLabel = new JLabel("Neue Sportart anlegen");
+        newSportsTypeLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(newSportsTypeLabel, gbc);
+        panel.revalidate();
+        panel.repaint();
     }
 
     private void showManageSportsTypePanel() {

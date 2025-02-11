@@ -14,6 +14,7 @@ public class AdministratorDatabaseOperations {
                 password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Vorname, Nachname und Passwort dürfen nicht leer oder null sein.");
         }
+
         String query = "INSERT INTO " + TABLE_NAME + " (firstName, lastName, password) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -25,6 +26,44 @@ public class AdministratorDatabaseOperations {
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Hinzufügen des Administrators: " + e.getMessage(), e);
         }
+    }
+
+    public boolean adminExists(String firstName, String lastName) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE firstName = ? AND lastName = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen der Administrator-Existenz: " + e.getMessage(), e);
+        }
+        return false;
+    }
+
+    public boolean validateCredentials(int administratorId, String password) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE administratorId = ? AND password = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, administratorId);
+            preparedStatement.setString(2, password);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler bei der Administrator-Authentifizierung: " + e.getMessage(), e);
+        }
+        return false;
     }
 
     public void deleteAdmin(int administratorId) {
@@ -49,7 +88,7 @@ public class AdministratorDatabaseOperations {
                 password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Alle Eingaben müssen gültig sein (nicht leer oder null).");
         }
-        String query = "UPDATE " + TABLE_NAME + " SET first_name = ?, last_name = ?, password = ? WHERE administratorId = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET firstName = ?, lastName = ?, password = ? WHERE administratorId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -76,8 +115,8 @@ public class AdministratorDatabaseOperations {
                 if (resultSet.next()) {
                     return new Administrator(
                             resultSet.getInt("administratorId"),
-                            resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
+                            resultSet.getString("firstName"),
+                            resultSet.getString("lastName"),
                             resultSet.getString("password")
                     );
                 }
@@ -98,8 +137,8 @@ public class AdministratorDatabaseOperations {
             while (resultSet.next()) {
                 administrators.add(new Administrator(
                         resultSet.getInt("administratorId"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
                         resultSet.getString("password")
                 ));
             }
