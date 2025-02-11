@@ -72,7 +72,6 @@ public class MemberDatabaseOperations {
         return null;
     }
 
-    // GetAll-Methode: Gibt alle Mitglieder zurück
     public List<Member> getAllMembers() {
         List<Member> members = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;

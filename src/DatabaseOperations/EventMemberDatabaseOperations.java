@@ -72,7 +72,6 @@ public class EventMemberDatabaseOperations {
         return null;
     }
 
-    // GetAll-Methode: Gibt alle EventMember aus der Datenbank zurück
     public List<EventMember> getAllEventMembers() {
         List<EventMember> eventMembers = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
