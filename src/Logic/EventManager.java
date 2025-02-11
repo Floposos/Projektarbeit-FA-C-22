@@ -11,17 +11,17 @@ public class EventManager {
         this.eventDbOps = new EventDatabaseOperations();
     }
 
-    public void addEvent(String administratorId, String name) {
-        if (administratorId == null || administratorId.trim().isEmpty() ||
+    public void addEvent(int administratorId, String name) {
+        if (administratorId <=0 ||
                 name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name darf nicht leer sein.");
         }
         eventDbOps.insertEvent(administratorId, name, "angelegt");
     }
 
-    public void updateEvent(int eventId, String administratorId, String name, String status) {
+    public void updateEvent(int eventId, int administratorId, String name, String status) {
         if (eventId <= 0 ||
-                administratorId == null || administratorId.trim().isEmpty() ||
+                administratorId <=0 ||
                 name == null || name.trim().isEmpty() ||
                 status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung des Events.");

@@ -3,11 +3,11 @@ package Model;
 public class Event {
 
     private int eventId;
-    private String administratorId;
+    private int administratorId;
     private String name;
     private String status;
 
-    public Event(int eventId, String administratorId, String name, String status) {
+    public Event(int eventId, int administratorId, String name, String status) {
 
         this.eventId = eventId;
         this.administratorId = administratorId;
@@ -40,11 +40,11 @@ public class Event {
         this.status = status;
     }
 
-    public String getAdministratorId() {
+    public int getAdministratorId() {
         return administratorId;
     }
 
-    public void setAdministratorId(String administratorId) {
+    public void setAdministratorId(int administratorId) {
         this.administratorId = administratorId;
     }
 }
