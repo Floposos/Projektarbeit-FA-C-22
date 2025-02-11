@@ -112,15 +112,26 @@ public class GUI {
         panel.add(loginButton, gbc);
 
         //LOGIN fertig, nur zum weiterarbeiten Auskommentiert
+        //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
         loginButton.addActionListener(e -> {
-            adminID = Integer.parseInt(userField.getText());
-         String password = new String(passField.getPassword());
-        if (!admin.checkAuthorization(adminID, password)) {
-            JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
-          } else {
-                showActionSelectionPanel();
-            }
+
+//            String username = userField.getText();
+//            adminID = Integer.parseInt(userField.getText());
+//            String password = new String(passField.getPassword());
+//
+//            if (username.isEmpty() || password.isEmpty()){
+//                JOptionPane.showMessageDialog(frame, "Test");
+//            } else {
+//                if (!admin.checkAuthorization(adminID, password)) {
+//                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
+//                    JOptionPane.showMessageDialog(frame, "Test");
+//                } else {
+                    showActionSelectionPanel();
+//                }
+//            }
         });
+
+
 
 
         // Pfeil-Button unten links
