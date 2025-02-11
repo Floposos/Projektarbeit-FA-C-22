@@ -1,5 +1,6 @@
 package GUI;
 import Logic.AdministratorManager;
+import Logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.util.List;
 public class GUI {
 
     private AdministratorManager Manager;
+    private EventManager event;
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
@@ -17,6 +19,7 @@ public class GUI {
 
     public GUI() {
         this.Manager = new AdministratorManager();
+        this.event = new EventManager();
         // Nimbus-Look-and-Feel aktivieren
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -330,6 +333,26 @@ public class GUI {
         gbc.insets = new Insets(10, 10, 20, 10);
         panel.add(manageEventLabel, gbc);
 
+
+        List<Event> events = event.getAllEvents();
+        JComboBox<Event> eventComboBox = new JComboBox<>(events.toArray(new Event[0]));
+
+// Optional: Überschreibe die toString-Methode in der Event-Klasse
+// oder füge einen CustomRenderer hinzu:
+        eventComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value,
+                                                          int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Event) {
+                    Event event = (Event) value;
+                    setText(event.getName()); // oder welches Attribut du anzeigen möchtest
+                }
+                return this;
+            }
+        });
+
+
         JLabel eventLabel = new JLabel("Event:");
         JComboBox<String> eventComboBox = new JComboBox<>(new String[]{"Event 1", "Event 2", "Event 3"});
         gbc.gridy = 1;
@@ -406,9 +429,10 @@ public class GUI {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
         panel.add(VorNameLabel, gbc);
         gbc.gridx = 1;
-        gbc.weightx = 1.0;
+        //gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(VorNameField, gbc);
 
@@ -417,18 +441,10 @@ public class GUI {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
         panel.add(NachNameLabel, gbc);
         gbc.gridx = 1;
         panel.add(NachNameField, gbc);
-
-        JLabel nameLabel = new JLabel("Benutzername:");
-        JTextField nameField = new JTextField(15);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        panel.add(nameLabel, gbc);
-        gbc.gridx = 1;
-        panel.add(nameField, gbc);
 
         JLabel passLabel = new JLabel("Passwort:");
         JPasswordField passField = new JPasswordField(15);
@@ -468,6 +484,15 @@ public class GUI {
             // Weiterleitung zur nächsten Ansicht
             showActionSelectionPanel();
         });
+
+        // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+
         panel.revalidate();
         panel.repaint();
         //Test
