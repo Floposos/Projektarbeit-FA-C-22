@@ -9,8 +9,9 @@ import java.util.List;
 
 public class GUI {
 
-    private AdministratorManager Manager;
+    private AdministratorManager admin;
     private EventManager event;
+    public int adminID;
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
@@ -18,7 +19,7 @@ public class GUI {
     private List<JFormattedTextField> dateFields;
 
     public GUI() {
-        this.Manager = new AdministratorManager();
+        this.admin = new AdministratorManager();
         this.event = new EventManager();
         // Nimbus-Look-and-Feel aktivieren
         try {
@@ -110,7 +111,14 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(loginButton, gbc);
 
-        loginButton.addActionListener(e -> showActionSelectionPanel());
+        loginButton.addActionListener(e -> {
+            adminID = Integer.parseInt(userField.getText());
+            String password = new String(passField.getPassword());
+            admin.checkAuthorization(adminID, password);
+
+            showActionSelectionPanel();
+        });
+
 
         // Pfeil-Button unten links
         JButton backButton = createBackButton(this::createRoleSelectionPanel);
@@ -480,7 +488,7 @@ public class GUI {
 
             // Fehlerbehandlung und Datenübergabe an AdministratorManager
             try {
-                Manager.addAdmin(firstname, lastname, password);
+                admin.addAdmin(firstname, lastname, password);
                 JOptionPane.showMessageDialog(frame, "Manager " + firstname + " erfolgreich gespeichert!");
                 showActionSelectionPanel();
             } catch (IllegalArgumentException ex) {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdministratorDatabaseOperations {
-    private static final String TABLE_NAME = "T_administrators";
+    private static final String TABLE_NAME = "T_administrator";
 
     public void insertAdmin(String firstName, String lastName, String password) {
         if (firstName == null || firstName.trim().isEmpty() ||
@@ -14,7 +14,7 @@ public class AdministratorDatabaseOperations {
                 password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Vorname, Nachname und Passwort dürfen nicht leer oder null sein.");
         }
-        String query = "INSERT INTO " + TABLE_NAME + " (first_name, last_name, password) VALUES (?, ?, ?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (firstName, lastName, password) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 

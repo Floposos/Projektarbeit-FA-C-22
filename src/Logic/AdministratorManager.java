@@ -51,4 +51,9 @@ public class AdministratorManager {
     public List<Administrator> getAllAdministrators() {
         return adminDbOps.getAllAdministrators();
     }
+
+    public boolean checkAuthorization(int adminID, String pwd){
+        //TODO
+        return true;
+    }
 }
