@@ -443,6 +443,7 @@ public class GUI {
 
 //            Manager.addAdmin(firstname,lastname,password);
 
+            //Test
             // Nachricht anzeigen
             //JOptionPane.showMessageDialog(frame, "Manager " + firstname + " gespeichert!");
 
