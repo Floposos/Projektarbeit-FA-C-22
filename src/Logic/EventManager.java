@@ -11,13 +11,12 @@ public class EventManager {
         this.eventDbOps = new EventDatabaseOperations();
     }
 
-    public void addEvent(String administratorId, String name, String status) {
+    public void addEvent(String administratorId, String name) {
         if (administratorId == null || administratorId.trim().isEmpty() ||
-                name == null || name.trim().isEmpty() ||
-                status == null || status.trim().isEmpty()) {
-            throw new IllegalArgumentException("Administrator-ID, Name und Status dürfen nicht leer oder null sein.");
+                name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name darf nicht leer sein.");
         }
-        eventDbOps.insertEvent(administratorId, name, status);
+        eventDbOps.insertEvent(administratorId, name, "angelegt");
     }
 
     public void updateEvent(int eventId, String administratorId, String name, String status) {

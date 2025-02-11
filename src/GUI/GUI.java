@@ -229,9 +229,14 @@ public class GUI {
         // **Hier wird der Event-Name erst beim Klick abgerufen**
         saveButton.addActionListener(e -> {
             String eventName = nameField.getText(); // Text aus dem Textfeld abrufen
+            int adminID = 1000; //zum Testen
+
             if (eventName.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Bitte einen Event-Namen eingeben!", "Fehler", JOptionPane.ERROR_MESSAGE);
             } else {
+
+              //  event.addEvent(adminID,eventName);
+
                 showNewSportEventPanel(eventName);
                 //showNewSportEventPanel(eventName); // Event-Name an die nächste Methode übergeben
             }
