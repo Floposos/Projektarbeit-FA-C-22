@@ -111,13 +111,16 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(loginButton, gbc);
 
-        loginButton.addActionListener(e -> {
-            adminID = Integer.parseInt(userField.getText());
-            String password = new String(passField.getPassword());
-            admin.checkAuthorization(adminID, password);
-
-            showActionSelectionPanel();
-        });
+        //LOGIN fertig, nur zum weiterarbeiten Auskommentiert
+//        loginButton.addActionListener(e -> {
+//            adminID = Integer.parseInt(userField.getText());
+//            String password = new String(passField.getPassword());
+//            if (!admin.checkAuthorization(adminID, password)) {
+//                JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
+//            } else {
+                showActionSelectionPanel();
+//            }
+//        });
 
 
         // Pfeil-Button unten links
@@ -553,13 +556,15 @@ public class GUI {
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        JLabel actionLabel = new JLabel("Was möchten Sie tun?");
-        actionLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 10, 20, 10);
-        panel.add(actionLabel, gbc);
+//        JLabel newSportsTypeLabel = new JLabel("Neuer Event-Manager");
+//        newEventLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+//        gbc.gridx = 0;
+//        gbc.gridy = 0;
+//        gbc.gridwidth = 2;
+//        gbc.insets = new Insets(10, 10, 20, 10);
+//        panel.add(newEventLabel, gbc);
+//        panel.revalidate();
+//        panel.repaint();
     }
 
     private void showManageSportsTypePanel() {

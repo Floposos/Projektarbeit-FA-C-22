@@ -24,15 +24,15 @@ public class AdministratorManager {
         adminDbOps.insertAdmin(firstName, lastName, password);
     }
 
-    public void deleteAdmin(String administratorId) {
-        if (administratorId == null || administratorId.trim().isEmpty()) {
+    public void deleteAdmin(int administratorId) {
+        if (administratorId <= 0) {
             throw new IllegalArgumentException("Ungültige Administrator-ID.");
         }
         adminDbOps.deleteAdmin(administratorId);
     }
 
-    public void updateAdmin(String administratorId, String firstName, String lastName, String password) {
-        if (administratorId == null || administratorId.trim().isEmpty() ||
+    public void updateAdmin(int administratorId, String firstName, String lastName, String password) {
+        if (administratorId <= 0 ||
                 firstName == null || firstName.trim().isEmpty() ||
                 lastName == null || lastName.trim().isEmpty() ||
                 password == null || password.trim().isEmpty()) {
@@ -41,8 +41,8 @@ public class AdministratorManager {
         adminDbOps.updateAdmin(administratorId, firstName, lastName, password);
     }
 
-    public Administrator getAdminById(String administratorId) {
-        if (administratorId == null || administratorId.trim().isEmpty()) {
+    public Administrator getAdminById(int administratorId) {
+        if (administratorId <= 0) {
             throw new IllegalArgumentException("Ungültige Administrator-ID.");
         }
         return adminDbOps.getAdminById(administratorId);
