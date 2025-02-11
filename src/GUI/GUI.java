@@ -333,24 +333,24 @@ public class GUI {
         gbc.insets = new Insets(10, 10, 20, 10);
         panel.add(manageEventLabel, gbc);
 
-
-        List<Event> events = event.getAllEvents();
-        JComboBox<Event> eventComboBox = new JComboBox<>(events.toArray(new Event[0]));
-
-// Optional: Überschreibe die toString-Methode in der Event-Klasse
-// oder füge einen CustomRenderer hinzu:
-        eventComboBox.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof Event) {
-                    Event event = (Event) value;
-                    setText(event.getName()); // oder welches Attribut du anzeigen möchtest
-                }
-                return this;
-            }
-        });
+//
+//        List<Event> events = event.getAllEvents();
+//        JComboBox<Event> eventComboBox = new JComboBox<>(events.toArray(new Event[0]));
+//
+//// Optional: Überschreibe die toString-Methode in der Event-Klasse
+//// oder füge einen CustomRenderer hinzu:
+//        eventComboBox.setRenderer(new DefaultListCellRenderer() {
+//            @Override
+//            public Component getListCellRendererComponent(JList<?> list, Object value,
+//                                                          int index, boolean isSelected, boolean cellHasFocus) {
+//                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+//                if (value instanceof Event) {
+//                    Event event = (Event) value;
+//                    setText(event.getName()); // oder welches Attribut du anzeigen möchtest
+//                }
+//                return this;
+//            }
+//        });
 
 
         JLabel eventLabel = new JLabel("Event:");

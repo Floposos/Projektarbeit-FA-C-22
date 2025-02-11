@@ -4,6 +4,9 @@ import DatabaseOperations.AdministratorDatabaseOperations;
 import Model.Administrator;
 import java.util.List;
 
+
+//Event Manager
+
 public class AdministratorManager {
 
     private AdministratorDatabaseOperations adminDbOps;
