@@ -16,6 +16,7 @@ public class GUI {
     private List<JFormattedTextField> dateFields;
 
     public GUI() {
+        this.Manager = new AdministratorManager();
         // Nimbus-Look-and-Feel aktivieren
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -386,6 +387,7 @@ public class GUI {
         panel.repaint();
     }
 
+
     private void showAddManagerPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -419,6 +421,15 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(NachNameField, gbc);
 
+        JLabel nameLabel = new JLabel("Benutzername:");
+        JTextField nameField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        panel.add(nameLabel, gbc);
+        gbc.gridx = 1;
+        panel.add(nameField, gbc);
+
         JLabel passLabel = new JLabel("Passwort:");
         JPasswordField passField = new JPasswordField(15);
         gbc.gridx = 0;
@@ -437,21 +448,30 @@ public class GUI {
         // Event-Handler für den Button "Anlegen"
         saveButton.addActionListener(e -> {
             // Daten aus den Textfeldern abrufen und in Variablen speichern
-//            String firstname = VorNameField.getText();
-//            String lastname = NachNameField.getText();
-//            String password = new String(passField.getPassword());  // Passwörter abrufen
+            String firstname = VorNameField.getText();
+            String lastname = NachNameField.getText();
+            String password = new String(passField.getPassword());  // Passwörter abrufen
 
-//            Manager.addAdmin(firstname,lastname,password);
+            // Debug-Ausgabe oder weitere Verarbeitung
+            System.out.println("Vorname: " + firstname);
+            System.out.println("Nachname: " + lastname);
+            System.out.println("Passwort: " + password);
 
-            //Test
-            // Nachricht anzeigen
-            //JOptionPane.showMessageDialog(frame, "Manager " + firstname + " gespeichert!");
-
+            // Fehlerbehandlung und Datenübergabe an AdministratorManager
+            try {
+                Manager.addAdmin(firstname, lastname, password);
+                JOptionPane.showMessageDialog(frame, "Manager " + firstname + " erfolgreich gespeichert!");
+                showActionSelectionPanel();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
             // Weiterleitung zur nächsten Ansicht
             showActionSelectionPanel();
         });
+        panel.revalidate();
+        panel.repaint();
+        //Test
     }
-
 
     private void  showManageSportsPanel() {
         panel.removeAll();
