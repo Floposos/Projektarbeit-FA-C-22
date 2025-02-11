@@ -2,6 +2,7 @@ package Logic;
 
 import Model.Club;
 import DatabaseOperations.ClubDatabaseOperations;
+import java.util.List;
 
 public class ClubManager {
     private ClubDatabaseOperations clubDbOps;
@@ -12,7 +13,7 @@ public class ClubManager {
 
     public void addClub(String name, String password) {
         if (name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("Der Name oder Passwort des Vereins darf nicht leer oder null sein.");
+            throw new IllegalArgumentException("Der Name oder das Passwort des Vereins darf nicht leer oder null sein.");
         }
         clubDbOps.insertClub(name, password);
     }
@@ -36,5 +37,9 @@ public class ClubManager {
             throw new IllegalArgumentException("Ungültige Vereins-ID.");
         }
         return clubDbOps.getClubById(clubId);
+    }
+
+    public List<Club> getAllClubs() {
+        return clubDbOps.getAllClubs();
     }
 }

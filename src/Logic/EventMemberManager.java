@@ -2,6 +2,7 @@ package Logic;
 
 import DatabaseOperations.EventMemberDatabaseOperations;
 import Model.EventMember;
+import java.util.List;
 
 public class EventMemberManager {
     private EventMemberDatabaseOperations eventMemberDbOps;
@@ -36,5 +37,9 @@ public class EventMemberManager {
             throw new IllegalArgumentException("Ungültige EventMember-ID.");
         }
         return eventMemberDbOps.getEventMemberById(eventMemberId);
+    }
+
+    public List<EventMember> getAllEventMembers() {
+        return eventMemberDbOps.getAllEventMembers();
     }
 }
