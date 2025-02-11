@@ -1,4 +1,5 @@
 package DatabaseOperations;
+
 import Model.Sport;
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,6 +9,9 @@ public class SportDatabaseOperations {
     private static final String TABLE_NAME = "T_sports";
 
     public void insertSport(String name, String resultType) {
+        if (name == null || name.trim().isEmpty() || resultType == null || resultType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name und ResultType dürfen nicht leer oder null sein.");
+        }
         String query = "INSERT INTO " + TABLE_NAME + " (name, result_type) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -21,6 +25,9 @@ public class SportDatabaseOperations {
     }
 
     public void deleteSport(int sportId) {
+        if (sportId <= 0) {
+            throw new IllegalArgumentException("Ungültige Sport-ID.");
+        }
         String query = "DELETE FROM " + TABLE_NAME + " WHERE sportId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -33,6 +40,9 @@ public class SportDatabaseOperations {
     }
 
     public void updateSport(int sportId, String name, String resultType) {
+        if (sportId <= 0 || name == null || name.trim().isEmpty() || resultType == null || resultType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung der Sportart.");
+        }
         String query = "UPDATE " + TABLE_NAME + " SET name = ?, result_type = ? WHERE sportId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -47,6 +57,9 @@ public class SportDatabaseOperations {
     }
 
     public Sport getSportById(int sportId) {
+        if (sportId <= 0) {
+            throw new IllegalArgumentException("Ungültige Sport-ID.");
+        }
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE sportId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -70,7 +83,6 @@ public class SportDatabaseOperations {
     public List<Sport> getAllSports() {
         List<Sport> sports = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
-
         try (Connection connection = DBConnection.Verbindung();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {

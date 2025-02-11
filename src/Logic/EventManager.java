@@ -10,7 +10,7 @@ public class EventManager {
         this.eventDbOps = new EventDatabaseOperations();
     }
 
-    public void createEvent(String administratorId, String name,  String status) {
+    public void addEvent(String administratorId, String name,  String status) {
         if (administratorId == null || administratorId.trim().isEmpty() || name == null || name.trim().isEmpty() || status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("Der Name des Events darf nicht leer oder null sein.");
         }

@@ -17,7 +17,7 @@ public class EventMemberManager {
         eventMemberDbOps.insertEventMember(memberId, eventId, sportId);
     }
 
-    public void removeEventMember(int eventMemberId) {
+    public void deleteEventMember(int eventMemberId) {
         if (eventMemberId <= 0) {
             throw new IllegalArgumentException("Ungültige EventMember-ID.");
         }
