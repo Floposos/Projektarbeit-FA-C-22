@@ -1,8 +1,6 @@
 package DatabaseOperations;
 
 import Model.SportEvent;
-import org.sqlite.core.DB;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
