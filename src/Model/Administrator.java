@@ -2,13 +2,13 @@ package Model;
 
 public class Administrator {
 
-    private String administratorId;
+    private int administratorId;
     private String firstName;
     private String lastName;
     private String password;
 
 
-    public Administrator(String administratorId, String firstName, String lastName, String password) {
+    public Administrator(int administratorId, String firstName, String lastName, String password) {
 
         this.administratorId = administratorId;
         this.firstName = firstName;
@@ -33,11 +33,11 @@ public class Administrator {
         this.lastName = lastName;
     }
 
-    public String getAdministratorId() {
+    public int getAdministratorId() {
         return administratorId;
     }
 
-    public void setAdministratorId(String userId) {
+    public void setAdministratorId(int userId) {
         this.administratorId = userId;
     }
 
