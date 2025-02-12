@@ -99,4 +99,21 @@ public class SportDatabaseOperations {
         }
         return sports;
     }
+
+    public boolean sportExists(String name) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE name = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen der Sport-Existenz: " + e.getMessage(), e);
+        }
+        return false;
+    }
 }

@@ -15,6 +15,9 @@ public class SportManager {
         if (name == null || name.trim().isEmpty() || resultType == null || resultType.trim().isEmpty()) {
             throw new IllegalArgumentException("Der Name und die Ergebnisart der Sportart dürfen nicht leer oder null sein.");
         }
+        if (sportDbOps.sportExists(name)) {
+            throw new IllegalArgumentException("Eine Sportart mit diesem Namen existiert bereits.");
+        }
         sportDbOps.insertSport(name, resultType);
     }
 
