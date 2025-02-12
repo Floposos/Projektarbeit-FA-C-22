@@ -15,6 +15,9 @@ public class ClubManager {
         if (name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Der Name oder das Passwort des Vereins darf nicht leer oder null sein.");
         }
+        if (clubDbOps.clubExists(name)) {
+            throw new IllegalArgumentException("Ein Verein mit diesem Namen existiert bereits.");
+        }
         clubDbOps.insertClub(name, password);
     }
 
