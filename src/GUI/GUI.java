@@ -1,4 +1,5 @@
 package GUI;
+
 import Logic.AdministratorManager;
 import Logic.*;
 import Model.*;
@@ -18,7 +19,6 @@ public class GUI {
     private JComboBox<String> clubDropdown;
     private JPasswordField clubPasswordField;
     private JButton clubLoginButton;
-
 
 
     JFrame frame = new JFrame("Auswahlfenster");
@@ -207,8 +207,6 @@ public class GUI {
     }
 
 
-
-
     // Erstellt die Haupt-Auswahlseite
     private void showActionSelectionPanel() {
         panel.removeAll();
@@ -305,7 +303,7 @@ public class GUI {
                 JOptionPane.showMessageDialog(panel, "Bitte einen Event-Namen eingeben!", "Fehler", JOptionPane.ERROR_MESSAGE);
             } else {
 
-              //  event.addEvent(adminID,eventName);
+                //  event.addEvent(adminID,eventName);
 
                 showNewSportEventPanel(eventName);
                 //showNewSportEventPanel(eventName); // Event-Name an die nächste Methode übergeben
@@ -625,7 +623,7 @@ public class GUI {
         //Test
     }
 
-    private void  showManageSportsPanel() {
+    private void showManageSportsPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
