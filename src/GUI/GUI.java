@@ -193,6 +193,7 @@ public class GUI {
 
             if (clubManager.checkAuthorization(selectedClub, password)) {
                 JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
+                showClubManagementPanel();
             } else {
                 JOptionPane.showMessageDialog(null, "Fehlgeschlagene Anmeldung. Überprüfen Sie das Passwort.", "Fehler", JOptionPane.ERROR_MESSAGE);
             }
@@ -346,6 +347,58 @@ public class GUI {
 
         panel.revalidate();
         panel.repaint();
+    }
+
+    private void showClubManagementPanel() {
+        panel.removeAll();  // Panel zurücksetzen
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Titel der Vereinsverwaltungsseite
+        JLabel titleLabel = new JLabel("Vereinsverwaltung");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panel.add(titleLabel, gbc);
+
+        // Mitglieder verwalten Button
+        JButton manageMembersButton = new JButton("Mitglieder verwalten");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(manageMembersButton, gbc);
+
+        // Eventanmeldung Button
+        JButton eventRegistrationButton = new JButton("Eventanmeldung");
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(eventRegistrationButton, gbc);
+
+        // ActionListener für den Mitglieder verwalten Button
+        manageMembersButton.addActionListener(e -> {
+            // Code für Mitglieder verwalten
+            showManageMembersPanel();
+        });
+
+        // ActionListener für den Eventanmeldung Button
+        eventRegistrationButton.addActionListener(e -> {
+            // Code für Eventanmeldung
+            showEventRegistrationPanel();
+        });
+
+        // Panel neu validieren und repainten
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private void showManageMembersPanel() {
+        System.out.println("Mitglieder verwalten wurde ausgewählt.");
+    }
+
+    private void showEventRegistrationPanel() {
+        System.out.println("Eventanmeldung wurde ausgewählt.");
     }
 
     private void addSportRow() {
