@@ -35,14 +35,14 @@ public class GUI {
         frame.setLayout(new BorderLayout());
 
         // Startpanel erstellen
-        createRoleSelectionPanel();
+        roleSelectionPanel();
 
         frame.add(panel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
     // Erstellt das Auswahl-Panel (Event-Manager / Verein)
-    private void createRoleSelectionPanel() {
+    private void roleSelectionPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -66,15 +66,15 @@ public class GUI {
         panel.add(buttonVerein, gbc);
 
         // ActionListener für die Buttons
-        buttonEventManager.addActionListener(e -> createLoginPanel());
-        buttonVerein.addActionListener(e -> showVereinPanel()); // Platzhalter für Verein
+        buttonEventManager.addActionListener(e -> loginPanel());
+        buttonVerein.addActionListener(e -> vereinPanel()); // Platzhalter für Verein
 
         panel.revalidate();
         panel.repaint();
     }
 
     // Login-Panel
-    private void createLoginPanel() {
+    private void loginPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -111,8 +111,7 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(loginButton, gbc);
 
-        //LOGIN fertig, nur zum weiterarbeiten Auskommentiert
-        //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
+
         loginButton.addActionListener(e -> {
             try {
                 adminID = Integer.parseInt(userField.getText());
@@ -120,17 +119,15 @@ public class GUI {
                 if (!admin.checkAuthorization(adminID, password)) {
                     JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    showActionSelectionPanel();
+                    actionSelectionPanel();
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        //TEST
-
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::createRoleSelectionPanel);
+        JButton backButton = createBackButton(this::roleSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -142,7 +139,7 @@ public class GUI {
     }
 
     // Platzhalter für die Verein-Seite
-    private void showVereinPanel() {
+    private void vereinPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
 
@@ -157,7 +154,7 @@ public class GUI {
     }
 
     // Erstellt die Haupt-Auswahlseite
-    private void showActionSelectionPanel() {
+    private void actionSelectionPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -190,24 +187,24 @@ public class GUI {
         panel.add(buttonManageSports, gbc);
 
         //back-button
-        JButton backButton = createBackButton(this::createRoleSelectionPanel);
+        JButton backButton = createBackButton(this::roleSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(backButton, gbc);
 
-        buttonNewEvent.addActionListener(e -> showNewEventPanel());
-        buttonManageEvent.addActionListener(e -> showManageEventPanel());
-        buttonAddManager.addActionListener(e -> showAddManagerPanel());
-        buttonManageSports.addActionListener(e -> showManageSportsPanel());
+        buttonNewEvent.addActionListener(e -> newEventPanel());
+        buttonManageEvent.addActionListener(e -> manageEventPanel());
+        buttonAddManager.addActionListener(e -> addManagerPanel());
+        buttonManageSports.addActionListener(e -> manageSportsPanel());
 
         panel.revalidate();
         panel.repaint();
     }
 
     // Panel für Neues Event
-    private void showNewEventPanel() {
+    private void newEventPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -236,7 +233,7 @@ public class GUI {
         panel.add(saveButton, gbc);
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::showActionSelectionPanel);
+        JButton backButton = createBackButton(this::actionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -254,7 +251,7 @@ public class GUI {
 
               //  event.addEvent(adminID,eventName);
 
-                showNewSportEventPanel(eventName);
+                newSportEventPanel(eventName);
                 //showNewSportEventPanel(eventName); // Event-Name an die nächste Methode übergeben
             }
         });
@@ -263,7 +260,7 @@ public class GUI {
         panel.repaint();
     }
 
-    private void showNewSportEventPanel(String eventName) {
+    private void newSportEventPanel(String eventName) {
         panel.removeAll(); // Clear the panel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -294,7 +291,7 @@ public class GUI {
         // ActionListener für den Hinzufügen-Button
         addSportButton.addActionListener(e -> addSportRow());
         // ActionListener für den Event Speichern Button
-        saveButton.addActionListener(e -> showActionSelectionPanel());
+        saveButton.addActionListener(e -> actionSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
@@ -341,7 +338,7 @@ public class GUI {
 
 
     // Panel für Event verwalten
-    private void showManageEventPanel() {
+    private void manageEventPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -415,13 +412,13 @@ public class GUI {
             JOptionPane.showMessageDialog(frame, "Sportart erfolgreich abgeschlossen und gespeichert!");
         });
 
-        finishEventButton.addActionListener(e -> showActionSelectionPanel());
+        finishEventButton.addActionListener(e -> actionSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::showActionSelectionPanel);
+        JButton backButton = createBackButton(this::actionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -433,7 +430,7 @@ public class GUI {
     }
 
 
-    private void showAddManagerPanel() {
+    private void addManagerPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -499,16 +496,16 @@ public class GUI {
             try {
                 admin.addAdmin(firstname, lastname, password);
                 JOptionPane.showMessageDialog(frame, "Manager " + firstname + " erfolgreich gespeichert!");
-                showActionSelectionPanel();
+                actionSelectionPanel();
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(frame, ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
             }
             // Weiterleitung zur nächsten Ansicht
-            showActionSelectionPanel();
+            actionSelectionPanel();
         });
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::showActionSelectionPanel);
+        JButton backButton = createBackButton(this::actionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -520,7 +517,7 @@ public class GUI {
         //Test
     }
 
-    private void  showManageSportsPanel() {
+    private void  manageSportsPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -542,11 +539,11 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(buttonManageSportsType, gbc);
 
-        buttonNewSportType.addActionListener(e -> showNewSportsTypePanel());
-        buttonManageSportsType.addActionListener(e -> showManageSportsTypePanel());
+        buttonNewSportType.addActionListener(e -> newSportsTypePanel());
+        buttonManageSportsType.addActionListener(e -> manageSportsTypePanel());
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::showActionSelectionPanel);
+        JButton backButton = createBackButton(this::actionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -557,7 +554,7 @@ public class GUI {
         panel.repaint();
     }
 
-    private void showNewSportsTypePanel() {
+    private void newSportsTypePanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -573,7 +570,7 @@ public class GUI {
         panel.repaint();
     }
 
-    private void showManageSportsTypePanel() {
+    private void manageSportsTypePanel() {
         //TODO
     }
 

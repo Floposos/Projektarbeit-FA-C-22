@@ -99,4 +99,23 @@ public class ClubDatabaseOperations {
         }
         return clubs;
     }
+
+    public boolean validateCredentials(String name, String password) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE name = ? AND password = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler bei der Verein-Authentifizierung: " + e.getMessage(), e);
+        }
+        return false;
+    }
 }
