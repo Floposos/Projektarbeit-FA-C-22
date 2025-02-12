@@ -118,4 +118,21 @@ public class ClubDatabaseOperations {
         }
         return false;
     }
+
+    public boolean clubExists(String name) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE name = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen der Vereins-Existenz: " + e.getMessage(), e);
+        }
+        return false;
+    }
 }
