@@ -14,6 +14,7 @@ public class GUI {
     private ClubManager clubManager;
     private EventManager event;
     public int adminID;
+    private SportManager sportsType;
     private JComboBox<String> clubDropdown;
     private JPasswordField clubPasswordField;
     private JButton clubLoginButton;
@@ -28,6 +29,7 @@ public class GUI {
     public GUI() {
         this.admin = new AdministratorManager();
         this.event = new EventManager();
+        this.sportsType = new SportManager();
         this.clubManager = new ClubManager();
         // Nimbus-Look-and-Feel aktivieren
         try {
@@ -674,6 +676,42 @@ public class GUI {
         panel.add(newSportsTypeLabel, gbc);
         panel.revalidate();
         panel.repaint();
+
+        JLabel lbl_sportsType = new JLabel("Neue Sportart: ");
+        JTextField sportsTypeNameField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(lbl_sportsType, gbc);
+        gbc.gridx = 1;
+        panel.add(sportsTypeNameField, gbc);
+
+        JLabel lbl_resultType = new JLabel("Ergebnisart: ");
+        JTextField resultTypeField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(lbl_resultType, gbc);
+        gbc.gridx = 1;
+        panel.add(resultTypeField, gbc);
+
+        JButton saveButton = new JButton("Anlegen");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 10, 10, 10);
+        panel.add(saveButton, gbc);
+
+        saveButton.addActionListener(e -> {
+            String sportsTypeName = sportsTypeNameField.getText();
+            String resultType = resultTypeField.getText();
+            sportsType.addSport(sportsTypeName, resultType);
+            showActionSelectionPanel();
+        });
+
+
     }
 
     private void showManageSportsTypePanel() {
