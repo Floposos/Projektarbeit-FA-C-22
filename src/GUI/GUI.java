@@ -357,11 +357,13 @@ public class GUI {
         gbc.anchor = GridBagConstraints.WEST;
 
         // Titel der Vereinsverwaltungsseite
-        JLabel titleLabel = new JLabel("Vereinsverwaltung");
+        JLabel clubLabel = new JLabel("Vereinsverwaltung");
+        clubLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        panel.add(titleLabel, gbc);
+        gbc.insets = new Insets(10, 10, 100, 10);
+        panel.add(clubLabel, gbc);
 
         // Mitglieder verwalten Button
         JButton manageMembersButton = new JButton("Mitglieder verwalten");
