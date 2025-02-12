@@ -42,4 +42,11 @@ public class ClubManager {
     public List<Club> getAllClubs() {
         return clubDbOps.getAllClubs();
     }
+
+    public boolean checkAuthorization(String name, String password) {
+        if (name ==null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Ungültiges Passwort.");
+        }
+        return clubDbOps.validateCredentials(name, password);
+    }
 }
