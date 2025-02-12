@@ -1,6 +1,7 @@
 package GUI;
 import Logic.AdministratorManager;
 import Logic.*;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,9 +11,14 @@ import java.util.List;
 public class GUI {
 
     private AdministratorManager admin;
+    private ClubManager clubManager;
     private EventManager event;
     public int adminID;
-    public SportManager sportsType;
+    private JComboBox<String> clubDropdown;
+    private JPasswordField clubPasswordField;
+    private JButton clubLoginButton;
+
+
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
@@ -22,7 +28,7 @@ public class GUI {
     public GUI() {
         this.admin = new AdministratorManager();
         this.event = new EventManager();
-        this.sportsType = new SportManager();
+        this.clubManager = new ClubManager();
         // Nimbus-Look-and-Feel aktivieren
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -37,18 +43,18 @@ public class GUI {
         frame.setLayout(new BorderLayout());
 
         // Startpanel erstellen
-        roleSelectionPanel();
+        createRoleSelectionPanel();
 
         frame.add(panel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
     // Erstellt das Auswahl-Panel (Event-Manager / Verein)
-    private void roleSelectionPanel() {
+    private void createRoleSelectionPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
+        System.out.println("Verfügbare Vereine: " + clubManager.getAllClubs().size());
         JLabel selectRoleLabel = new JLabel("Wählen Sie aus, was auf Sie zutrifft:");
         selectRoleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         gbc.gridx = 0;
@@ -68,15 +74,17 @@ public class GUI {
         panel.add(buttonVerein, gbc);
 
         // ActionListener für die Buttons
-        buttonEventManager.addActionListener(e -> loginPanel());
-        buttonVerein.addActionListener(e -> vereinPanel()); // Platzhalter für Verein
-
+        buttonEventManager.addActionListener(e -> createLoginPanel());
+        buttonVerein.addActionListener(e -> {
+            System.out.println("Verein Button gedrückt");
+            showClubLoginPanel(); // Hier soll das Login-Panel erscheinen
+        });
         panel.revalidate();
         panel.repaint();
     }
 
     // Login-Panel
-    private void loginPanel() {
+    private void createLoginPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -113,23 +121,26 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(loginButton, gbc);
 
-
+        //LOGIN fertig, nur zum weiterarbeiten Auskommentiert
+        //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
         loginButton.addActionListener(e -> {
-//            try {
-//                adminID = Integer.parseInt(userField.getText());
-//                String password = new String(passField.getPassword());
-//                if (!admin.checkAuthorization(adminID, password)) {
-//                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
-//                } else {
-                    actionSelectionPanel();
-//                }
-//            } catch (NumberFormatException ex) {
-//                JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
-//            }
+            try {
+                adminID = Integer.parseInt(userField.getText());
+                String password = new String(passField.getPassword());
+                if (!admin.checkAuthorization(adminID, password)) {
+                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    showActionSelectionPanel();
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
+        //TEST
+
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::roleSelectionPanel);
+        JButton backButton = createBackButton(this::createRoleSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -141,22 +152,62 @@ public class GUI {
     }
 
     // Platzhalter für die Verein-Seite
-    private void vereinPanel() {
-        panel.removeAll();
+    private void showClubLoginPanel() {
+        panel.removeAll(); // Panel zurücksetzen
         panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        JLabel vereinLabel = new JLabel("Verein-Seite in Arbeit...");
-        vereinLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
-        panel.add(vereinLabel);
+        JLabel clubLabel = new JLabel("Verein auswählen:");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(clubLabel, gbc);
 
+        // Dropdown für Vereinsnamen
+        clubDropdown = new JComboBox<>();
+        for (Club club : clubManager.getAllClubs()) {  // Instanzmethode richtig aufrufen
+            clubDropdown.addItem(club.getName());
+        }
+        gbc.gridx = 1;
+        panel.add(clubDropdown, gbc);
+
+        JLabel passwordLabel = new JLabel("Passwort:");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(passwordLabel, gbc);
+
+        clubPasswordField = new JPasswordField(15);
+        gbc.gridx = 1;
+        panel.add(clubPasswordField, gbc);
+
+        clubLoginButton = new JButton("Anmelden");
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(clubLoginButton, gbc);
+
+        clubLoginButton.addActionListener(e -> {
+            String selectedClub = (String) clubDropdown.getSelectedItem();
+            String password = new String(clubPasswordField.getPassword());
+
+            if (clubManager.checkAuthorization(selectedClub, password)) {
+                JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Fehlgeschlagene Anmeldung. Überprüfen Sie das Passwort.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Panel neu validieren und repainten
         panel.revalidate();
         panel.repaint();
-
-
     }
 
+
+
+
     // Erstellt die Haupt-Auswahlseite
-    private void actionSelectionPanel() {
+    private void showActionSelectionPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -189,24 +240,24 @@ public class GUI {
         panel.add(buttonManageSports, gbc);
 
         //back-button
-        JButton backButton = createBackButton(this::roleSelectionPanel);
+        JButton backButton = createBackButton(this::createRoleSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(backButton, gbc);
 
-        buttonNewEvent.addActionListener(e -> newEventPanel());
-        buttonManageEvent.addActionListener(e -> manageEventPanel());
-        buttonAddManager.addActionListener(e -> addManagerPanel());
-        buttonManageSports.addActionListener(e -> manageSportsPanel());
+        buttonNewEvent.addActionListener(e -> showNewEventPanel());
+        buttonManageEvent.addActionListener(e -> showManageEventPanel());
+        buttonAddManager.addActionListener(e -> showAddManagerPanel());
+        buttonManageSports.addActionListener(e -> showManageSportsPanel());
 
         panel.revalidate();
         panel.repaint();
     }
 
     // Panel für Neues Event
-    private void newEventPanel() {
+    private void showNewEventPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -235,7 +286,7 @@ public class GUI {
         panel.add(saveButton, gbc);
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::actionSelectionPanel);
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -253,7 +304,7 @@ public class GUI {
 
               //  event.addEvent(adminID,eventName);
 
-                newSportEventPanel(eventName);
+                showNewSportEventPanel(eventName);
                 //showNewSportEventPanel(eventName); // Event-Name an die nächste Methode übergeben
             }
         });
@@ -262,7 +313,7 @@ public class GUI {
         panel.repaint();
     }
 
-    private void newSportEventPanel(String eventName) {
+    private void showNewSportEventPanel(String eventName) {
         panel.removeAll(); // Clear the panel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -293,7 +344,7 @@ public class GUI {
         // ActionListener für den Hinzufügen-Button
         addSportButton.addActionListener(e -> addSportRow());
         // ActionListener für den Event Speichern Button
-        saveButton.addActionListener(e -> actionSelectionPanel());
+        saveButton.addActionListener(e -> showActionSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
@@ -340,7 +391,7 @@ public class GUI {
 
 
     // Panel für Event verwalten
-    private void manageEventPanel() {
+    private void showManageEventPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -414,13 +465,13 @@ public class GUI {
             JOptionPane.showMessageDialog(frame, "Sportart erfolgreich abgeschlossen und gespeichert!");
         });
 
-        finishEventButton.addActionListener(e -> actionSelectionPanel());
+        finishEventButton.addActionListener(e -> showActionSelectionPanel());
 
         panel.revalidate();
         panel.repaint();
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::actionSelectionPanel);
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -432,7 +483,7 @@ public class GUI {
     }
 
 
-    private void addManagerPanel() {
+    private void showAddManagerPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -498,16 +549,16 @@ public class GUI {
             try {
                 admin.addAdmin(firstname, lastname, password);
                 JOptionPane.showMessageDialog(frame, "Manager " + firstname + " erfolgreich gespeichert!");
-                actionSelectionPanel();
+                showActionSelectionPanel();
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(frame, ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
             }
             // Weiterleitung zur nächsten Ansicht
-            actionSelectionPanel();
+            showActionSelectionPanel();
         });
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::actionSelectionPanel);
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -519,7 +570,7 @@ public class GUI {
         //Test
     }
 
-    private void  manageSportsPanel() {
+    private void  showManageSportsPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -541,11 +592,11 @@ public class GUI {
         gbc.gridx = 1;
         panel.add(buttonManageSportsType, gbc);
 
-        buttonNewSportType.addActionListener(e -> newSportsTypePanel());
-        buttonManageSportsType.addActionListener(e -> manageSportsTypePanel());
+        buttonNewSportType.addActionListener(e -> showNewSportsTypePanel());
+        buttonManageSportsType.addActionListener(e -> showManageSportsTypePanel());
 
         // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::actionSelectionPanel);
+        JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -556,7 +607,7 @@ public class GUI {
         panel.repaint();
     }
 
-    private void newSportsTypePanel() {
+    private void showNewSportsTypePanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -570,55 +621,9 @@ public class GUI {
         panel.add(newSportsTypeLabel, gbc);
         panel.revalidate();
         panel.repaint();
-
-        JLabel lbl_sportsTypeName = new JLabel("Neue Sportart:");
-        JTextField sportsTypeNameField = new JTextField(15);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(lbl_sportsTypeName, gbc);
-        gbc.gridx = 1;
-        //gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(sportsTypeNameField, gbc);
-
-        JLabel lbl_resultType = new JLabel("Ergebnisart: ");
-        JTextField resultTypeField = new JTextField(15);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(lbl_resultType, gbc);
-        gbc.gridx = 1;
-        panel.add(resultTypeField, gbc);
-
-        JButton saveButton = new JButton("Anlegen");
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 10, 10, 10);
-        panel.add(saveButton, gbc);
-
-        saveButton.addActionListener(e -> {
-            String sportsTypeName = sportsTypeNameField.getText();
-            String resultType = resultTypeField.getText();
-            sportsType.addSport(sportsTypeName, resultType);
-            actionSelectionPanel();
-        });
-        //Test
-
-        // Pfeil-Button unten links
-        JButton backButton = createBackButton(this::actionSelectionPanel);
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.LAST_LINE_START;
-        gbc.insets = new Insets(10, 10, 10, 10);
-        panel.add(backButton, gbc);
-
     }
 
-    private void manageSportsTypePanel() {
+    private void showManageSportsTypePanel() {
         //TODO
     }
 
