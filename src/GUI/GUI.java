@@ -1,6 +1,7 @@
 package GUI;
 import Logic.AdministratorManager;
 import Logic.*;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,14 @@ import java.util.List;
 public class GUI {
 
     private AdministratorManager admin;
+    private ClubManager clubManager;
     private EventManager event;
     public int adminID;
+    private JComboBox<String> clubDropdown;
+    private JPasswordField clubPasswordField;
+    private JButton clubLoginButton;
+
+
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
@@ -21,6 +28,7 @@ public class GUI {
     public GUI() {
         this.admin = new AdministratorManager();
         this.event = new EventManager();
+        this.clubManager = new ClubManager();
         // Nimbus-Look-and-Feel aktivieren
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -46,7 +54,7 @@ public class GUI {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
+        System.out.println("Verfügbare Vereine: " + clubManager.getAllClubs().size());
         JLabel selectRoleLabel = new JLabel("Wählen Sie aus, was auf Sie zutrifft:");
         selectRoleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         gbc.gridx = 0;
@@ -67,8 +75,10 @@ public class GUI {
 
         // ActionListener für die Buttons
         buttonEventManager.addActionListener(e -> createLoginPanel());
-        buttonVerein.addActionListener(e -> showVereinPanel()); // Platzhalter für Verein
-
+        buttonVerein.addActionListener(e -> {
+            System.out.println("Verein Button gedrückt");
+            showClubLoginPanel(); // Hier soll das Login-Panel erscheinen
+        });
         panel.revalidate();
         panel.repaint();
     }
@@ -142,19 +152,59 @@ public class GUI {
     }
 
     // Platzhalter für die Verein-Seite
-    private void showVereinPanel() {
-        panel.removeAll();
+    private void showClubLoginPanel() {
+        panel.removeAll(); // Panel zurücksetzen
         panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        JLabel vereinLabel = new JLabel("Verein-Seite in Arbeit...");
-        vereinLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
-        panel.add(vereinLabel);
+        JLabel clubLabel = new JLabel("Verein auswählen:");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(clubLabel, gbc);
 
+        // Dropdown für Vereinsnamen
+        clubDropdown = new JComboBox<>();
+        for (Club club : clubManager.getAllClubs()) {  // Instanzmethode richtig aufrufen
+            clubDropdown.addItem(club.getName());
+        }
+        gbc.gridx = 1;
+        panel.add(clubDropdown, gbc);
+
+        JLabel passwordLabel = new JLabel("Passwort:");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(passwordLabel, gbc);
+
+        clubPasswordField = new JPasswordField(15);
+        gbc.gridx = 1;
+        panel.add(clubPasswordField, gbc);
+
+        clubLoginButton = new JButton("Anmelden");
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(clubLoginButton, gbc);
+
+        clubLoginButton.addActionListener(e -> {
+            String selectedClub = (String) clubDropdown.getSelectedItem();
+            String password = new String(clubPasswordField.getPassword());
+
+            if (clubManager.checkAuthorization(selectedClub, password)) {
+                JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Fehlgeschlagene Anmeldung. Überprüfen Sie das Passwort.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Panel neu validieren und repainten
         panel.revalidate();
         panel.repaint();
-
-
     }
+
+
+
 
     // Erstellt die Haupt-Auswahlseite
     private void showActionSelectionPanel() {
