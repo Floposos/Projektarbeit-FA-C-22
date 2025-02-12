@@ -193,6 +193,7 @@ public class GUI {
 
             if (clubManager.checkAuthorization(selectedClub, password)) {
                 JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
+                showClubManagementPanel();
             } else {
                 JOptionPane.showMessageDialog(null, "Fehlgeschlagene Anmeldung. Überprüfen Sie das Passwort.", "Fehler", JOptionPane.ERROR_MESSAGE);
             }
