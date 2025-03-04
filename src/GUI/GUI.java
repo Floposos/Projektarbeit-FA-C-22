@@ -3,6 +3,8 @@ package GUI;
 import Logic.AdministratorManager;
 import Logic.*;
 import Model.*;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javax.swing.*;
@@ -130,7 +132,7 @@ public class GUI {
         //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
         loginButton.addActionListener(e -> {
 //            try {
-//                adminID = Integer.parseInt(userField.getText());
+                adminID = Integer.parseInt(userField.getText());
 //                String password = new String(passField.getPassword());
 //                if (!admin.checkAuthorization(adminID, password)) {
 //                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -252,7 +254,13 @@ public class GUI {
         panel.add(backButton, gbc);
 
         buttonNewEvent.addActionListener(e -> showNewEventPanel());
-        buttonManageEvent.addActionListener(e -> showManageEventPanel());
+        buttonManageEvent.addActionListener(e -> {
+            try {
+                showManageEventPanel();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         buttonAddManager.addActionListener(e -> showAddManagerPanel());
         buttonManageSports.addActionListener(e -> showManageSportsPanel());
 
@@ -300,12 +308,13 @@ public class GUI {
         // **Hier wird der Event-Name erst beim Klick abgerufen**
         saveButton.addActionListener(e -> {
             String eventName = nameField.getText(); // Text aus dem Textfeld abrufen
-            int adminID = 1000; //zum Testen
+            //int adminID = 1000; //zum Testen
 
             if (eventName.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Bitte einen Event-Namen eingeben!", "Fehler", JOptionPane.ERROR_MESSAGE);
             } else {
 
+                event.addEvent(adminID, eventName);
                 //  event.addEvent(adminID,eventName);
 
                 showNewSportEventPanel(eventName);
@@ -751,7 +760,7 @@ public class GUI {
     }
 
     // Panel für Event verwalten
-    private void showManageEventPanel() {
+    private void showManageEventPanel() throws SQLException {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -808,6 +817,10 @@ public class GUI {
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         panel.add(participantsLabel, gbc);
+
+        DynamicTableSportEvent.loadTableData();
+
+
 
         // TODO Teilnehmer und Ergebniseingabe einrichten, siee Quelle: https://www.java-forum.org/thema/swing-eingabefelder-in-tabelle.27003/
 
