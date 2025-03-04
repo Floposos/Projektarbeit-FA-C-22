@@ -117,4 +117,22 @@ public class SportDatabaseOperations {
         }
         return false;
     }
+
+    public int getSportIdByName(String sportName) {
+        String Query = "SELECT sportId FROM " + TABLE_NAME + " WHERE name = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
+            preparedStatement.setString(1, sportName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("sportId");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen der EventId: " + e.getMessage(), e);
+        }
+        return 0;
+    }
+
+
 }
