@@ -12,7 +12,8 @@ public class SportEventDatabaseOperations {
 
     private static final String TABLE_NAME = "T_sportEvent";
 
-    public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+//    public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, String resultValueList) {
         String query = "INSERT INTO " + TABLE_NAME + " (eventMemberId, eventId, sportId, startDate, endDate, resultValueList) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -28,8 +29,10 @@ public class SportEventDatabaseOperations {
         }
     }
 
-    public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
-        String query = "UPDATE " + TABLE_NAME + " SET eventMemberId = ?, eventId = ?, sportId = ?, startDate = ?, endDate = ?, resultValueList = ? WHERE sportEventId = ?";
+ //   public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+ public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, String resultValueList) {
+
+     String query = "UPDATE " + TABLE_NAME + " SET eventMemberId = ?, eventId = ?, sportId = ?, startDate = ?, endDate = ?, resultValueList = ? WHERE sportEventId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, eventMemberId);

@@ -22,7 +22,8 @@ public class SportEventManager {
         this.sportDataOP = new SportDatabaseOperations();
     }
 
-    public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+//    public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, String resultValueList) {
         if (eventId <= 0 || sportId <= 0 || startDate == null || endDate == null || resultValueList == null) {
             throw new IllegalArgumentException("Ungültige Eingaben für das SportEvent.");
         }
@@ -48,7 +49,9 @@ public class SportEventManager {
     }
 
 
-    public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+//    public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, String resultValueList) {
+
         if (sportEventId <= 0 || eventMemberId <= 0 || eventId <= 0 || sportId <= 0 || startDate == null || endDate == null || resultValueList == null) {
             throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung des SportEvents.");
         }
