@@ -83,6 +83,22 @@ public class SportEventDatabaseOperations {
         return null;
     }
 
+    public int getEventIdByName(String eventName) {
+        String query = "SELECT eventId FROM T_events WHERE eventName = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, eventName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("eventId");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen der EventId: " + e.getMessage(), e);
+        }
+        return 0;
+    }
+
     public List<SportEvent> getAllSportEvents() {
         List<SportEvent> sportEvents = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME;
@@ -109,4 +125,5 @@ public class SportEventDatabaseOperations {
         }
         return sportEvents;
     }
+
 }

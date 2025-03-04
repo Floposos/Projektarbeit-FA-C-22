@@ -27,11 +27,11 @@ public class DynamicTableSportEvent {
         Vector<String> columnNames = new Vector<>();
 
         try {
-            String query = "SELECT m.firstName || ' ' || m.lastName AS TeilnehmerName, s.name AS Eventtyp, se.resultValue AS Ergebnis " +
-                    "FROM T_member m " +
-                    "JOIN T_eventMember em ON m.memberId = em.memberId " +
-                    "JOIN T_sportEvent se ON em.eventMemberId = se.eventMemberId " +
-                    "JOIN T_sport s ON se.sportId = s.sportId";
+            String query = "SELECT firstName || ' ' || lastName AS TeilnehmerName, name AS Eventtyp, resultValue AS Ergebnis " +
+                    "FROM T_member " +
+                    "JOIN T_eventMember ON T_member.memberId = T_eventMember.memberId " +
+                    "JOIN T_sportEvent ON T_eventMember.eventMemberId = T_sportEvent.eventMemberId " +
+                    "JOIN T_sport ON T_sport.sportId = T_sportEvent.sportId";
 
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
