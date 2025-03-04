@@ -1,5 +1,6 @@
 package GUI;
 
+import DatabaseOperations.DBConnection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -7,18 +8,21 @@ import java.sql.*;
 import java.util.Vector;
 
 public class DynamicTableSportEvent {
-    private JTable table;
-    private DefaultTableModel tableModel;
-    private JPanel panel;
-    private Connection connection;
+    private static JTable table;
+    private static DefaultTableModel tableModel;
+    private static JPanel panel;
+    private static Connection connection;
 
-    public DynamicTableSportEvent(Connection connection) {
-        this.connection = connection;
+    public DynamicTableSportEvent(Connection connection) throws SQLException {
+        DynamicTableSportEvent.connection = connection;
         panel = new JPanel(new BorderLayout());
         loadTableData();
     }
 
-    private void loadTableData() {
+    static void loadTableData() throws SQLException {
+
+        connection = DBConnection.Verbindung();
+
         Vector<Vector<Object>> data = new Vector<>();
         Vector<String> columnNames = new Vector<>();
 
@@ -63,7 +67,7 @@ public class DynamicTableSportEvent {
         return panel;
     }
 
-    public void refreshTable() {
+    public void refreshTable() throws SQLException {
         panel.removeAll();
         loadTableData();
         panel.revalidate();
