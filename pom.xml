@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.floposos</groupId><!-- Anpassen -->
+    <artifactId>projektarbeit-fa-c-22</artifactId><!-- Anpassen -->
+    <version>1.0.0</version>
+
+    <!-- Standard Maven Build-Konfiguration -->
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory> <!-- Standardverzeichnis für Java-Quellcode -->
+
+        <!-- Konfiguration für den resources-Ordner -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory> <!-- Standardverzeichnis für Ressourcen -->
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/html2pdf -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>html2pdf</artifactId>
+            <version>6.1.0</version>
+        </dependency>
+    </dependencies>
+</project>

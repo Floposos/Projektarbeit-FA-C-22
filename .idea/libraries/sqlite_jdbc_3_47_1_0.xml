@@ -2,11 +2,42 @@
   <library name="sqlite-jdbc-3.47.1.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/sqlite-jdbc-3.47.1.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/pdfbox-app-3.0.3.jar!/" />
-      <root url="jar://$PROJECT_DIR$/openhtmltopdf-pdfbox-1.0.10.jar!/" />
       <root url="jar://$PROJECT_DIR$/xmlgraphics-commons-2.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/barcodes-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/forms-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/html2pdf-6.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/io-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/kernel-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/layout-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/pdfa-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/pdftest-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/sign-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/styled-xml-parser-7.1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/svg-7.1.9.jar!/" />
     </CLASSES>
-    <JAVADOC />
-    <SOURCES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/pdf_jars/barcodes-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/forms-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/io-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/kernel-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/layout-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/pdfa-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/pdftest-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/sign-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/styled-xml-parser-7.1.9-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/svg-7.1.9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/pdf_jars/barcodes-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/forms-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/io-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/kernel-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/layout-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/pdfa-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/pdftest-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/sign-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/styled-xml-parser-7.1.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/pdf_jars/svg-7.1.9-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
