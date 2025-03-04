@@ -24,6 +24,7 @@ public class GUI {
     private JComboBox<String> clubDropdown;
     private JPasswordField clubPasswordField;
     private JButton clubLoginButton;
+    private int loggedInClubId;
 
 
     JFrame frame = new JFrame("Auswahlfenster");
@@ -200,6 +201,8 @@ public class GUI {
             String password = new String(clubPasswordField.getPassword());
 
             if (clubManager.checkAuthorization(selectedClub, password)) {
+                loggedInClubId = clubManager.getClubIdByName(selectedClub);
+                System.out.println(loggedInClubId);
                 JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
                 showClubManagementPanel();
             } else {
@@ -361,11 +364,11 @@ public class GUI {
         saveButton.addActionListener(e ->{
             for (int i = 0; i< sportDropdowns.size(); i++) {
                 String selectedSport = (String) sportDropdowns.get(i).getSelectedItem();
-                LocalDate selectedDate = (LocalDate) dateFields.get(i).getValue(); // Value ? gibt es nicht eine Funktion für Date ?
+               // LocalDate selectedDate = (LocalDate) dateFields.get(i).getValue(); // Value ? gibt es nicht eine Funktion für Date ?
 
                // if (selectedSport != null && selectedDate != null) {
                     //TODO: Event speichern
-                selectedDate = LocalDate.now();
+                LocalDate selectedDate = LocalDate.now();
                     sportEventManager.addSportEvent(eventName, selectedSport, selectedDate, selectedDate);
              //   }
             }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDatabaseOperations {
-    private static final String TABLE_NAME = "T_events";
+    private static final String TABLE_NAME = "T_event";
 
     public void insertEvent(int administratorId, String name, String status) {
         String query = "INSERT INTO " + TABLE_NAME + " (administratorId, name, status) VALUES (?, ?, ?)";
@@ -72,11 +72,11 @@ public class EventDatabaseOperations {
         return null;
     }
 
-    public int getEventIDByName(String eventName) {
+    public int getEventIDByName(String name) {
         String Query = "SELECT eventId FROM " + TABLE_NAME + " WHERE name = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
-            preparedStatement.setString(1, eventName);
+            preparedStatement.setString(1, name);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt("eventId");
