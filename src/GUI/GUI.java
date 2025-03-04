@@ -419,7 +419,12 @@ public class GUI {
         int row = sportDropdowns.size() + 2; // Startposition nach Überschrift und Button
 
         // Dropdown für Sportarten
-        JComboBox<String> sportComboBox = new JComboBox<>(new String[]{"Schwimmen 25m", "Laufen", "Schwimmen 50m"});
+        JComboBox<String> sportComboBox = new JComboBox<>();
+        //TODO aktuell
+        for (Sport sporttype : sportsType.getAllSports()) {  // Instanzmethode richtig aufrufen
+            sportComboBox.addItem(sporttype.getName());
+        }
+
         sportDropdowns.add(sportComboBox); // Speichern in der Liste
         gbc.gridx = 0;
         gbc.gridy = row;
@@ -690,7 +695,7 @@ public class GUI {
         JLabel lbl_resultType = new JLabel("Ergebnisart: ");
         JTextField resultTypeField = new JTextField(15);
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(lbl_resultType, gbc);
@@ -711,11 +716,31 @@ public class GUI {
             showActionSelectionPanel();
         });
 
+        // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::showManageSportsPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
 
     }
 
+    //TODO
     private void showManageSportsTypePanel() {
-        //TODO
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel newSportsTypeLabel = new JLabel("Sportart bearbeiten");
+        newSportsTypeLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(newSportsTypeLabel, gbc);
+        panel.revalidate();
+        panel.repaint();
     }
 
     public static void main(String[] args) {
