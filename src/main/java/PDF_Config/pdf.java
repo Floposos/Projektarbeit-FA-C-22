@@ -1,6 +1,6 @@
 package PDF_Config;
 
-import com.itextpdf.html2pdf.HtmlConverter;
+//import com.itextpdf.html2pdf.HtmlConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +33,7 @@ public class pdf {
             htmlContent = htmlContent.replace("{{VEREINSNAME}}", vereinsname);
 
             // PDF aus HTML generieren
-            HtmlConverter.convertToPdf(htmlContent, new FileOutputStream(outputPath));
+//            HtmlConverter.convertToPdf(htmlContent, new FileOutputStream(outputPath));
 
             System.out.println("✅ Urkunde für " + name + " im Verein " + vereinsname + " wurde erfolgreich erstellt!");
         } catch (IOException e) {
