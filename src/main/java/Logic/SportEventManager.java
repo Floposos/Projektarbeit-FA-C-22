@@ -1,0 +1,48 @@
+package Logic;
+
+import DatabaseOperations.SportEventDatabaseOperations;
+import Model.SportEvent;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class SportEventManager {
+
+    private SportEventDatabaseOperations sportEvDataOP;
+
+    public SportEventManager() {
+        this.sportEvDataOP = new SportEventDatabaseOperations();
+    }
+
+    public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+        if (eventMemberId <= 0 || eventId <= 0 || sportId <= 0 || startDate == null || endDate == null || resultValueList == null) {
+            throw new IllegalArgumentException("Ungültige Eingaben für das SportEvent.");
+        }
+        sportEvDataOP.insertSportEvent(eventMemberId, eventId, sportId, startDate, endDate, resultValueList);
+    }
+
+    public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
+        if (sportEventId <= 0 || eventMemberId <= 0 || eventId <= 0 || sportId <= 0 || startDate == null || endDate == null || resultValueList == null) {
+            throw new IllegalArgumentException("Ungültige Eingaben für die Aktualisierung des SportEvents.");
+        }
+        sportEvDataOP.updateSportEvent(sportEventId, eventMemberId, eventId, sportId, startDate, endDate, resultValueList);
+    }
+
+    public void deleteSportEvent(int sportEventId) {
+        if (sportEventId <= 0) {
+            throw new IllegalArgumentException("Ungültige SportEvent-ID.");
+        }
+        sportEvDataOP.deleteSportEvent(sportEventId);
+    }
+
+    public SportEvent getSportEventById(int sportEventId) {
+        if (sportEventId <= 0) {
+            throw new IllegalArgumentException("Ungültige SportEvent-ID.");
+        }
+        return sportEvDataOP.getSportEventById(sportEventId);
+    }
+
+    public List<SportEvent> getAllSportEvents() {
+        return sportEvDataOP.getAllSportEvents();
+    }
+}
