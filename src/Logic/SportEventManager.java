@@ -16,7 +16,10 @@ public class SportEventManager {
 
 
     public SportEventManager() {
+
         this.sportEvDataOP = new SportEventDatabaseOperations();
+        this.evDataOP = new EventDatabaseOperations();
+        this.sportDataOP = new SportDatabaseOperations();
     }
 
     public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
@@ -34,7 +37,6 @@ public class SportEventManager {
     }
 
     public void addSportEvent(String eventName, String sportName, LocalDate startDate, LocalDate endDate) {
-
         int eventId = evDataOP.getEventIDByName(eventName);
 
         int sportId = sportDataOP.getSportIdByName(sportName);

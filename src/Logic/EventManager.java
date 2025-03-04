@@ -5,7 +5,7 @@ import DatabaseOperations.EventDatabaseOperations;
 import java.util.List;
 
 public class EventManager {
-    private EventDatabaseOperations eventDbOps;
+    public EventDatabaseOperations eventDbOps;
 
     public EventManager() {
         this.eventDbOps = new EventDatabaseOperations();

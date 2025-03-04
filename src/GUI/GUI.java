@@ -24,6 +24,7 @@ public class GUI {
     private JComboBox<String> clubDropdown;
     private JPasswordField clubPasswordField;
     private JButton clubLoginButton;
+    private int loggedInClubId;
 
 
     JFrame frame = new JFrame("Auswahlfenster");
@@ -133,7 +134,7 @@ public class GUI {
         //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
         loginButton.addActionListener(e -> {
 //            try {
-//                adminID = Integer.parseInt(userField.getText());
+                adminID = Integer.parseInt(userField.getText());
 //                String password = new String(passField.getPassword());
 //                if (!admin.checkAuthorization(adminID, password)) {
 //                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -200,6 +201,8 @@ public class GUI {
             String password = new String(clubPasswordField.getPassword());
 
             if (clubManager.checkAuthorization(selectedClub, password)) {
+                loggedInClubId = clubManager.getClubIdByName(selectedClub);
+                System.out.println(loggedInClubId);
                 JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
                 showClubManagementPanel();
             } else {
@@ -309,12 +312,13 @@ public class GUI {
         // **Hier wird der Event-Name erst beim Klick abgerufen**
         saveButton.addActionListener(e -> {
             String eventName = nameField.getText(); // Text aus dem Textfeld abrufen
-            int adminID = 1000; //zum Testen
+            //int adminID = 1000; //zum Testen
 
             if (eventName.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Bitte einen Event-Namen eingeben!", "Fehler", JOptionPane.ERROR_MESSAGE);
             } else {
 
+                event.addEvent(adminID, eventName);
                 //  event.addEvent(adminID,eventName);
 
                 showNewSportEventPanel(eventName);
@@ -360,11 +364,11 @@ public class GUI {
         saveButton.addActionListener(e ->{
             for (int i = 0; i< sportDropdowns.size(); i++) {
                 String selectedSport = (String) sportDropdowns.get(i).getSelectedItem();
-                LocalDate selectedDate = (LocalDate) dateFields.get(i).getValue(); // Value ? gibt es nicht eine Funktion für Date ?
+               // LocalDate selectedDate = (LocalDate) dateFields.get(i).getValue(); // Value ? gibt es nicht eine Funktion für Date ?
 
                // if (selectedSport != null && selectedDate != null) {
                     //TODO: Event speichern
-                selectedDate = LocalDate.now();
+                LocalDate selectedDate = LocalDate.now();
                     sportEventManager.addSportEvent(eventName, selectedSport, selectedDate, selectedDate);
              //   }
             }
