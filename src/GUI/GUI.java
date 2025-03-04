@@ -704,7 +704,12 @@ public class GUI {
         int row = sportDropdowns.size() + 2; // Startposition nach Überschrift und Button
 
         // Dropdown für Sportarten
-        JComboBox<String> sportComboBox = new JComboBox<>(new String[]{"Schwimmen 25m", "Laufen", "Schwimmen 50m"});
+        JComboBox<String> sportComboBox = new JComboBox<>();
+        //TODO aktuell
+        for (Sport sporttype : sportsType.getAllSports()) {  // Instanzmethode richtig aufrufen
+            sportComboBox.addItem(sporttype.getName());
+        }
+
         sportDropdowns.add(sportComboBox); // Speichern in der Liste
         gbc.gridx = 0;
         gbc.gridy = row;
