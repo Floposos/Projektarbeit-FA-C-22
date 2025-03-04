@@ -37,16 +37,16 @@ public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate
         sportEvDataOP.insertSportEvent(0, eventId, sportId, startDate, endDate, null);
     }
 
-    public void addSportEvent(String eventName, String sportName, LocalDate startDate, LocalDate endDate) {
-        int eventId = evDataOP.getEventIDByName(eventName);
-
-        int sportId = sportDataOP.getSportIdByName(sportName);
-
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("Ungültige Eingaben für das SportEvent.");
-        }
-        sportEvDataOP.insertSportEvent(0, eventId, sportId, startDate, endDate, null);
-    }
+//    public void addSportEvent(String eventName, String sportName, LocalDate startDate, LocalDate endDate) {
+//        int eventId = evDataOP.getEventIDByName(eventName);
+//
+//        int sportId = sportDataOP.getSportIdByName(sportName);
+//
+//        if (startDate == null || endDate == null) {
+//            throw new IllegalArgumentException("Ungültige Eingaben für das SportEvent.");
+//        }
+//        sportEvDataOP.insertSportEvent(0, eventId, sportId, startDate, endDate, null);
+//    }
 
 
 //    public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
@@ -72,12 +72,12 @@ public void updateSportEvent(int sportEventId, int eventMemberId, int eventId, i
         return sportEvDataOP.getSportEventById(sportEventId);
     }
 
-    public int getSportEventIdByName(String eventName) {
-        if (eventName == null) {
-            throw new IllegalArgumentException("Ungültige SportEvent-ID.");
-        }
-        return sportEvDataOP.getEventIdByName(eventName);
-    }
+//    public int getSportEventIdByName(String eventName) {
+//        if (eventName == null) {
+//            throw new IllegalArgumentException("Ungültige SportEvent-ID.");
+//        }
+//        return sportEvDataOP.getEventIdByName(eventName);
+//    }
 
     public List<SportEvent> getAllSportEvents() {
         return sportEvDataOP.getAllSportEvents();
