@@ -3,6 +3,7 @@ package GUI;
 import Logic.AdministratorManager;
 import Logic.*;
 import Model.*;
+import java.time.LocalDate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,7 +169,7 @@ public class GUI {
 
         // Dropdown für Vereinsnamen
         clubDropdown = new JComboBox<>();
-        for (Club club : clubManager.getAllClubs()) {  // Instanzmethode richtig aufrufen
+        for (Club club : clubManager.getAllClubs()) {
             clubDropdown.addItem(club.getName());
         }
         gbc.gridx = 1;
@@ -398,12 +399,296 @@ public class GUI {
     }
 
     private void showManageMembersPanel() {
-        System.out.println("Mitglieder verwalten wurde ausgewählt.");
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JLabel manageLabel = new JLabel("Mitglieder verwalten");
+        manageLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 50, 10);
+        panel.add(manageLabel, gbc);
+
+        JButton addMemberButton = new JButton("Mitglied hinzufügen");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(addMemberButton, gbc);
+
+        JButton editMemberButton = new JButton("Mitglied bearbeiten");
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(editMemberButton, gbc);
+
+        JButton deleteMemberButton = new JButton("Mitglied löschen");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        panel.add(deleteMemberButton, gbc);
+
+        addMemberButton.addActionListener(e -> showAddMembersPanel());
+        editMemberButton.addActionListener(e -> showEditMembersPanel());
+        deleteMemberButton.addActionListener(e -> showDeleteMembersPanel());
+
+        JButton backButton = createBackButton(this::showClubManagementPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        panel.add(backButton, gbc);
+        panel.revalidate();
+        panel.repaint();
     }
 
+
     private void showEventRegistrationPanel() {
-        System.out.println("Eventanmeldung wurde ausgewählt.");
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JLabel eventLabel = new JLabel("Eventanmeldung");
+        eventLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 50, 10);
+        panel.add(eventLabel, gbc);
+
+        JButton registerEventButton = new JButton("Mitglied für Event anmelden");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(registerEventButton, gbc);
+
+        JButton unregisterEventButton = new JButton("Mitglied von Event abmelden");
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(unregisterEventButton, gbc);
+
+        registerEventButton.addActionListener(e -> showRegisterEventPanel());
+        unregisterEventButton.addActionListener(e -> showUnregisterEventPanel());
+
+        JButton backButton = createBackButton(this::showClubManagementPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
+
+        panel.revalidate();
+        panel.repaint();
     }
+    private void showAddMembersPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JLabel addMemberLabel = new JLabel("Mitglied hinzufügen");
+        addMemberLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 50, 10);
+        panel.add(addMemberLabel, gbc);
+
+        // Felder für Vorname, Nachname und Geburtsdatum
+        JTextField firstNameField = new JTextField(20);
+        JTextField lastNameField = new JTextField(20);
+        JTextField birthDateField = new JTextField(10); // Format: YYYY-MM-DD
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(new JLabel("Vorname:"), gbc);
+        gbc.gridx = 1;
+        panel.add(firstNameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Nachname:"), gbc);
+        gbc.gridx = 1;
+        panel.add(lastNameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(new JLabel("Geburtsdatum (YYYY-MM-DD):"), gbc);
+        gbc.gridx = 1;
+        panel.add(birthDateField, gbc);
+
+        JButton addButton = new JButton("Mitglied hinzufügen");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        panel.add(addButton, gbc);
+
+        addButton.addActionListener(e -> {
+            try {
+                String firstName = firstNameField.getText();
+                String lastName = lastNameField.getText();
+                LocalDate birthDate = LocalDate.parse(birthDateField.getText()); // Datum validieren
+                int clubId = 1; // Beispiel Club-ID, diese müsste angepasst werden
+
+                MemberManager memberManager = new MemberManager();
+                memberManager.addMember(clubId, firstName, lastName, birthDate);
+                JOptionPane.showMessageDialog(panel, "Mitglied erfolgreich hinzugefügt.");
+                showManageMembersPanel(); // Zurück zur Mitgliederverwaltung
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "Fehler: " + ex.getMessage());
+            }
+        });
+
+        JButton backButton = createBackButton(this::showManageMembersPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panel.add(backButton, gbc);
+
+        panel.revalidate();
+        panel.repaint();
+    }
+    private void showEditMembersPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JLabel editMemberLabel = new JLabel("Mitglied bearbeiten");
+        editMemberLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 50, 10);
+        panel.add(editMemberLabel, gbc);
+
+        JTextField memberIdField = new JTextField(10);
+        JTextField firstNameField = new JTextField(20);
+        JTextField lastNameField = new JTextField(20);
+        JTextField birthDateField = new JTextField(10);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Mitglieds-ID:"), gbc);
+        gbc.gridx = 1;
+        panel.add(memberIdField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Vorname:"), gbc);
+        gbc.gridx = 1;
+        panel.add(firstNameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(new JLabel("Nachname:"), gbc);
+        gbc.gridx = 1;
+        panel.add(lastNameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panel.add(new JLabel("Geburtsdatum (YYYY-MM-DD):"), gbc);
+        gbc.gridx = 1;
+        panel.add(birthDateField, gbc);
+
+        JButton updateButton = new JButton("Mitglied aktualisieren");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        panel.add(updateButton, gbc);
+
+        updateButton.addActionListener(e -> {
+            try {
+                int memberId = Integer.parseInt(memberIdField.getText());
+                String firstName = firstNameField.getText();
+                String lastName = lastNameField.getText();
+                LocalDate birthDate = LocalDate.parse(birthDateField.getText());
+                int clubId = 1;
+
+                MemberManager memberManager = new MemberManager();
+                memberManager.updateMember(memberId, clubId, firstName, lastName, birthDate);
+                JOptionPane.showMessageDialog(panel, "Mitglied erfolgreich aktualisiert.");
+                showManageMembersPanel();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "Fehler: " + ex.getMessage());
+            }
+        });
+
+        JButton backButton = createBackButton(this::showManageMembersPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panel.add(backButton, gbc);
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private void showDeleteMembersPanel() {
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JLabel deleteMemberLabel = new JLabel("Mitglied löschen");
+        deleteMemberLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 50, 10);
+        panel.add(deleteMemberLabel, gbc);
+
+        JTextField memberIdField = new JTextField(10);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Mitglieds-ID:"), gbc);
+        gbc.gridx = 1;
+        panel.add(memberIdField, gbc);
+
+        JButton deleteButton = new JButton("Mitglied löschen");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        panel.add(deleteButton, gbc);
+
+        deleteButton.addActionListener(e -> {
+            try {
+                int memberId = Integer.parseInt(memberIdField.getText());
+
+                MemberManager memberManager = new MemberManager();
+                memberManager.deleteMember(memberId);
+                JOptionPane.showMessageDialog(panel, "Mitglied erfolgreich gelöscht.");
+                showManageMembersPanel();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "Fehler: " + ex.getMessage());
+            }
+        });
+
+        JButton backButton = createBackButton(this::showManageMembersPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(backButton, gbc);
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private void showRegisterEventPanel() {
+        System.out.println("Mitglied für Event anmelden wurde ausgewählt.");
+    }
+
+    private void showUnregisterEventPanel() {
+        System.out.println("Mitglied von Event abmelden wurde ausgewählt.");
+    }
+
 
     private void addSportRow() {
         GridBagConstraints gbc = new GridBagConstraints();
