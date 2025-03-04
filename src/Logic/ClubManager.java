@@ -42,6 +42,14 @@ public class ClubManager {
         return clubDbOps.getClubById(clubId);
     }
 
+    public int getClubIdByName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Ungültiger Club-Name.");
+        }
+        return clubDbOps.getClubIdByName(name);
+    }
+
+
     public List<Club> getAllClubs() {
         return clubDbOps.getAllClubs();
     }

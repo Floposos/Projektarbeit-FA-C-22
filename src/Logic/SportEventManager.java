@@ -11,11 +11,12 @@ import java.util.List;
 public class SportEventManager {
 
     private SportEventDatabaseOperations sportEvDataOP;
-    private EventDatabaseOperations evDataOP;
+    public EventDatabaseOperations evDataOP;
     private SportDatabaseOperations sportDataOP;
 
 
     public SportEventManager() {
+
         this.sportEvDataOP = new SportEventDatabaseOperations();
     }
 
