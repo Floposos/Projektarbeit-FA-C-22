@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SportDatabaseOperations {
-    private static final String TABLE_NAME = "T_sports";
+    private static final String TABLE_NAME = "T_sport";
 
     public void insertSport(String name, String resultType) {
         if (name == null || name.trim().isEmpty() || resultType == null || resultType.trim().isEmpty()) {
             throw new IllegalArgumentException("Name und ResultType dürfen nicht leer oder null sein.");
         }
-        String query = "INSERT INTO " + TABLE_NAME + " (name, result_type) VALUES (?, ?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (name, resultType) VALUES (?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -71,7 +71,7 @@ public class SportDatabaseOperations {
                     return new Sport(
                             resultSet.getInt("sportId"),
                             resultSet.getString("name"),
-                            resultSet.getString("result_type")
+                            resultSet.getString("resultType")
                     );
                 }
             }
@@ -92,7 +92,7 @@ public class SportDatabaseOperations {
                 sports.add(new Sport(
                         resultSet.getInt("sportId"),
                         resultSet.getString("name"),
-                        resultSet.getString("result_type")
+                        resultSet.getString("resultType")
                 ));
             }
         } catch (SQLException e) {
