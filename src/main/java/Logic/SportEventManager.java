@@ -36,7 +36,7 @@ public void addSportEvent(int eventMemberId, int eventId, int sportId, LocalDate
         }
         sportEvDataOP.insertSportEvent(0, eventId, sportId, startDate, endDate, null);
     }
-
+//Test
     public void addSportEvent(String eventName, String sportName, LocalDate startDate, LocalDate endDate) {
         int eventId = evDataOP.getEventIDByName(eventName);
 
