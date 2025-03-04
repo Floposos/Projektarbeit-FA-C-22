@@ -57,7 +57,7 @@ public class GUI {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        System.out.println("Verfügbare Vereine: " + clubManager.getAllClubs().size());
+//        System.out.println("Verfügbare Vereine: " + clubManager.getAllClubs().size());
         JLabel selectRoleLabel = new JLabel("Wählen Sie aus, was auf Sie zutrifft:");
         selectRoleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         gbc.gridx = 0;
@@ -127,17 +127,17 @@ public class GUI {
         //LOGIN fertig, nur zum weiterarbeiten Auskommentiert
         //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
         loginButton.addActionListener(e -> {
-            try {
-                adminID = Integer.parseInt(userField.getText());
-                String password = new String(passField.getPassword());
-                if (!admin.checkAuthorization(adminID, password)) {
-                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
-                } else {
+//            try {
+//                adminID = Integer.parseInt(userField.getText());
+//                String password = new String(passField.getPassword());
+//                if (!admin.checkAuthorization(adminID, password)) {
+//                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
+//                } else {
                     showActionSelectionPanel();
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
-            }
+//                }
+//            } catch (NumberFormatException ex) {
+//                JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
+//            }
         });
 
         //TEST
@@ -975,7 +975,7 @@ public class GUI {
         JLabel lbl_resultType = new JLabel("Ergebnisart: ");
         JTextField resultTypeField = new JTextField(15);
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(lbl_resultType, gbc);
@@ -996,11 +996,31 @@ public class GUI {
             showActionSelectionPanel();
         });
 
+        // Pfeil-Button unten links
+        JButton backButton = createBackButton(this::showManageSportsPanel);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.LAST_LINE_START;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        panel.add(backButton, gbc);
 
     }
 
+    //TODO
     private void showManageSportsTypePanel() {
-        //TODO
+        panel.removeAll();
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel newSportsTypeLabel = new JLabel("Sportart bearbeiten");
+        newSportsTypeLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        panel.add(newSportsTypeLabel, gbc);
+        panel.revalidate();
+        panel.repaint();
     }
 
     public static void main(String[] args) {
