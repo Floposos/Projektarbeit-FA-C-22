@@ -3,6 +3,8 @@ package GUI;
 import Logic.AdministratorManager;
 import Logic.*;
 import Model.*;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
@@ -251,7 +253,13 @@ public class GUI {
         panel.add(backButton, gbc);
 
         buttonNewEvent.addActionListener(e -> showNewEventPanel());
-        buttonManageEvent.addActionListener(e -> showManageEventPanel());
+        buttonManageEvent.addActionListener(e -> {
+            try {
+                showManageEventPanel();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         buttonAddManager.addActionListener(e -> showAddManagerPanel());
         buttonManageSports.addActionListener(e -> showManageSportsPanel());
 
@@ -821,7 +829,7 @@ public class GUI {
 
 
     // Panel für Event verwalten
-    private void showManageEventPanel() {
+    private void showManageEventPanel() throws SQLException {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -878,6 +886,10 @@ public class GUI {
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         panel.add(participantsLabel, gbc);
+
+        DynamicTableSportEvent.loadTableData();
+
+
 
         // TODO Teilnehmer und Ergebniseingabe einrichten, siee Quelle: https://www.java-forum.org/thema/swing-eingabefelder-in-tabelle.27003/
 
