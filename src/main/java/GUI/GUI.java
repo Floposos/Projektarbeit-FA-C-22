@@ -769,14 +769,89 @@ public class GUI {
     }
 
 
-    private void showRegisterEventPanel() {
-        System.out.println("Mitglied für Event anmelden wurde ausgewählt.");
+    public void showRegisterEventPanel() {
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+
+        JLabel lblMemberId = new JLabel("Mitglieds-ID:");
+        JTextField txtMemberId = new JTextField();
+
+        JLabel lblEventId = new JLabel("Event-ID:");
+        JTextField txtEventId = new JTextField();
+
+        JLabel lblSportEventId = new JLabel("SportEvent-ID:");
+        JTextField txtSportEventId = new JTextField();
+
+        JButton btnRegister = new JButton("Anmelden");
+
+        panel.add(lblMemberId);
+        panel.add(txtMemberId);
+        panel.add(lblEventId);
+        panel.add(txtEventId);
+        panel.add(lblSportEventId);
+        panel.add(txtSportEventId);
+        panel.add(btnRegister);
+
+        JFrame frame = new JFrame("Event Anmeldung");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
+
+        btnRegister.addActionListener(e -> {
+            try {
+                int memberId = Integer.parseInt(txtMemberId.getText());
+                int eventId = Integer.parseInt(txtEventId.getText());
+                int sportEventId = Integer.parseInt(txtSportEventId.getText());
+
+                EventMemberManager eventMemberManager = new EventMemberManager();
+                eventMemberManager.registerMemberForEvent(memberId, eventId, sportEventId);
+
+                JOptionPane.showMessageDialog(frame, "Erfolgreich für das Event angemeldet!");
+                frame.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Bitte gültige Zahlen eingeben!");
+            }
+        });
     }
 
-    private void showUnregisterEventPanel() {
-        System.out.println("Mitglied von Event abmelden wurde ausgewählt.");
-    }
+    public void showUnregisterEventPanel() {
+        JPanel panel = new JPanel(new GridLayout(3, 2));
 
+        JLabel lblMemberId = new JLabel("Mitglieds-ID:");
+        JTextField txtMemberId = new JTextField();
+
+        JLabel lblEventId = new JLabel("Event-ID:");
+        JTextField txtEventId = new JTextField();
+
+        JButton btnUnregister = new JButton("Abmelden");
+
+        panel.add(lblMemberId);
+        panel.add(txtMemberId);
+        panel.add(lblEventId);
+        panel.add(txtEventId);
+        panel.add(btnUnregister);
+
+        JFrame frame = new JFrame("Event Abmeldung");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
+
+        btnUnregister.addActionListener(e -> {
+            try {
+                int memberId = Integer.parseInt(txtMemberId.getText());
+                int eventId = Integer.parseInt(txtEventId.getText());
+
+                EventMemberManager eventMemberManager = new EventMemberManager();
+                eventMemberManager.unregisterMemberFromEvent(memberId, eventId);
+
+                JOptionPane.showMessageDialog(frame, "Erfolgreich vom Event abgemeldet!");
+                frame.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Bitte gültige Zahlen eingeben!");
+            }
+        });
+    }
 
     private void addSportRow() {
         GridBagConstraints gbc = new GridBagConstraints();

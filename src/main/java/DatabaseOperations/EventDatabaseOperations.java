@@ -92,4 +92,20 @@ public class EventDatabaseOperations {
         }
         return events;
     }
+
+    public boolean eventExists(int eventId) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE eventId = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, eventId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen des Events: " + e.getMessage(), e);
+        }
+        return false;
+    }
 }

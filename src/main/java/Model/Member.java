@@ -21,7 +21,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;  // Kombiniere Vorname und Nachname
+        return memberId + " - " + firstName + " - " + lastName;
     }
     public int getMemberId() {
         return memberId;
