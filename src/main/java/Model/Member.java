@@ -19,6 +19,10 @@ public class Member {
 
     }
 
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;  // Kombiniere Vorname und Nachname
+    }
     public int getMemberId() {
         return memberId;
     }

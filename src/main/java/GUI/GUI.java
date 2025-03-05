@@ -6,6 +6,7 @@ import Model.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class GUI {
     private JComboBox<String> clubDropdown;
     private JPasswordField clubPasswordField;
     private JButton clubLoginButton;
+    private int loggedInClubId;
 
 
     JFrame frame = new JFrame("Auswahlfenster");
@@ -130,17 +132,17 @@ public class GUI {
         //LOGIN fertig, nur zum weiterarbeiten Auskommentiert
         //TODO Fehleranzeige, warum zeigt es dieMessage nicht an
         loginButton.addActionListener(e -> {
-//            try {
-//                adminID = Integer.parseInt(userField.getText());
-//                String password = new String(passField.getPassword());
-//                if (!admin.checkAuthorization(adminID, password)) {
-//                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
-//                } else {
+            try {
+                adminID = Integer.parseInt(userField.getText());
+                String password = new String(passField.getPassword());
+                if (!admin.checkAuthorization(adminID, password)) {
+                    JOptionPane.showMessageDialog(panel, "Das Passwort oder der Nutzername stimmen nicht!", "Fehler", JOptionPane.ERROR_MESSAGE);
+                } else {
                     showActionSelectionPanel();
-//                }
-//            } catch (NumberFormatException ex) {
-//                JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
-//            }
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "Der Benutzername muss eine Zahl sein!", "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         //TEST
@@ -157,7 +159,6 @@ public class GUI {
 
     }
 
-    // Platzhalter für die Verein-Seite
     private void showClubLoginPanel() {
         panel.removeAll(); // Panel zurücksetzen
         panel.setLayout(new GridBagLayout());
@@ -198,6 +199,7 @@ public class GUI {
             String password = new String(clubPasswordField.getPassword());
 
             if (clubManager.checkAuthorization(selectedClub, password)) {
+                loggedInClubId = clubManager.getClubIdByName(selectedClub);
                 JOptionPane.showMessageDialog(null, "Erfolgreich bei " + selectedClub + " angemeldet!");
                 showClubManagementPanel();
             } else {
@@ -503,53 +505,56 @@ public class GUI {
 
         JLabel addMemberLabel = new JLabel("Mitglied hinzufügen");
         addMemberLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 50, 10);
         panel.add(addMemberLabel, gbc);
 
-        // Felder für Vorname, Nachname und Geburtsdatum
         JTextField firstNameField = new JTextField(20);
-        JTextField lastNameField = new JTextField(20);
-        JTextField birthDateField = new JTextField(10); // Format: YYYY-MM-DD
+        firstNameField.setPreferredSize(new Dimension(200, 30));
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
         panel.add(new JLabel("Vorname:"), gbc);
-        gbc.gridx = 1;
+        gbc.gridx = 3;
         panel.add(firstNameField, gbc);
+
+        JTextField lastNameField = new JTextField(20);
+        lastNameField.setPreferredSize(new Dimension(200, 30));
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(new JLabel("Nachname:"), gbc);
-        gbc.gridx = 1;
+        gbc.gridx = 3;
         panel.add(lastNameField, gbc);
+
+        JTextField birthDateField = new JTextField(10);
+        birthDateField.setPreferredSize(new Dimension(200, 30));
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         panel.add(new JLabel("Geburtsdatum (YYYY-MM-DD):"), gbc);
-        gbc.gridx = 1;
+        gbc.gridx = 3;
         panel.add(birthDateField, gbc);
 
         JButton addButton = new JButton("Mitglied hinzufügen");
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
         panel.add(addButton, gbc);
 
         addButton.addActionListener(e -> {
             try {
+                int clubId = 1; // Hier wäre der Club ID, wenn benötigt
                 String firstName = firstNameField.getText();
                 String lastName = lastNameField.getText();
-                LocalDate birthDate = LocalDate.parse(birthDateField.getText()); // Datum validieren
-                int clubId = 1; // Beispiel Club-ID, diese müsste angepasst werden
+                LocalDate birthDate = LocalDate.parse(birthDateField.getText());
 
                 MemberManager memberManager = new MemberManager();
                 memberManager.addMember(clubId, firstName, lastName, birthDate);
                 JOptionPane.showMessageDialog(panel, "Mitglied erfolgreich hinzugefügt.");
-                showManageMembersPanel(); // Zurück zur Mitgliederverwaltung
+                showManageMembersPanel();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(panel, "Fehler: " + ex.getMessage());
             }
@@ -563,6 +568,7 @@ public class GUI {
         panel.revalidate();
         panel.repaint();
     }
+
     private void showEditMembersPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -572,42 +578,77 @@ public class GUI {
 
         JLabel editMemberLabel = new JLabel("Mitglied bearbeiten");
         editMemberLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 50, 10);
         panel.add(editMemberLabel, gbc);
 
-        JTextField memberIdField = new JTextField(10);
-        JTextField firstNameField = new JTextField(20);
-        JTextField lastNameField = new JTextField(20);
-        JTextField birthDateField = new JTextField(10);
-
+        // Dropdown mit allen Mitgliedern des Clubs
+        JLabel selectMemberLabel = new JLabel("Mitglied auswählen:");
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(new JLabel("Mitglieds-ID:"), gbc);
-        gbc.gridx = 1;
-        panel.add(memberIdField, gbc);
+        panel.add(selectMemberLabel, gbc);
 
+        JComboBox<Member> memberDropdown = new JComboBox<>();
+        List<Member> members = getMembersForClub(loggedInClubId);  // ClubId des eingeloggenen Clubs wird verwendet
+        for (Member member : members) {
+            memberDropdown.addItem(member);
+        }
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        panel.add(memberDropdown, gbc);
+
+        // Vorname Textfeld (kann geändert werden)
+        JLabel firstNameLabel = new JLabel("Vorname:");
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panel.add(new JLabel("Vorname:"), gbc);
-        gbc.gridx = 1;
+        panel.add(firstNameLabel, gbc);
+
+        JTextField firstNameField = new JTextField(20);
+        firstNameField.setPreferredSize(new Dimension(200, 30));
+        gbc.gridx = 3;
+        gbc.gridy = 2;
         panel.add(firstNameField, gbc);
 
+        // Nachname Textfeld (kann geändert werden)
+        JLabel lastNameLabel = new JLabel("Nachname:");
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(new JLabel("Nachname:"), gbc);
-        gbc.gridx = 1;
+        panel.add(lastNameLabel, gbc);
+
+        JTextField lastNameField = new JTextField(20);
+        lastNameField.setPreferredSize(new Dimension(200, 30));
+        gbc.gridx = 3;
+        gbc.gridy = 3;
         panel.add(lastNameField, gbc);
 
+        // Geburtsdatum Textfeld (kann geändert werden)
+        JLabel birthDateLabel = new JLabel("Geburtsdatum (YYYY-MM-DD):");
         gbc.gridx = 0;
         gbc.gridy = 4;
-        panel.add(new JLabel("Geburtsdatum (YYYY-MM-DD):"), gbc);
-        gbc.gridx = 1;
+        panel.add(birthDateLabel, gbc);
+
+        JTextField birthDateField = new JTextField(20);
+        birthDateField.setPreferredSize(new Dimension(200, 30));
+        gbc.gridx = 3;
+        gbc.gridy = 4;
         panel.add(birthDateField, gbc);
 
-        JButton updateButton = new JButton("Mitglied aktualisieren");
+        // Ausgewähltes Mitglied aus Dropdown laden
+        memberDropdown.addActionListener(e -> {
+            Member selectedMember = (Member) memberDropdown.getSelectedItem();
+            if (selectedMember != null) {
+                firstNameField.setText(selectedMember.getFirstName());
+                lastNameField.setText(selectedMember.getLastName());
+                birthDateField.setText(selectedMember.getBirthDate().toString());
+            }
+        });
+
+        // Update-Button für die Änderungen
+        JButton updateButton = new JButton("Mitglied bearbeiten");
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 2;
@@ -615,15 +656,34 @@ public class GUI {
 
         updateButton.addActionListener(e -> {
             try {
-                int memberId = Integer.parseInt(memberIdField.getText());
-                String firstName = firstNameField.getText();
-                String lastName = lastNameField.getText();
-                LocalDate birthDate = LocalDate.parse(birthDateField.getText());
-                int clubId = 1;
+                Member selectedMember = (Member) memberDropdown.getSelectedItem();
+                if (selectedMember == null) {
+                    JOptionPane.showMessageDialog(panel, "Kein Mitglied ausgewählt.");
+                    return;
+                }
+
+                String firstName = firstNameField.getText().trim();
+                String lastName = lastNameField.getText().trim();
+                String birthDateString = birthDateField.getText().trim();
+                LocalDate birthDate = LocalDate.parse(birthDateString);
 
                 MemberManager memberManager = new MemberManager();
-                memberManager.updateMember(memberId, clubId, firstName, lastName, birthDate);
-                JOptionPane.showMessageDialog(panel, "Mitglied erfolgreich aktualisiert.");
+
+                // Nur das geänderte Attribut aktualisieren
+                if (!firstName.isEmpty()) {
+                    selectedMember.setFirstName(firstName);
+                }
+                if (!lastName.isEmpty()) {
+                    selectedMember.setLastName(lastName);
+                }
+                if (!birthDateString.isEmpty()) {
+                    selectedMember.setBirthDate(birthDate);
+                }
+
+                memberManager.updateMember(selectedMember.getMemberId(), selectedMember.getClubId(),
+                        selectedMember.getFirstName(), selectedMember.getLastName(), selectedMember.getBirthDate());
+
+                JOptionPane.showMessageDialog(panel, "Mitglied erfolgreich bearbeitet.");
                 showManageMembersPanel();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(panel, "Fehler: " + ex.getMessage());
@@ -639,6 +699,7 @@ public class GUI {
         panel.repaint();
     }
 
+
     private void showDeleteMembersPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -648,22 +709,23 @@ public class GUI {
 
         JLabel deleteMemberLabel = new JLabel("Mitglied löschen");
         deleteMemberLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(10, 10, 50, 10);
         panel.add(deleteMemberLabel, gbc);
 
-        JTextField memberIdField = new JTextField(10);
+        JTextField memberIdField = new JTextField(20);
+        memberIdField.setPreferredSize(new Dimension(200, 30)); // Anpassung der Größe
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(new JLabel("Mitglieds-ID:"), gbc);
-        gbc.gridx = 1;
+        gbc.gridx = 3;
         panel.add(memberIdField, gbc);
 
         JButton deleteButton = new JButton("Mitglied löschen");
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         panel.add(deleteButton, gbc);
@@ -689,6 +751,25 @@ public class GUI {
         panel.revalidate();
         panel.repaint();
     }
+
+    private List<Member> getMembersForClub(int clubId) {
+        MemberManager memberManager = new MemberManager();
+        List<Member> allMembers = memberManager.getAllMembers();
+
+        System.out.println("Anzahl aller Mitglieder: " + allMembers.size()); // Ausgabe der Gesamtzahl
+
+        List<Member> filteredMembers = allMembers.stream()
+                .filter(member -> {
+                    System.out.println("Prüfe Mitglied: " + member.getFirstName() + ", ClubId: " + member.getClubId() + " == " + clubId);
+                    return member.getClubId() == clubId; // Filtert nach Club-ID
+                })
+                .collect(Collectors.toList());
+
+        System.out.println("Gefilterte Mitglieder: " + filteredMembers.size()); // Ausgabe der gefilterten Mitglieder
+        return filteredMembers;
+    }
+
+
 
     private void showRegisterEventPanel() {
         System.out.println("Mitglied für Event anmelden wurde ausgewählt.");
