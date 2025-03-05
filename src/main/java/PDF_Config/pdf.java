@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 public class pdf {
     public static void main(String[] args) {
         String outputPath = "src/main/resources/zertifikat.pdf";    // Pfad für die Ausgabe-PDF
-        String name = "Max Mustermann";           // Dynamischer Name
+        String firstname = "Max";           // Dynamischer Name
+        String lastname = "Mustermann";
         String vereinsname = "Sportverein Musterstadt"; // Dynamischer Vereinsname
 
         try {
@@ -29,13 +30,14 @@ public class pdf {
             }
 
             // Platzhalter ersetzen
-            htmlContent = htmlContent.replace("{{NAME}}", name);
+            htmlContent = htmlContent.replace("{{FIRSTNAME}}", firstname);
+            htmlContent = htmlContent.replace("{{LASTNAME}}", lastname);
             htmlContent = htmlContent.replace("{{VEREINSNAME}}", vereinsname);
 
             // PDF aus HTML generieren
 //            HtmlConverter.convertToPdf(htmlContent, new FileOutputStream(outputPath));
 
-            System.out.println("✅ Urkunde für " + name + " im Verein " + vereinsname + " wurde erfolgreich erstellt!");
+            System.out.println("✅ Urkunde für " + firstname + " " + lastname + " im Verein " + vereinsname + " wurde erfolgreich erstellt!");
         } catch (IOException e) {
             e.printStackTrace();
         }
