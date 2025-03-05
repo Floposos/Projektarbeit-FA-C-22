@@ -699,7 +699,6 @@ public class GUI {
         panel.repaint();
     }
 
-
     private void showDeleteMembersPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -768,7 +767,6 @@ public class GUI {
         System.out.println("Gefilterte Mitglieder: " + filteredMembers.size()); // Ausgabe der gefilterten Mitglieder
         return filteredMembers;
     }
-
 
 
     private void showRegisterEventPanel() {

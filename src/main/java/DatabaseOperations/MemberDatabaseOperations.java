@@ -59,8 +59,8 @@ public class MemberDatabaseOperations {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Member(
-                            resultSet.getInt("clubId"),
                             resultSet.getInt("memberId"),
+                            resultSet.getInt("clubId"),
                             resultSet.getString("firstName"),
                             resultSet.getString("lastName"),
                             resultSet.getDate("birthDate").toLocalDate()
@@ -83,8 +83,8 @@ public class MemberDatabaseOperations {
 
             while (resultSet.next()) {
                 Member m = new Member(
-                        resultSet.getInt("clubId"),
                         resultSet.getInt("memberId"),
+                        resultSet.getInt("clubId"),
                         resultSet.getString("firstName"),
                         resultSet.getString("lastName"),
                         resultSet.getDate("birthDate").toLocalDate()

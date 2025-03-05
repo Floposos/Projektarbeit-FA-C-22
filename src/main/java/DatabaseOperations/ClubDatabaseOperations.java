@@ -57,7 +57,7 @@ public class ClubDatabaseOperations {
         }
     }
     public int getClubIdByName(String name) {
-        String query = "SELECT clubId FROM" + TABLE_NAME +  " WHERE name = ?";
+        String query = "SELECT clubId FROM " + TABLE_NAME +  " WHERE name = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
