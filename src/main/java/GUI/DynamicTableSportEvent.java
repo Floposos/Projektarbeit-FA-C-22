@@ -1,6 +1,5 @@
 package GUI;
 
-import DatabaseOperations.DBConnection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -8,69 +7,125 @@ import java.sql.*;
 import java.util.Vector;
 
 public class DynamicTableSportEvent {
-    private static JTable table;
-    private static DefaultTableModel tableModel;
-    private static JPanel panel;
-    private static Connection connection;
+    private JTable table;
+    private DefaultTableModel tableModel;
+    private JPanel panel;
+    private Connection connection;
+    private JButton addColumnButton;
+    private JButton saveButton;
 
-    public DynamicTableSportEvent(Connection connection) throws SQLException {
-        DynamicTableSportEvent.connection = connection;
+    public DynamicTableSportEvent(Connection connection) {
+        this.connection = connection;
         panel = new JPanel(new BorderLayout());
-        loadTableData();
+        initUI();
     }
 
-    static void loadTableData() throws SQLException {
+    private void initUI() {
+        // Erstelle ein TableModel mit initialen Spalten:
+        // Spalte 0: ID (wird später verborgen), Spalte 1: Teilnehmer, Spalte 2: Ergebnis 1
+        tableModel = new DefaultTableModel();
+        tableModel.addColumn("ID");           // Versteckte Spalte für interne IDs
+        tableModel.addColumn("Teilnehmer");
+        tableModel.addColumn("Ergebnis 1");
 
-        connection = DBConnection.Verbindung();
+        loadParticipants();
 
-        Vector<Vector<Object>> data = new Vector<>();
-        Vector<String> columnNames = new Vector<>();
+        // JTable erstellen und die ID-Spalte in der Ansicht entfernen
+        table = new JTable(tableModel);
+        table.removeColumn(table.getColumnModel().getColumn(0)); // Verberge die ID
 
+        JScrollPane scrollPane = new JScrollPane(table);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Panel für Buttons (Spalte hinzufügen und Speichern)
+        JPanel buttonPanel = new JPanel();
+        addColumnButton = new JButton("Spalte hinzufügen");
+        saveButton = new JButton("Speichern");
+
+        addColumnButton.addActionListener(e -> addResultColumn());
+        saveButton.addActionListener(e -> saveResults());
+
+        buttonPanel.add(addColumnButton);
+        buttonPanel.add(saveButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void loadParticipants() {
         try {
-            String query = "SELECT m.firstName || ' ' || m.lastName AS TeilnehmerName, s.name AS Eventtyp, se.resultValue AS Ergebnis " +
-                    "FROM T_member m " +
-                    "JOIN T_eventMember em ON m.memberId = em.memberId " +
-                    "JOIN T_sportEvent se ON em.eventMemberId = se.eventMemberId " +
-                    "JOIN T_sport s ON se.sportId = s.sportId";
-
+            // Beispiel-Abfrage: Lädt eventMemberId und den zusammengesetzten Namen des Teilnehmers
+            String query = "SELECT em.eventMemberId, m.firstName || ' ' || m.lastName AS Teilnehmer " +
+                    "FROM T_eventMember em " +
+                    "JOIN T_member m ON em.memberId = m.memberId";
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData metaData = rs.getMetaData();
-
-            int columnCount = metaData.getColumnCount();
-            for (int i = 1; i <= columnCount; i++) {
-                columnNames.add(metaData.getColumnName(i));
-            }
-
             while (rs.next()) {
+                int id = rs.getInt("eventMemberId");
+                String name = rs.getString("Teilnehmer");
+                // Füge eine Zeile hinzu: ID, Teilnehmer, initial leerer Wert für "Ergebnis 1"
                 Vector<Object> row = new Vector<>();
-                for (int i = 1; i <= columnCount; i++) {
-                    row.add(rs.getObject(i));
-                }
-                data.add(row);
+                row.add(id);
+                row.add(name);
+                row.add(""); // Ergebnis 1 zunächst leer
+                tableModel.addRow(row);
             }
-
             rs.close();
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Fehler beim Laden der Daten: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Fehler beim Laden der Teilnehmer: " + e.getMessage());
         }
+    }
 
-        tableModel = new DefaultTableModel(data, columnNames);
-        table = new JTable(tableModel);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+    private void addResultColumn() {
+        // Bestimme, wie viele Ergebnis-Spalten bereits vorhanden sind
+        int resultColumns = tableModel.getColumnCount() - 2; // Spalten ab Index 2
+        String newColumnName = "Ergebnis " + (resultColumns + 1);
+        tableModel.addColumn(newColumnName);
+
+        // Setze alle Zellen der neuen Spalte initial auf leer
+        int rowCount = tableModel.getRowCount();
+        int newColIndex = tableModel.getColumnCount() - 1;
+        for (int i = 0; i < rowCount; i++) {
+            tableModel.setValueAt("", i, newColIndex);
+        }
+    }
+
+    private void saveResults() {
+        int rowCount = tableModel.getRowCount();
+        int colCount = tableModel.getColumnCount();
+        try {
+            // Update-Statement: Speichert alle Ergebniswerte (z. B. als kommagetrennte Zeichenkette) in resultValue
+            String updateSQL = "UPDATE T_sportEvent SET resultValue = ? WHERE eventMemberId = ?";
+            PreparedStatement pstmt = connection.prepareStatement(updateSQL);
+            for (int i = 0; i < rowCount; i++) {
+                // Hole die eventMemberId aus der versteckten Spalte (Index 0 im Model)
+                int eventMemberId = (Integer) tableModel.getValueAt(i, 0);
+                StringBuilder resultValue = new StringBuilder();
+                // Ergebniszellen befinden sich ab Spalte 2
+                for (int j = 2; j < colCount; j++) {
+                    Object value = tableModel.getValueAt(i, j);
+                    if (value != null) {
+                        resultValue.append(value.toString());
+                    }
+                    if (j < colCount - 1) {
+                        resultValue.append(", ");
+                    }
+                }
+                pstmt.setString(1, resultValue.toString());
+                pstmt.setInt(2, eventMemberId);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+            pstmt.close();
+            JOptionPane.showMessageDialog(null, "Ergebnisse erfolgreich gespeichert!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Fehler beim Speichern der Ergebnisse: " + e.getMessage());
+        }
     }
 
     public JPanel getPanel() {
         return panel;
-    }
-
-    public void refreshTable() throws SQLException {
-        panel.removeAll();
-        loadTableData();
-        panel.revalidate();
-        panel.repaint();
     }
 }

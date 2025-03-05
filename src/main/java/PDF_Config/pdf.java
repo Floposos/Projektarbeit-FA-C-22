@@ -11,9 +11,22 @@ import java.util.stream.Collectors;
 
 public class pdf {
     public static void main(String[] args) {
-        String outputPath = "src/main/resources/zertifikat.pdf";    // Pfad für die Ausgabe-PDF
-        String name = "Max Mustermann";           // Dynamischer Name
-        String vereinsname = "Sportverein Musterstadt"; // Dynamischer Vereinsname
+        String outputPath = "src/main/resources/zertifikat.pdf";
+
+        // Dynamische Platzhalterwerte
+        String firstname = "Max";
+        String lastname = "Mustermann";
+        String vereinsname = "Sportverein Musterstadt";
+        String eventname = "Sommerturnier";
+        String startdatum = "01.06.2024";
+        String enddatum = "03.06.2024";
+        String sportart1 = "Fußball";
+        String ergebnis1 = "1. Platz";
+        String sportart2 = "Basketball";
+        String ergebnis2 = "3. Platz";
+        String sportart3 = "Schwimmen";
+        String ergebnis3 = "2. Platz";
+        String dateEventEnd = "03.06.2024";
 
         try {
             // HTML-Datei aus dem Ressourcen-Ordner laden
@@ -29,13 +42,24 @@ public class pdf {
             }
 
             // Platzhalter ersetzen
-            htmlContent = htmlContent.replace("{{NAME}}", name);
-            htmlContent = htmlContent.replace("{{VEREINSNAME}}", vereinsname);
+            htmlContent = htmlContent.replace("{{VORNAME}}", firstname)
+                    .replace("{{NACHNAME}}", lastname)
+                    .replace("{{VEREINSNAME}}", vereinsname)
+                    .replace("{{EVENTNAME}}", eventname)
+                    .replace("{{STARTDATUM}}", startdatum)
+                    .replace("{{ENDDATUM}}", enddatum)
+                    .replace("{{SPORTART1}}", sportart1)
+                    .replace("{{ERGEBNIS1}}", ergebnis1)
+                    .replace("{{SPORTART2}}", sportart2)
+                    .replace("{{ERGEBNIS2}}", ergebnis2)
+                    .replace("{{SPORTART3}}", sportart3)
+                    .replace("{{ERGEBNIS3}}", ergebnis3)
+                    .replace("{{DATE_EVENT_END}}", dateEventEnd);
 
             // PDF aus HTML generieren
             HtmlConverter.convertToPdf(htmlContent, new FileOutputStream(outputPath));
 
-            System.out.println("✅ Urkunde für " + name + " im Verein " + vereinsname + " wurde erfolgreich erstellt!");
+            System.out.println("✅ Urkunde für " + firstname + " " + lastname + " wurde erfolgreich erstellt!");
         } catch (IOException e) {
             e.printStackTrace();
         }
