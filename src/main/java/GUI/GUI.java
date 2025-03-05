@@ -1,13 +1,16 @@
 package GUI;
 
+import DatabaseOperations.DBConnection;
 import Logic.AdministratorManager;
 import Logic.*;
 import Model.*;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -803,9 +806,22 @@ public class GUI {
         gbc.gridwidth = 2;
         panel.add(participantsLabel, gbc);
 
-        DynamicTableSportEvent.loadTableData();
+        //Tabelle?
 
+        Connection connection = DBConnection.Verbindung();
+        DynamicTableSportEvent dynamicTableSportEvent = new DynamicTableSportEvent(connection);
+        JPanel tableContainer = new JPanel(new BorderLayout());
+        tableContainer.add(dynamicTableSportEvent.getPanel(), BorderLayout.CENTER);
 
+        GridBagConstraints gbcTable = new GridBagConstraints();
+        gbcTable.gridx = 0;
+        gbcTable.gridy = 4;
+        gbcTable.gridwidth = 2;
+        gbcTable.fill = GridBagConstraints.BOTH;
+        gbcTable.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbcTable.insets = new Insets(10, 10, 10, 10);
+        panel.add(tableContainer, gbcTable);
 
         // TODO Teilnehmer und Ergebniseingabe einrichten, siee Quelle: https://www.java-forum.org/thema/swing-eingabefelder-in-tabelle.27003/
 

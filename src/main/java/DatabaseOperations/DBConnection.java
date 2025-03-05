@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    public static final String PATH = "C:\\Users\\Alpay Tarakcioglu\\IdeaProjects\\Projektarbeit-FA-C-22\\ProjektDB_v4.db";
+    public static final String PATH = "C:\\Users\\Flo\\OneDrive - OSZ IMT\\LF12\\PROJEKT ARBEIT\\untitled\\ProjektDB_v4.db";
     public static final String ConnectionURL = "jdbc:sqlite:" + PATH;
 
 
