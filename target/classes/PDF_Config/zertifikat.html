@@ -8,33 +8,75 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 50px;
-            border: 10px solid gold;
-            margin: 50px;
+            padding: 0;
+            margin: 0;
         }
-        h1 {
-            font-size: 36px;
-            color: darkblue;
+
+        /* Container für das Zertifikat */
+        .container {
+            position: relative;
+            width: 595px;  /* A4 Breite */
+            height: 842px; /* A4 Höhe */
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid black;
         }
-        p {
-            font-size: 20px;
+
+        /* Der Rahmen als Bild, damit er korrekt gerendert wird */
+        .rahmen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
-        .name {
-            font-size: 28px;
-            font-weight: bold;
-            color: darkred;
+
+        /* Symbol (z. B. Kranz mit Stern) */
+        .symbol {
+            width: 120px;
+            height: 120px;
+            margin-top: 30px;
         }
+
         .vereinsname {
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 50px;
+        }
+
+        .eventname, .eventzeitraum {
             font-style: italic;
         }
     </style>
 </head>
 <body>
-<h1>Zertifikat</h1>
-<p>Dieses Zertifikat wird verliehen an:</p>
-<p class="name">{{NAME}}</p>
-<p>Für herausragende Leistungen im</p>
-<p class="vereinsname">{{VEREINSNAME}}</p>
-<p>Herzlichen Glückwunsch!</p>
+<div class="container">
+    <!-- Rahmen-Hintergrund -->
+    <img class="rahmen" src="C:\Users\Lasse\IdeaProjects\Projektarbeit-FA-C-22\src\main\resources\PDF_Config\rahmen.png" alt="Rahmen">
+
+    <!-- Symbol -->
+    <img class="symbol" src="C:\Users\Lasse\IdeaProjects\Projektarbeit-FA-C-22\src\main\resources\PDF_Config\symbol.png" alt="Symbol">
+
+    <h1>Zertifikat</h1>
+    <p>Für die Teilnahme an: <span class="eventname">{{EVENTNAME}}</span></p>
+    <p>Zeitraum des Events: <span class="eventzeitraum">{{STARTDATUM}} - {{ENDDATUM}}</span></p>
+    <p><span class="vorname">{{VORNAME}}</span> <span class="nachname">{{NACHNAME}}</span></p>
+    <p>Vom Verein: <span class="vereinsname">{{VEREINSNAME}}</span></p>
+    <p>Hat in folgenden Sportarten wie folgt abgeschnitten:</p>
+    <p><span class="sportart">{{SPORTART1}}</span>: <span class="ergebnis">{{ERGEBNIS1}}</span></p>
+    <p><span class="sportart">{{SPORTART2}}</span>: <span class="ergebnis">{{ERGEBNIS2}}</span></p>
+    <p><span class="sportart">{{SPORTART3}}</span>: <span class="ergebnis">{{ERGEBNIS3}}</span></p>
+    <p>Datum: <span class="datum">{{DATE_EVENT_END}}</span></p>
+    <div class="signature">
+        <p>Unterschrift: _________________</p>
+    </div>
+</div>
 </body>
 </html>

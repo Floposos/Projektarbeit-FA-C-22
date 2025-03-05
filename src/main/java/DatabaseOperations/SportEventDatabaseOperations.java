@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SportEventDatabaseOperations {
 
-    private static final String TABLE_NAME = "T_sport_events";
+    private static final String TABLE_NAME = "T_sportEvent";
 
 //    public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
 public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, String resultValueList) {
@@ -111,5 +111,21 @@ public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalD
             throw new RuntimeException("Fehler beim Abrufen der SportEvents: " + e.getMessage(), e);
         }
         return sportEvents;
+    }
+
+    public boolean sportEventExists(int sportEventId) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE sportEventId = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, sportEventId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen des SportEvents: " + e.getMessage(), e);
+        }
+        return false;
     }
 }

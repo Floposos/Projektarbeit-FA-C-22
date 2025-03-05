@@ -1,17 +1,33 @@
 package DatabaseOperations;
 
 import Model.EventMember;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventMemberDatabaseOperations {
 
-    private static final String TABLE_NAME = "T_event_members";
+    private static final String TABLE_NAME = "T_eventMember";
+    private final EventDatabaseOperations eventDb;
+    private final SportEventDatabaseOperations sportEventDb;
+
+    public EventMemberDatabaseOperations() {
+        this.eventDb = new EventDatabaseOperations();
+        this.sportEventDb = new SportEventDatabaseOperations();
+    }
 
     public void insertEventMember(int memberId, int eventId, int sportEventId) {
-        String query = "INSERT INTO " + TABLE_NAME + " (member_id, event_id, sportEvent_id) VALUES (?, ?, ?)";
+        if (!eventDb.eventExists(eventId)) {
+            throw new IllegalArgumentException("Event mit ID " + eventId + " existiert nicht.");
+        }
+        if (!sportEventDb.sportEventExists(sportEventId)) {
+            throw new IllegalArgumentException("SportEvent mit ID " + sportEventId + " existiert nicht.");
+        }
+        if (isMemberAlreadyRegistered(memberId, eventId)) {
+            throw new IllegalArgumentException("Mitglied ist bereits für dieses Event angemeldet.");
+        }
+
+        String query = "INSERT INTO " + TABLE_NAME + " (memberId, eventId, sportEventId) VALUES (?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -24,53 +40,54 @@ public class EventMemberDatabaseOperations {
         }
     }
 
-    public void updateEventMember(int eventMemberId, int memberId, int eventId, int sportEventId) {
-        String query = "UPDATE " + TABLE_NAME + " SET member_id = ?, event_id = ?, sportEvent_id = ? WHERE eventMemberId = ?";
+    public boolean isMemberAlreadyRegistered(int memberId, int eventId) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE memberId = ? AND eventId = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, memberId);
+            preparedStatement.setInt(2, eventId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen der Mitgliedschaft: " + e.getMessage(), e);
+        }
+        return false;
+    }
+
+    public int getEventMemberId(int memberId, int eventId) {
+        String query = "SELECT eventMemberId FROM " + TABLE_NAME + " WHERE memberId = ? AND eventId = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, memberId);
+            preparedStatement.setInt(2, eventId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("eventMemberId");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen der EventMember-ID: " + e.getMessage(), e);
+        }
+        return -1;
+    }
+    public void deleteEventMember(int memberId, int eventId) {
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE memberId = ? AND eventId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, memberId);
             preparedStatement.setInt(2, eventId);
-            preparedStatement.setInt(3, sportEventId);
-            preparedStatement.setInt(4, eventMemberId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Aktualisieren des EventMembers: " + e.getMessage(), e);
-        }
-    }
+            int affectedRows = preparedStatement.executeUpdate();
 
-    public void deleteEventMember(int eventMemberId) {
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE eventMemberId = ?";
-        try (Connection connection = DBConnection.Verbindung();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setInt(1, eventMemberId);
-            preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new RuntimeException("Kein Eintrag zum Löschen gefunden.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Löschen des EventMembers: " + e.getMessage(), e);
         }
-    }
-
-    public EventMember getEventMemberById(int eventMemberId) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE eventMemberId = ?";
-        try (Connection connection = DBConnection.Verbindung();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setInt(1, eventMemberId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return new EventMember(
-                            resultSet.getInt("eventMemberId"),
-                            resultSet.getInt("member_id"),
-                            resultSet.getInt("event_id"),
-                            resultSet.getInt("sportEvent_id")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Fehler beim Abrufen des EventMembers: " + e.getMessage(), e);
-        }
-        return null;
     }
 
     public List<EventMember> getAllEventMembers() {
@@ -84,9 +101,9 @@ public class EventMemberDatabaseOperations {
             while (resultSet.next()) {
                 EventMember em = new EventMember(
                         resultSet.getInt("eventMemberId"),
-                        resultSet.getInt("member_id"),
-                        resultSet.getInt("event_id"),
-                        resultSet.getInt("sportEvent_id")
+                        resultSet.getInt("memberId"),
+                        resultSet.getInt("eventId"),
+                        resultSet.getInt("sportEventId")
                 );
                 eventMembers.add(em);
             }

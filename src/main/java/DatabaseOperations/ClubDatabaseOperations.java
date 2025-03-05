@@ -57,7 +57,7 @@ public class ClubDatabaseOperations {
         }
     }
     public int getClubIdByName(String name) {
-        String query = "SELECT clubId FROM T_clubs WHERE name = ?";
+        String query = "SELECT clubId FROM " + TABLE_NAME +  " WHERE name = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
@@ -69,7 +69,7 @@ public class ClubDatabaseOperations {
         } catch (SQLException e) {
             throw new RuntimeException("Fehler beim Abrufen der ClubId: " + e.getMessage(), e);
         }
-        return 0; // Falls kein Club gefunden wurde, könnte man 0 oder eine andere Fehlerbehandlung zurückgeben
+        return 0;
     }
 
 
