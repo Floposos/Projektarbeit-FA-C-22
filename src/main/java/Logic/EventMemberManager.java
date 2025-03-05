@@ -1,45 +1,47 @@
 package Logic;
 
+import DatabaseOperations.EventDatabaseOperations;
+import DatabaseOperations.SportEventDatabaseOperations;
 import DatabaseOperations.EventMemberDatabaseOperations;
 import Model.EventMember;
+
 import java.util.List;
 
 public class EventMemberManager {
-    private EventMemberDatabaseOperations eventMemberDbOps;
+    private final EventMemberDatabaseOperations eventMemberDb;
+    private final EventDatabaseOperations eventDb;
+    private final SportEventDatabaseOperations sportEventDb;
 
     public EventMemberManager() {
-        this.eventMemberDbOps = new EventMemberDatabaseOperations();
+        this.eventMemberDb = new EventMemberDatabaseOperations();
+        this.eventDb = new EventDatabaseOperations();
+        this.sportEventDb = new SportEventDatabaseOperations();
     }
 
-    public void addEventMember(int memberId, int eventId, int sportId) {
-        if (memberId <= 0 || eventId <= 0 || sportId <= 0) {
-            throw new IllegalArgumentException("Ungültige Eingabedaten für EventMember.");
+    public void registerMemberForEvent(int memberId, int eventId, int sportEventId) {
+        if (!eventDb.eventExists(eventId)) {
+            throw new IllegalArgumentException("Event mit ID " + eventId + " existiert nicht.");
         }
-        eventMemberDbOps.insertEventMember(memberId, eventId, sportId);
+        if (!sportEventDb.sportEventExists(sportEventId)) {
+            throw new IllegalArgumentException("SportEvent mit ID " + sportEventId + " existiert nicht.");
+        }
+        if (eventMemberDb.isMemberAlreadyRegistered(memberId, eventId)) {
+            throw new IllegalArgumentException("Mitglied ist bereits für dieses Event angemeldet.");
+        }
+
+        eventMemberDb.insertEventMember(memberId, eventId, sportEventId);
     }
 
-    public void deleteEventMember(int eventMemberId) {
-        if (eventMemberId <= 0) {
-            throw new IllegalArgumentException("Ungültige EventMember-ID.");
+    public void unregisterMemberFromEvent(int memberId, int eventId) {
+        int eventMemberId = eventMemberDb.getEventMemberId(memberId, eventId);
+        if (eventMemberId == -1) {
+            throw new IllegalArgumentException("Mitglied ist nicht für dieses Event angemeldet.");
         }
-        eventMemberDbOps.deleteEventMember(eventMemberId);
-    }
 
-    public void updateEventMember(int eventMemberId, int memberId, int eventId, int sportId) {
-        if (eventMemberId <= 0 || memberId <= 0 || eventId <= 0 || sportId <= 0) {
-            throw new IllegalArgumentException("Ungültige Eingabedaten für die Aktualisierung von EventMember.");
-        }
-        eventMemberDbOps.updateEventMember(eventMemberId, memberId, eventId, sportId);
-    }
-
-    public EventMember getEventMemberById(int eventMemberId) {
-        if (eventMemberId <= 0) {
-            throw new IllegalArgumentException("Ungültige EventMember-ID.");
-        }
-        return eventMemberDbOps.getEventMemberById(eventMemberId);
+        eventMemberDb.deleteEventMember(memberId, eventId);
     }
 
     public List<EventMember> getAllEventMembers() {
-        return eventMemberDbOps.getAllEventMembers();
+        return eventMemberDb.getAllEventMembers();
     }
 }
