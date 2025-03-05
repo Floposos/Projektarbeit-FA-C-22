@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClubDatabaseOperations {
-    private static final String TABLE_NAME = "T_clubs";
+    private static final String TABLE_NAME = "T_club";
 
     public void insertClub(String name, String password) {
         if (name == null || name.trim().isEmpty() || password == null || password.trim().isEmpty()) {
