@@ -112,4 +112,20 @@ public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalD
         }
         return sportEvents;
     }
+
+    public boolean sportEventExists(int sportEventId) {
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE sportEventId = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, sportEventId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Überprüfen des SportEvents: " + e.getMessage(), e);
+        }
+        return false;
+    }
 }
