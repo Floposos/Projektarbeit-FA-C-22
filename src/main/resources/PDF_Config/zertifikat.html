@@ -8,32 +8,62 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-image: url('rahmen.jpg');
-            background-size: cover;
-            padding: 50px;
+            padding: 0;
+            margin: 0;
         }
+
+        /* Container für das Zertifikat */
         .container {
-            background: white;
-            padding: 20px;
-            border: 2px solid black;
-            display: inline-block;
-            width: 80%;
+            position: relative;
+            width: 595px;  /* A4 Breite */
+            height: 842px; /* A4 Höhe */
             margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid black;
         }
+
+        /* Der Rahmen als Bild, damit er korrekt gerendert wird */
+        .rahmen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Symbol (z. B. Kranz mit Stern) */
+        .symbol {
+            width: 120px;
+            height: 120px;
+            margin-top: 30px;
+        }
+
         .vereinsname {
             font-weight: bold;
-            color: darkred;
         }
+
         .signature {
             margin-top: 50px;
         }
-        .eventname, .eventzeit-style: italic;
+
+        .eventname, .eventzeitraum {
+            font-style: italic;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <img src="symbol.png" alt="Icon" width="100">
+    <!-- Rahmen-Hintergrund -->
+    <img class="rahmen" src="C:\Users\Lasse\IdeaProjects\Projektarbeit-FA-C-22\src\main\resources\PDF_Config\rahmen.png" alt="Rahmen">
+
+    <!-- Symbol -->
+    <img class="symbol" src="C:\Users\Lasse\IdeaProjects\Projektarbeit-FA-C-22\src\main\resources\PDF_Config\symbol.png" alt="Symbol">
+
     <h1>Zertifikat</h1>
     <p>Für die Teilnahme an: <span class="eventname">{{EVENTNAME}}</span></p>
     <p>Zeitraum des Events: <span class="eventzeitraum">{{STARTDATUM}} - {{ENDDATUM}}</span></p>
