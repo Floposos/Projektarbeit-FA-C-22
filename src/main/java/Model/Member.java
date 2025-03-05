@@ -19,6 +19,10 @@ public class Member {
 
     }
 
+    @Override
+    public String toString() {
+        return memberId + " - " + firstName + " - " + lastName;
+    }
     public int getMemberId() {
         return memberId;
     }
@@ -36,10 +40,10 @@ public class Member {
     }
 
     public String getLastName() {
-        return firstName;
+        return lastName;
     }
 
-    public void setLastName(String firstName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
