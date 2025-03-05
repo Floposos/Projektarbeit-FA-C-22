@@ -29,7 +29,7 @@ public class GUI {
 
     JFrame frame = new JFrame("Auswahlfenster");
     JPanel panel = new JPanel();
-    private List<JComboBox<String>> sportDropdowns; // List to store sport dropdowns
+    private List<JComboBox<String>> sportDropdowns;
     private List<JFormattedTextField> dateFields;
 
     public GUI() {
@@ -171,7 +171,6 @@ public class GUI {
         gbc.gridy = 0;
         panel.add(clubLabel, gbc);
 
-        // Dropdown für Vereinsnamen
         clubDropdown = new JComboBox<>();
         for (Club club : clubManager.getAllClubs()) {
             clubDropdown.addItem(club.getName());
@@ -207,13 +206,10 @@ public class GUI {
             }
         });
 
-        // Panel neu validieren und repainten
         panel.revalidate();
         panel.repaint();
     }
 
-
-    // Erstellt die Haupt-Auswahlseite
     private void showActionSelectionPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -269,7 +265,6 @@ public class GUI {
         panel.repaint();
     }
 
-    // Panel für Neues Event
     private void showNewEventPanel() {
         panel.removeAll();
         panel.setLayout(new GridBagLayout());
@@ -298,7 +293,6 @@ public class GUI {
         gbc.insets = new Insets(20, 10, 10, 10);
         panel.add(saveButton, gbc);
 
-        // Pfeil-Button unten links
         JButton backButton = createBackButton(this::showActionSelectionPanel);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -306,10 +300,9 @@ public class GUI {
         gbc.insets = new Insets(10, 10, 10, 10);
         panel.add(backButton, gbc);
 
-        // **Hier wird der Event-Name erst beim Klick abgerufen**
         saveButton.addActionListener(e -> {
-            String eventName = nameField.getText(); // Text aus dem Textfeld abrufen
-            int adminID = 1000; //zum Testen
+            String eventName = nameField.getText();
+            int adminID = 1000;
 
             if (eventName.isEmpty()) {
                 JOptionPane.showMessageDialog(panel, "Bitte einen Event-Namen eingeben!", "Fehler", JOptionPane.ERROR_MESSAGE);
