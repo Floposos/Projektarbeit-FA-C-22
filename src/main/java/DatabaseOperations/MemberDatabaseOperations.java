@@ -9,10 +9,10 @@ import java.util.List;
 
 public class MemberDatabaseOperations {
 
-    private static final String TABLE_NAME = "T_members";
+    private static final String TABLE_NAME = "T_member";
 
     public void insertMember(int clubId, String firstName, String lastName, LocalDate birthDate) {
-        String query = "INSERT INTO " + TABLE_NAME + " (first_name, last_name, birth_date, club_id) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO " + TABLE_NAME + " (firstName, lastName, birthDate, clubId) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, firstName);
@@ -37,7 +37,7 @@ public class MemberDatabaseOperations {
     }
 
     public void updateMember(int memberId, int clubId, String firstName, String lastName, LocalDate birthDate) {
-        String query = "UPDATE " + TABLE_NAME + " SET club_id = ?, first_name = ?, last_name = ?, birth_date = ? WHERE memberId = ?";
+        String query = "UPDATE " + TABLE_NAME + " SET clubId = ?, firstName = ?, lastName = ?, birthDate = ? WHERE memberId = ?";
         try (Connection connection = DBConnection.Verbindung();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, clubId);
@@ -59,11 +59,11 @@ public class MemberDatabaseOperations {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return new Member(
-                            resultSet.getInt("club_id"),
                             resultSet.getInt("memberId"),
-                            resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
-                            resultSet.getDate("birth_date").toLocalDate()
+                            resultSet.getInt("clubId"),
+                            resultSet.getString("firstName"),
+                            resultSet.getString("lastName"),
+                            resultSet.getDate("birthDate").toLocalDate()
                     );
                 }
             }
@@ -83,11 +83,11 @@ public class MemberDatabaseOperations {
 
             while (resultSet.next()) {
                 Member m = new Member(
-                        resultSet.getInt("club_id"),
                         resultSet.getInt("memberId"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name"),
-                        resultSet.getDate("birth_date").toLocalDate()
+                        resultSet.getInt("clubId"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getDate("birthDate").toLocalDate()
                 );
                 members.add(m);
             }
