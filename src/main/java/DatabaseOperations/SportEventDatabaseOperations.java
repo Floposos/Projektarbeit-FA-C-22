@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SportEventDatabaseOperations {
 
-    private static final String TABLE_NAME = "T_sport_events";
+    private static final String TABLE_NAME = "T_sportEvent";
 
 //    public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, List<String> resultValueList) {
 public void insertSportEvent(int eventMemberId, int eventId, int sportId, LocalDate startDate, LocalDate endDate, String resultValueList) {

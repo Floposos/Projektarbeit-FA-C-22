@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDatabaseOperations {
-    private static final String TABLE_NAME = "T_events";
+    private static final String TABLE_NAME = "T_event";
 
     public void insertEvent(int administratorId, String name, String status) {
         String query = "INSERT INTO " + TABLE_NAME + " (administratorId, name, status) VALUES (?, ?, ?)";
@@ -91,5 +91,21 @@ public class EventDatabaseOperations {
             throw new RuntimeException("Fehler beim Abrufen der Events: " + e.getMessage(), e);
         }
         return events;
+    }
+
+    public int getEventIDByName(String eventName) {
+        String Query = "SELECT eventId FROM " + TABLE_NAME + " WHERE name = ?";
+        try (Connection connection = DBConnection.Verbindung();
+             PreparedStatement preparedStatement = connection.prepareStatement(Query)) {
+            preparedStatement.setString(1, eventName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("eventId");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Fehler beim Abrufen der EventId: " + e.getMessage(), e);
+        }
+        return 0;
     }
 }
