@@ -589,7 +589,7 @@ public class GUI {
 
         addButton.addActionListener(e -> {
             try {
-                int clubId = 1; // Hier wäre der Club ID, wenn benötigt
+                int clubId = loggedInClubId;
                 String firstName = firstNameField.getText();
                 String lastName = lastNameField.getText();
                 LocalDate birthDate = LocalDate.parse(birthDateField.getText());
