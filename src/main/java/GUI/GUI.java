@@ -360,6 +360,49 @@ public class GUI {
         panel.revalidate();
         panel.repaint();
     }
+    private void addSportRow() {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        if (sportDropdowns == null || dateFields == null) {
+            sportDropdowns = new ArrayList<>();
+            dateFields = new ArrayList<>();
+        }
+
+        // Neue Zeile für Dropdown und Kalender
+        int row = sportDropdowns.size() + 2; // Startposition nach Überschrift und Button
+
+        // Dropdown für Sportarten
+        JComboBox<String> sportComboBox = new JComboBox<>();
+        //TODO aktuell
+        for (Sport sporttype : sportsType.getAllSports()) {  // Instanzmethode richtig aufrufen
+            sportComboBox.addItem(sporttype.getName());
+        }
+
+        sportDropdowns.add(sportComboBox); // Speichern in der Liste
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 1;
+        panel.add(sportComboBox, gbc);
+
+        // Kalenderobjekt für Datum
+        JFormattedTextField dateField = new JFormattedTextField("TT/MM/JJJJ");
+        dateFields.add(dateField); // Speichern in der Liste
+        gbc.gridx = 1;
+        panel.add(dateField, gbc);
+
+        // Event Speichern Button nach unten verschieben
+        JButton saveButton = (JButton) panel.getComponent(panel.getComponentCount() - 1);
+        gbc.gridx = 0;
+        gbc.gridy = row + 1;
+        gbc.gridwidth = 2;
+        panel.remove(saveButton); // Entferne den alten Button
+        panel.add(saveButton, gbc); // Füge ihn darunter wieder hinzu
+
+        panel.revalidate();
+        panel.repaint();
+    }
 
     private void showClubManagementPanel() {
         panel.removeAll();  // Panel zurücksetzen
@@ -697,52 +740,6 @@ public class GUI {
     private void showUnregisterEventPanel() {
         System.out.println("Mitglied von Event abmelden wurde ausgewählt.");
     }
-
-
-    private void addSportRow() {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);
-
-        if (sportDropdowns == null || dateFields == null) {
-            sportDropdowns = new ArrayList<>();
-            dateFields = new ArrayList<>();
-        }
-
-        // Neue Zeile für Dropdown und Kalender
-        int row = sportDropdowns.size() + 2; // Startposition nach Überschrift und Button
-
-        // Dropdown für Sportarten
-        JComboBox<String> sportComboBox = new JComboBox<>();
-        //TODO aktuell
-        for (Sport sporttype : sportsType.getAllSports()) {  // Instanzmethode richtig aufrufen
-            sportComboBox.addItem(sporttype.getName());
-        }
-
-        sportDropdowns.add(sportComboBox); // Speichern in der Liste
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.gridwidth = 1;
-        panel.add(sportComboBox, gbc);
-
-        // Kalenderobjekt für Datum
-        JFormattedTextField dateField = new JFormattedTextField("TT/MM/JJJJ");
-        dateFields.add(dateField); // Speichern in der Liste
-        gbc.gridx = 1;
-        panel.add(dateField, gbc);
-
-        // Event Speichern Button nach unten verschieben
-        JButton saveButton = (JButton) panel.getComponent(panel.getComponentCount() - 1);
-        gbc.gridx = 0;
-        gbc.gridy = row + 1;
-        gbc.gridwidth = 2;
-        panel.remove(saveButton); // Entferne den alten Button
-        panel.add(saveButton, gbc); // Füge ihn darunter wieder hinzu
-
-        panel.revalidate();
-        panel.repaint();
-    }
-
 
     // Panel für Event verwalten
     private void pnlManageEvent() throws SQLException {
