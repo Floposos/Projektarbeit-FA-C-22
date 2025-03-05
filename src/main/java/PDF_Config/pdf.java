@@ -13,6 +13,7 @@ public class pdf {
     public static void main(String[] args) {
         String outputPath = "src/main/resources/zertifikat.pdf";
 
+        // Dynamische Platzhalterwerte
         String firstname = "Max";
         String lastname = "Mustermann";
         String vereinsname = "Sportverein Musterstadt";
@@ -28,16 +29,19 @@ public class pdf {
         String dateEventEnd = "03.06.2024";
 
         try {
+            // HTML-Datei aus dem Ressourcen-Ordner laden
             InputStream inputStream = pdf.class.getClassLoader().getResourceAsStream("PDF_Config/zertifikat.html");
             if (inputStream == null) {
                 throw new IOException("Die Datei zertifikat.html wurde nicht gefunden!");
             }
 
+            // HTML-Inhalt als String einlesen
             String htmlContent;
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 htmlContent = reader.lines().collect(Collectors.joining("\n"));
             }
 
+            // Platzhalter ersetzen
             htmlContent = htmlContent.replace("{{VORNAME}}", firstname)
                     .replace("{{NACHNAME}}", lastname)
                     .replace("{{VEREINSNAME}}", vereinsname)
@@ -52,9 +56,10 @@ public class pdf {
                     .replace("{{ERGEBNIS3}}", ergebnis3)
                     .replace("{{DATE_EVENT_END}}", dateEventEnd);
 
+            // PDF aus HTML generieren
             HtmlConverter.convertToPdf(htmlContent, new FileOutputStream(outputPath));
 
-            System.out.println("Urkunde für " + firstname + " " + lastname + " wurde erfolgreich erstellt!");
+            System.out.println("✅ Urkunde für " + firstname + " " + lastname + " wurde erfolgreich erstellt!");
         } catch (IOException e) {
             e.printStackTrace();
         }
